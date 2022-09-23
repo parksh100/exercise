@@ -1,10 +1,14 @@
 const { application } = require("express");
 const express = require("express");
 const app = express();
+const xlsx = require("xlsx"); // 아무데나
 const port = 3000;
 require("dotenv").config({ path: "mysql/.env" }); // 반드시 mysql위에 있어야 함.
 const mysql = require("./mysql");
 const multer = require("multer");
+const fs = require("fs");
+const morgan = require("morgan");
+const rfs = require("rotating-file-stream"); // 사이즈가 벗어난다거나 할때 자동으로 새로운 로그파일 생성
 const path = require("path");
 
 //----------------------------------------------------
@@ -49,6 +53,59 @@ app.post("/api/attachment", upload.single("attachment"), async (req, res) => {
   // const r = await mysql.query("auditorImage", fileInfo);
   // res.send(r);
 });
+
+// xlsx --------------------------------------------------
+const xlsxStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // 어떤폴더에 저장
+    cb(null, "uploads");
+  },
+  filename: function (req, file, cb) {
+    // 시스템 시간으로 파일이름 변경
+    cb(null, new Date().valueOf() + path.extname(file.originalname));
+  },
+});
+
+const xlsxUpload = multer({ storage: xlsxStorage });
+
+app.post("/api/xlsx", xlsxUpload.single("xlsx"), async (req, res) => {
+  console.log(req.file);
+  console.log(req.body);
+  const workbook = xlsx.readFile(req.file.path);
+  const firstSheetName = workbook.SheetNames[0];
+  const firstSheet = workbook.Sheets[firstSheetName];
+  const firstSheetJson = xlsx.utils.sheet_to_json(firstSheet);
+
+  res.send(firstSheetJson);
+});
+
+//morgan --------------------------------------------------------------
+const generator = (time, index) => {
+  if (!time) return "file.log";
+
+  const yearMonth =
+    time.getFullYear() + (time.getMonth() + 1).toString().padStart(2, "0");
+  const day = time.getDate().toString().padStart(2, "0");
+  const hour = time.getHours().toString().padStart(2, "0");
+  const minute = time.getMinutes().toString().padStart(2, "0");
+
+  return `${yearMonth}/${yearMonth}${day}-${hour}${minute}-${index}-file.log`;
+};
+
+const accessLogStream = rfs.createStream(generator, {
+  interval: "1d",
+  size: "10M",
+  path: path.join(__dirname, "log"),
+});
+
+app.use(
+  morgan("combined", {
+    stream: accessLogStream,
+    skip: function (req, res) {
+      return res.statusCode < 400; // 에러가 아닌 경우 로그파일 생성 하지 않음
+    },
+  })
+);
 
 //웹서버 시작--------------------------------------------------------
 app.listen(port, () => {
