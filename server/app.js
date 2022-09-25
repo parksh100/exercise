@@ -3,23 +3,24 @@ const express = require("express");
 const app = express();
 const xlsx = require("xlsx"); // 아무데나
 const port = 3000;
-require("dotenv").config({ path: "mysql/.env" }); // 반드시 mysql위에 있어야 함.
+require("dotenv").config({ path: `mysql/.env.${app.get("env")}` }); // 반드시 mysql위에 있어야 함.
 const mysql = require("./mysql"); // mysql
 const multer = require("multer"); // multer
-const fs = require("fs");
-const morgan = require("morgan");
-const rfs = require("rotating-file-stream"); // 사이즈가 벗어난다거나 할때 자동으로 새로운 로그파일 생성
-const path = require("path");
+const fs = require("fs"); // morgan
+const morgan = require("morgan"); // morgan
+const rfs = require("rotating-file-stream"); // morgan 사이즈가 벗어난다거나 할때 자동으로 새로운 로그파일 생성
+const path = require("path"); // morgan
 const session = require("express-session");
+const cors = require("cors"); // cors
 
-require("dotenv").config({ path: "nodemailer/.env" }); // nodemailer
+require("dotenv").config({ path: `nodemailer/.env.${app.get("env")}` }); // nodemailer
 const nodemailer = require("./nodemailer"); // nodemailer
 
 const mime = require("mime"); // 파일다운로드 기능
 const cookieParser = require("cookie-parser");
 const cron = require("node-cron"); // 작업스케줄러
 
-//----------------------------------------------------------------------------------------------------
+// static----------------------------------------------------------------------------------------------------
 app.use(express.static("public")); // 서버에서 이미지를 다운받아야 할때 사용. static("열어줄 폴더")
 // 브라우저에 localhost:3000//images/q8.jpg 입력하면 이미지 바로 볼 수 있음.
 
@@ -32,11 +33,12 @@ app.use(
   })
 );
 
-// multer ---------------------------------------------------------------------------------------------
-const storage = multer.diskStorage({
+// multer 이미지 업로드---------------------------------------------------------------------------------------------
+
+const imageStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     // 어떤폴더에 저장
-    cb(null, "uploads");
+    cb(null, "public/images"); //전송된 파일이 저장되는 디렉토리
   },
   filename: function (req, file, cb) {
     // 시스템 시간으로 파일이름 변경
@@ -44,23 +46,58 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const imageUpload = multer({ storage: imageStorage });
 
-app.post("/api/attachment", upload.single("attachment"), async (req, res) => {
-  console.log(req.file);
-  console.log(req.body);
+app.post(
+  "/api/upload/image",
+  imageUpload.single("attachment"),
+  async (req, res) => {
+    console.log(req.file);
+    console.log(req.body);
 
-  const fileInfo = {
-    auditor_id: parseInt(req.body.auditor_id),
-    originalname: req.file.originalname,
-    mimetype: req.file.mimetype,
-    filename: req.file.filename,
-    path: req.file.path,
-  };
-  res.send(fileInfo);
-  // const r = await mysql.query("auditorImage", fileInfo);
-  // res.send(r);
+    const fileInfo = {
+      auditor_id: parseInt(req.body.auditor_id),
+      originalname: req.file.originalname,
+      mimetype: req.file.mimetype,
+      filename: req.file.filename,
+      path: req.file.path,
+    };
+    res.send(fileInfo);
+  }
+);
+
+// multer 일반파일 업로드---------------------------------------------------------------------------------------------
+
+const fileStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // 어떤폴더에 저장
+    cb(null, "uploads"); //전송된 파일이 저장되는 디렉토리
+  },
+  filename: function (req, file, cb) {
+    // 시스템 시간으로 파일이름 변경
+    cb(null, new Date().valueOf() + path.extname(file.originalname));
+  },
 });
+
+const fileUpload = multer({ storage: fileStorage });
+
+app.post(
+  "/api/upload/file",
+  fileUpload.single("attachment"),
+  async (req, res) => {
+    console.log(req.file);
+    console.log(req.body);
+
+    const fileInfo = {
+      auditor_id: parseInt(req.body.auditor_id),
+      originalname: req.file.originalname,
+      mimetype: req.file.mimetype,
+      filename: req.file.filename,
+      path: req.file.path,
+    };
+    res.send(fileInfo);
+  }
+);
 
 // xlsx Upload ----------------------------------------------------------------------------------------------
 const xlsxStorage = multer.diskStorage({
@@ -120,6 +157,14 @@ app.listen(port, () => {
   console.log(`Server start on port ${port}!!`);
 });
 
+//cors -------------------------------------------------------------------------------------------------------
+const corsOptions = {
+  origin: "http://localhost:8080", // 허용할 도메인
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
 //라우트 동록---------------------------------------------------------------------------------------------------
 //auditor 전체조회
 app.get("/api/auditor", async (req, res) => {
@@ -172,17 +217,10 @@ app.post("/api/email", async (req, res) => {
 });
 
 // File download --------------------------------------------------------------------------------------------------------------
-app.get("/file/:filename", (req, res) => {
+app.get("/api/file/:filename", (req, res) => {
   const file = "./uploads/" + req.params.filename;
   try {
     if (fs.existsSync(file)) {
-      // 파일이 있는지 확인해서 있을때만
-      // const mimetype = mime.getType(file);
-      // const filename = path.basename(file);
-      // res.setHeader("Content-disposition", "attachment; filename =" + file);
-      // res.setHeader("Content-tye", mimetype); //파일형식 지정
-      // const filestream = fs.createReadStream(file);
-      // filestream.pipe(res);
       res.download(file);
     } else {
       res.send("요청한 파일이 존재하지 않습니다");
@@ -197,7 +235,7 @@ app.get("/file/:filename", (req, res) => {
 app.use(cookieParser());
 
 // express-session -----------------------------------------------------------------------------------------------------
-/*
+
 let sess = {
   secret: "secret key",
   resave: "false", //세션에 변경사항이 없어도 항상 다시 저장할지 여부
@@ -208,13 +246,13 @@ let sess = {
     maxAge: 1000 * 60 * 60, // 쿠키가 유지되는 시간
   },
 };
-
+/*
 // if (app.get("env") == "prod") {
 //   sess.cookie.secure = true;
 // }
-
+*/
 app.use(session(sess));
-
+/*
 app.post("/login", (req, res) => {
   const { email, pw } = req.body.param;
   //데이터 베이스에 해당하는 사용자가 있는지, 비밀번호 맞는지 체크
@@ -400,7 +438,7 @@ app.get("/api/xlsx/auditorList", async (req, res) => {
   res.setHeader("Content-disposition", "attachment; filename = Auditors.xlsx");
   res.setHeader(
     "Content-type",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    "application/vnd.openxmlformats-officedocument.spreadsheet's.sheet"
   );
   const downloadFile = Buffer.from(
     // 물리적인 파일이 아님. 일회성 파일
