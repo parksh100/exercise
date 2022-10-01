@@ -20,7 +20,7 @@ export default {
   unmounted() {},
   methods: {
     async getAuditor() {
-      const auditors = await this.get('http://localhost:3000/api/auditor')
+      const auditors = await this.$get('http://localhost:3000/api/auditor')
       console.log(auditors)
     }
   }

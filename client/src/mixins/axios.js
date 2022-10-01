@@ -7,7 +7,7 @@ export default {
   },
   unmounted() {},
   methods: {
-    async get(url) {
+    async $get(url) {
       return (
         await axios.get(url).catch((e) => {
           console.log(e)
