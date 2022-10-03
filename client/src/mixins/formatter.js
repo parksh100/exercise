@@ -1,76 +1,45 @@
-import axios from 'axios'
-import ExcelJS from 'exceljs'
-import { saveAs } from 'file-saver'
-axios.defaults.baseURL = 'http://localhost:3000'
-axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
-axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
-
 export default {
-  created() {},
-  mounted() {},
-  unmounted() {},
   methods: {
-    async $get(url) {
-      return (
-        await axios.get(url).catch((e) => {
-          console.log(e)
-        })
-      ).data // get방식은 바로 data를 뽑아오게 되어 있음.
-    },
-    async $post(url, data) {
-      return await axios.post(url, data).catch((e) => {
-        console.log(e)
-      })
-    },
-    async $put(url, data) {
-      return await axios.put(url, data).catch((e) => {
-        console.log(e)
-      })
-    },
-    async $delete(url) {
-      return await axios.delete(url).catch((e) => {
-        console.log(e)
-      })
-    },
-    // upload ------------------------------------------------------------------
-    async $upload(url, file) {
-      const formData = new FormData()
-      formData.append('attachment', file)
-      return (
-        await axios
-          .post(url, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-          })
-          .catch((e) => {
-            console.log(e)
-          })
-      ).data
-    },
-    // 엑셀다운로드 ---------------------------------------------------------------
-    async $ExcelFromTable(
-      header = [],
-      rows = [],
-      fileName = 'excel',
-      option = {}
-    ) {
-      header = header.filter((h) => h.title && h.key)
-      // https://github.com/exceljs/exceljs#tables
-      const wb = new ExcelJS.Workbook()
-      const ws = wb.addWorksheet() // name,{pageSetup:https://github.com/exceljs/exceljs#page-setup}
-      ws.addTable({
-        name: 'myTable',
-        ref: 'A1',
-        headerRow: true,
-        // style: { theme: 'TableStyleDark3', showRowStripes: true },
-        columns: header.map((h) => ({
-          name: h.title
-        })), // width 설정가능, total함수 가능
-        rows: rows.map((r) => header.map((h) => r[h.key])),
-        ...option
-      })
+    // 날짜
+    // 한국은 2022.03.15
+    // 2022-03-15
+    // 2022/03/15
+    // 미국은 Mar 15, 2022
+    // 유럽은 15.05.2022
+    // d = '20220315', f = 'YYYY.MM.DD'
+    // new Date()
+    $convertDateFormat(d, f) {
+      let year = ''
+      let month = ''
+      let day = ''
 
-      saveAs(new Blob([await wb.xlsx.writeBuffer()]), `${fileName}.xlsx`)
+      if (typeof d === 'string') {
+        year = d.substr(0, 4)
+        month = d.substr(4, 2)
+        day = d.substr(6, 2)
+      } else if (typeof d === 'object') {
+        year = d.getFullYear()
+        month = (d.getMonth() + 1).toString().padStart(2, 0)
+        day = d.getDate().toString().padStart(2, 0)
+      }
+
+      // f = 'YYYY.MM.DD', YYYY/MM/DD, DD.MM.YYYY
+      return f.replace('YYYY', year).replace('MM', month).replace('DD', day)
     },
+
+    // 금액에 대한 포맷
+    // 3500
+    // 3500.1
+    // 한국 3,500
+    // 미국 $3,500.00
+    // 유럽 3.500,00
+    // '3500', '#,###' -> 3,500
+    // 3500, '#.###' -> 3.500
+    // 3500.1, '$#,###.00' -> $3,500.10
+    // 3500.1, '#,###.##' -> 3,500.1
+    // 3500.1, '#.###,##' -> 3.500,1
+    // 1250.12, '#,###.##%' -> 1,250.12%
+    // -3500, '#,###' -> -3,500
     $convertNumberFormat(amount, format) {
       let currencySymbol = ''
       let lastSymbol = ''

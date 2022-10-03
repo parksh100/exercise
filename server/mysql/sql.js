@@ -5,4 +5,5 @@ module.exports = {
   auditorUpdate: `update auditor set ? where auditor_id=?`,
   auditorDelete: `delete from auditor where auditor_id=?`,
   getAuditor: `select * from auditor where auditor_id=?`,
+  auditorListByCondition: `select * from auditor where lower(auditor_name) like ?`,
 };
