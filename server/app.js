@@ -260,18 +260,36 @@ let sess = {
 */
 app.use(session(sess));
 
-// app.post("/login", (req, res) => {
-//   const { email, pw } = req.body.param;
-//   //데이터 베이스에 해당하는 사용자가 있는지, 비밀번호 맞는지 체크해야 함..있다면 로그인 시킴
-//   req.session.email = email;
-//   req.session.isLogined = true;
-//   req.session.save((err) => {
-//     // 위에 두즐 저장
-//     if (err) throw err;
+app.post("/login", async (req, res) => {
+  // const { email, pw } = req.body.param;
+  // //데이터 베이스에 해당하는 사용자가 있는지, 비밀번호 맞는지 체크해야 함..있다면 로그인 시킴
+  // req.session.email = email;
+  // req.session.isLogined = true;
+  // req.session.save((err) => {
+  //   // 위에 두즐 저장
+  //   if (err) throw err;
 
-//     res.send(req.session);
-//   });
-// });
+  //   res.send(req.session);
+  // });
+
+  // app.post("/api/auditor", async (req, res) => {
+  //   const result = await mysql.query("auditorInsert", req.body.param);
+  //   res.send(result);
+  // });
+
+  try {
+    await mysql.query("signUp", req.body.param);
+    if (req.body.param.length > 0) {
+      for (let key in req.body.param[0])
+        req.session[key] = req.body.param[0][key];
+      res.send(req.body.parma[0]);
+    } else {
+      res.send({ error: "로그인 실패! 시스템 관리자에게 문의하세요" });
+    }
+  } catch (err) {
+    res.send({ error: "DB처리과정에서 오류발생!" });
+  }
+});
 
 // app.post("/logout", (req, res) => {
 //   if (req.session.email) {

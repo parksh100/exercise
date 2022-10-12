@@ -41,11 +41,17 @@ const routes = [
   },
   {
     path: '/customer/create',
-    name: 'customer',
+    name: 'customerCreate',
     component: () =>
       import(
         /* webpackChunkName: "customer" */ '../views/CustomerCreateView.vue'
       )
+  },
+  {
+    path: '/customer/list',
+    name: 'customerList',
+    component: () =>
+      import(/* webpackChunkName: "customer" */ '../views/CustomerListView.vue')
   }
 ]
 

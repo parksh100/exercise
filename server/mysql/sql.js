@@ -6,4 +6,5 @@ module.exports = {
   auditorDelete: `delete from auditor where auditor_id=?`,
   getAuditor: `select * from auditor where auditor_id=?`,
   auditorListByCondition: `select * from auditor where lower(auditor_name) like ?`,
+  signUp: `insert into user set ? on duplicate key update ?`,
 };

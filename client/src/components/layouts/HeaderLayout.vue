@@ -36,17 +36,17 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                :class="{ active: $route.path == '/supplier/list' }"
-                @click="goToMenu('/supplier/list')"
-                >Supplier</a
+                :class="{ active: $route.path == '/customer/list' }"
+                @click="goToMenu('/customer/list')"
+                >Customer</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link"
-                :class="{ active: $route.path == '/product/list' }"
-                @click="goToMenu('/product/list')"
-                >Product</a
+                :class="{ active: $route.path == '/customer/create' }"
+                @click="goToMenu('/customer/create')"
+                >인증심사신청</a
               >
             </li>
             <li class="nav-item">
@@ -65,6 +65,16 @@
                 >Shipper</a
               >
             </li>
+            <li v-if="user.email == undefined">
+              <button class="btn btn-primary" @click="kakaoLogin">
+                로그인
+              </button>
+            </li>
+            <li v-else>
+              <button class="btn btn-danger" @click="kakaoLogout">
+                로그아웃
+              </button>
+            </li>
           </ul>
           <!-- <div class="d-flex">
             <span v-if="userInfo.name" class="text-white">{{
@@ -81,20 +91,60 @@
 </template>
 <script>
 export default {
-  // computed: {
-  //   userInfo() {
-  //     return this.$store.state.user.userInfo
-  //   }
-  // },
+  computed: {
+    user() {
+      return this.$store.state.user
+    }
+  },
   methods: {
     goToMenu(path) {
       this.$router.push({ path: path })
-    }
+    },
     // logout() {
     //   this.$store.commit('user/logout')
 
     //   this.$router.push({ path: '/' })
     // }
+    kakaoLogin() {
+      window.Kakao.Auth.login({
+        scope: 'profile_nickname, account_email',
+        success: this.getProfile
+      })
+    },
+    getProfile(authObj) {
+      console.log(authObj)
+      window.Kakao.API.request({
+        url: '/v2/user/me',
+        success: (res) => {
+          const kakaoAccount = res.kakao_account
+          console.log(kakaoAccount)
+          this.login(kakaoAccount)
+
+          alert('로그인 성공')
+        }
+      })
+    },
+    async login(kakaoAccount) {
+      await this.$post('/login', {
+        param: [
+          {
+            usr_email: kakaoAccount.email,
+            user_nickname: kakaoAccount.profile.nickname,
+            user_role: null
+          },
+          { user_nickname: kakaoAccount.profile.nickname, user_role: null }
+        ]
+      })
+      this.$store.commit('user', kakaoAccount)
+    },
+    kakaoLogout() {
+      window.Kakao.Auth.logout((res) => {
+        console.log(res)
+        this.$store.commit('user', {})
+        alert('로그아웃 성공')
+      })
+      this.$router.push({ path: '/' })
+    }
   }
 }
 </script>
