@@ -57,15 +57,12 @@ export default {
   mounted() {},
   unmounted() {},
   methods: {
-    async login() {
-      const paramEmail = await this.post('/login', {
-        param: {
-          paramEmail: this.email,
-          paramPw: this.pw
-        }
+    login() {
+      this.$store.commit('user/login', {
+        email: this.email,
+        pw: this.pw
       })
-      console.log(paramEmail)
-      this.$router.push({ path: '/home' }) // 정해진 화면으로 보내기
+      this.$router.push({ path: '/customer' })
     }
   }
 }
