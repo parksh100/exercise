@@ -1,5 +1,7 @@
 <template>
-  <div>Dashboard Page</div>
+  <div>
+    <h1>Dashboard Page</h1>
+  </div>
 </template>
 <script>
 export default {
@@ -24,7 +26,7 @@ export default {
     // console.log(this.user.userInfo.email)
     if (this.user.userInfo.email === undefined) {
       alert('로그인이 필요합니다.')
-      this.$router.push({ path: '/' })
+      this.$router.push({ path: '/login' })
     }
   },
   unmounted() {},

@@ -19,10 +19,10 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                :class="{ active: $route.path == '/home' }"
+                :class="{ active: $route.path == '/' }"
                 aria-current="page"
-                @click="goToMenu('/home')"
-                >Home</a
+                @click="goToMenu('/')"
+                >홈페이지</a
               >
             </li>
             <li class="nav-item">
@@ -30,7 +30,7 @@
                 class="nav-link"
                 :class="{ active: $route.path == '/dashboard' }"
                 @click="goToMenu('/dashboard')"
-                >Dashboard
+                >대시보드
               </a>
             </li>
             <li class="nav-item">
@@ -38,7 +38,7 @@
                 class="nav-link"
                 :class="{ active: $route.path == '/auditor' }"
                 @click="goToMenu('/auditor')"
-                >Auditor</a
+                >심사원</a
               >
             </li>
 
@@ -47,7 +47,7 @@
                 class="nav-link"
                 :class="{ active: $route.path == '/customer/list' }"
                 @click="goToMenu('/customer/list')"
-                >고객사현황</a
+                >업체리스트</a
               >
             </li>
             <li class="nav-item">
@@ -82,7 +82,7 @@
             <button
               class="btn btn-outline-success"
               v-else
-              @click="goToMenu('/')"
+              @click="goToMenu('/login')"
             >
               로그인
             </button>

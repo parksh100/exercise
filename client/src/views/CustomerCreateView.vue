@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <h3 class="mb-3 fw-bold">[인증심사신청]</h3>
+    <!-- <hr style="width: 50%" /> -->
+
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">심사유형</label>
       <div class="col-sm-9">
@@ -8,7 +11,7 @@
           aria-label="Default select example"
           v-model.trim="customer.certification_type"
         >
-          <option selected>선택하세요</option>
+          <option selected></option>
           <option value="initial">최초심사</option>
           <option value="transSurveil">전환사후심사</option>
           <option value="transRecert">전환갱신심사</option>
@@ -20,6 +23,7 @@
         /> -->
       </div>
     </div>
+
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">국문상호</label>
       <div class="col-sm-9">
@@ -606,7 +610,7 @@
     </div>
     <HR></HR>
 
-    <h3>ISO14001신청정보</h3>
+    <h3 class="mb-5 fw-bold">[ISO14001신청정보]</h3>
 
     <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">인증이력</label>
@@ -1486,7 +1490,7 @@ export default {
     // console.log(this.user.userInfo.email)
     if (this.user.userInfo.email === undefined) {
       alert('로그인이 필요합니다.')
-      this.$router.push({ path: '/' })
+      this.$router.push({ path: '/login' })
     }
   },
   unmounted() {},

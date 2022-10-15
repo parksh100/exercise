@@ -6,24 +6,29 @@ import AuditorView from '@/views/AuditorView.vue'
 import DashBoardView from '@/views/DashBoardView.vue'
 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'login',
+  //   component: LoginView
+  // },
   {
     path: '/',
-    name: 'login',
-    component: LoginView
+    name: 'home',
+    component: HomeView
   },
   {
     path: '/dashboard',
     name: 'dashboard',
     component: DashBoardView
   },
-  {
-    path: '/home',
-    name: 'home',
-    component: HomeView
-  },
+  // {
+  //   path: '/home',
+  //   name: 'home',
+  //   component: HomeView
+  // },
   {
     path: '/login',
-    name: 'login2',
+    name: 'login',
     component: LoginView
   },
   {
@@ -73,14 +78,24 @@ router.beforeEach((to, from, next) => {
   // console.log(store.getters['user/isLogin'])
   // 사용자가 로그인 되었으면 next()를 호출하고, 로그인이 되지 않았으면 login 페이지로 이동시킨다.
   // use.js/getter에서 isLogin을 정의하고, 그 값을 이용한다.
-  if (to.path === '/home') {
+  // if (to.path === '/home') {
+  //   next()
+  // } else {
+  //   if (store.getters['user/isLogin']) {
+  //     next()
+  //   } else {
+  //     store.commit('user/logout')
+  //     next('/')
+  //   }
+  // }
+  if (to.path === '/') {
     next()
   } else {
     if (store.getters['user/isLogin']) {
       next()
     } else {
       store.commit('user/logout')
-      next('/')
+      next('/login')
     }
   }
 })

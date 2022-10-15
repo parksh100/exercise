@@ -1,5 +1,5 @@
 <template>
-  <HeaderLayout v-if="$route.path != '/'" />
+  <HeaderLayout v-if="$route.path != '/login'" />
   <router-view />
   <FooterLayout />
 </template>
@@ -16,12 +16,12 @@ export default {
   font-family: 'Nanum Gothic', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
-  margin-top: 60px; */
+  margin-top: 60px;
 }
-/* html,
+html,
 body {
   background: #faedf0;
-} */
+}
 </style>
