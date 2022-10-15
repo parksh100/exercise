@@ -178,6 +178,14 @@
 </template>
 <script>
 export default {
+  computed: {
+    user() {
+      const data = this.$store.state.user
+      return data
+      // return this.$store.state.user.user
+      // return this.$store.user.userInfo
+    }
+  },
   components: {},
   data() {
     return {
@@ -204,6 +212,11 @@ export default {
   setup() {},
   created() {},
   async mounted() {
+    if (this.user.userInfo.email === undefined) {
+      alert('로그인이 필요합니다.')
+      this.$router.push({ path: '/' })
+    }
+
     this.list = await this.$get('/api/auditor')
     // console.log(r)
   },

@@ -16,7 +16,7 @@
           class="form-control"
           id="floatingInput"
           placeholder="name@example.com"
-          v-model="email"
+          v-model.trim="user.email"
         />
         <label for="floatingInput">Email address</label>
       </div>
@@ -26,7 +26,7 @@
           class="form-control"
           id="floatingPassword"
           placeholder="Password"
-          v-model="pw"
+          v-model.trim="user.pw"
         />
         <label for="floatingPassword">Password</label>
       </div>
@@ -48,8 +48,10 @@ export default {
   components: {},
   data() {
     return {
-      email: '',
-      pw: ''
+      user: {
+        email: '',
+        pw: ''
+      }
     }
   },
   setup() {},
@@ -57,12 +59,40 @@ export default {
   mounted() {},
   unmounted() {},
   methods: {
-    login() {
-      this.$store.commit('user/login', {
-        email: this.email,
-        pw: this.pw
+    // login() {
+    //   this.$store.commit('user/setUser', {
+    //     name: 'Sunghoon Park',
+    //     email: 'spark616@gmail.com'
+    //   })
+    //   this.$router.push({ path: '/home' })
+    // }
+    async login() {
+      await this.$post('/login', {
+        user: this.user
       })
-      this.$router.push({ path: '/customer' })
+        .then(
+          (res) => {
+            // 로그인 성공
+            console.log(res)
+            alert(res.data.message)
+            // console.log(res.data.userData.user_name)
+            if (res.data.success === true) {
+              this.$store.commit('user/setUser', {
+                name: res.data.userData.user_name,
+                email: res.data.userData.user_email
+              })
+              this.$router.push({ path: '/home' })
+            }
+          },
+          (err) => {
+            console.log(err)
+            // 로그인 실패
+            alert('로그인 실패')
+          }
+        )
+        .catch((err) => {
+          alert(err)
+        })
     }
   }
 }

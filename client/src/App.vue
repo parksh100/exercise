@@ -1,5 +1,5 @@
 <template>
-  <HeaderLayout />
+  <HeaderLayout v-if="$route.path != '/'" />
   <router-view />
   <FooterLayout />
 </template>
@@ -20,8 +20,8 @@ export default {
   color: #2c3e50;
   margin-top: 60px; */
 }
-html,
+/* html,
 body {
   background: #faedf0;
-}
+} */
 </style>

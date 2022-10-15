@@ -1,16 +1,10 @@
 import { createStore } from 'vuex'
+import { user } from './user'
+import persistedstate from 'vuex-persistedstate'
 
-const store = createStore({
-  state() {
-    return {
-      user: {}
-    }
+export default createStore({
+  modules: {
+    user: user
   },
-  mutations: {
-    user(state, data) {
-      state.user = data
-    }
-  }
+  plugins: [persistedstate({ paths: ['user.userInfo'] })] // 새로고침해도 유지하고 싶은 값을 배열로 넣어준다.
 })
-
-export default store

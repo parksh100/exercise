@@ -1,13 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import AuditorView from '@/views/AuditorView.vue'
+import DashBoardView from '@/views/DashBoardView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: DashBoardView
   },
   {
     path: '/home',
@@ -58,6 +65,24 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  console.log('to', to)
+  console.log('from', from)
+  // console.log(store.getters['user/isLogin'])
+  // 사용자가 로그인 되었으면 next()를 호출하고, 로그인이 되지 않았으면 login 페이지로 이동시킨다.
+  // use.js/getter에서 isLogin을 정의하고, 그 값을 이용한다.
+  if (to.path === '/home') {
+    next()
+  } else {
+    if (store.getters['user/isLogin']) {
+      next()
+    } else {
+      store.commit('user/logout')
+      next('/')
+    }
+  }
 })
 
 export default router

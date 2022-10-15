@@ -2,8 +2,8 @@ import axios from 'axios'
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
 axios.defaults.baseURL = 'http://localhost:3000'
-axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
-axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
+axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8' // 주고 받는 것은 json형태로 함.
+axios.defaults.headers['Access-Control-Allow-Origin'] = '*' // 모든 도메인에서 접근 가능하도록 함.cors설정
 
 export default {
   created() {},
@@ -34,8 +34,8 @@ export default {
     },
     // upload ------------------------------------------------------------------
     async $upload(url, file) {
-      const formData = new FormData()
-      formData.append('attachment', file)
+      const formData = new FormData() // formdata는 multipart/form-data로 보내는 것임. 자바스크립트 기본객체임
+      formData.append('attachment', file) // name속성이 attachment인 form태그와 같은 의미.
       return (
         await axios
           .post(url, formData, {

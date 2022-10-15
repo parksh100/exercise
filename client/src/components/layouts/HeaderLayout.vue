@@ -28,17 +28,26 @@
             <li class="nav-item">
               <a
                 class="nav-link"
+                :class="{ active: $route.path == '/dashboard' }"
+                @click="goToMenu('/dashboard')"
+                >Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
                 :class="{ active: $route.path == '/auditor' }"
                 @click="goToMenu('/auditor')"
                 >Auditor</a
               >
             </li>
+
             <li class="nav-item">
               <a
                 class="nav-link"
                 :class="{ active: $route.path == '/customer/list' }"
                 @click="goToMenu('/customer/list')"
-                >Customer</a
+                >고객사현황</a
               >
             </li>
             <li class="nav-item">
@@ -49,41 +58,35 @@
                 >인증심사신청</a
               >
             </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                :class="{ active: $route.path == '/order/create' }"
-                @click="goToMenu('/order/create')"
-                >Order</a
-              >
-            </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a
                 class="nav-link"
                 :class="{ active: $route.path == '/shipper' }"
                 @click="goToMenu('/shipper')"
                 >Shipper</a
               >
-            </li>
-            <li v-if="user.email == undefined">
-              <button class="btn btn-primary" @click="kakaoLogin">
-                로그인
-              </button>
-            </li>
-            <li v-else>
-              <button class="btn btn-danger" @click="kakaoLogout">
-                로그아웃
-              </button>
-            </li>
+            </li> -->
           </ul>
-          <!-- <div class="d-flex">
-            <span v-if="userInfo.name" class="text-white">{{
-              userInfo.name
-            }}</span>
-            <button class="btn btn-outline-success" @click="logout">
+
+          <div class="d-flex">
+            <span v-if="userInfo.name" class="text-white pt-2 me-4"
+              >{{ userInfo.name }} 위원님 반갑습니다!</span
+            >
+            <button
+              class="btn btn-outline-success"
+              v-if="userInfo.name"
+              @click="logout"
+            >
               로그아웃
             </button>
-          </div> -->
+            <button
+              class="btn btn-outline-success"
+              v-else
+              @click="goToMenu('/')"
+            >
+              로그인
+            </button>
+          </div>
         </div>
       </div>
     </nav>
@@ -92,8 +95,8 @@
 <script>
 export default {
   computed: {
-    user() {
-      return this.$store.state.user
+    userInfo() {
+      return this.$store.state.user.userInfo // store/index.js/user.js/userInfo정보 가져옴
     }
   },
   methods: {
@@ -105,45 +108,50 @@ export default {
 
     //   this.$router.push({ path: '/' })
     // }
-    kakaoLogin() {
-      window.Kakao.Auth.login({
-        scope: 'profile_nickname, account_email',
-        success: this.getProfile
-      })
-    },
-    getProfile(authObj) {
-      console.log(authObj)
-      window.Kakao.API.request({
-        url: '/v2/user/me',
-        success: (res) => {
-          const kakaoAccount = res.kakao_account
-          console.log(kakaoAccount)
-          this.login(kakaoAccount)
+    //   kakaoLogin() {
+    //     window.Kakao.Auth.login({
+    //       scope: 'profile_nickname, account_email',
+    //       success: this.getProfile
+    //     })
+    //   },
+    //   getProfile(authObj) {
+    //     console.log(authObj)
+    //     window.Kakao.API.request({
+    //       url: '/v2/user/me',
+    //       success: (res) => {
+    //         const kakaoAccount = res.kakao_account
+    //         console.log(kakaoAccount)
+    //         this.login(kakaoAccount)
 
-          alert('로그인 성공')
-        }
-      })
-    },
-    async login(kakaoAccount) {
-      await this.$post('/login', {
-        param: [
-          {
-            usr_email: kakaoAccount.email,
-            user_nickname: kakaoAccount.profile.nickname,
-            user_role: null
-          },
-          { user_nickname: kakaoAccount.profile.nickname, user_role: null }
-        ]
-      })
-      this.$store.commit('user', kakaoAccount)
-    },
-    kakaoLogout() {
-      window.Kakao.Auth.logout((res) => {
-        console.log(res)
-        this.$store.commit('user', {})
-        alert('로그아웃 성공')
-      })
-      this.$router.push({ path: '/' })
+    //         alert('로그인 성공')
+    //       }
+    //     })
+    //   },
+    //   async login(kakaoAccount) {
+    //     await this.$post('/login', {
+    //       param: [
+    //         {
+    //           usr_email: kakaoAccount.email,
+    //           user_nickname: kakaoAccount.profile.nickname,
+    //           user_role: null
+    //         },
+    //         { user_nickname: kakaoAccount.profile.nickname, user_role: null }
+    //       ]
+    //     })
+    //     this.$store.commit('user', kakaoAccount)
+    //   },
+    //   kakaoLogout() {
+    //     window.Kakao.Auth.logout((res) => {
+    //       console.log(res)
+    //       this.$store.commit('user', {})
+    //       alert('로그아웃 성공')
+    //     })
+    //     this.$router.push({ path: '/' })
+    //   }
+    logout() {
+      this.$store.commit('user/setUser', {})
+
+      this.$router.push({ path: '/login' })
     }
   }
 }

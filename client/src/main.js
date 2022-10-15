@@ -62,4 +62,4 @@ app.directive('korean', {
 app.mount('#app')
 
 // 카카오 로그인
-window.Kakao.init('5eb237caee8b8476ce1c8441f7831627')
+// window.Kakao.init('5eb237caee8b8476ce1c8441f7831627')

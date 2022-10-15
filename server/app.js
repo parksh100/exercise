@@ -19,6 +19,7 @@ const nodemailer = require("./nodemailer"); // nodemailer
 const mime = require("mime"); // 파일다운로드 기능
 const cookieParser = require("cookie-parser");
 const cron = require("node-cron"); // 작업스케줄러
+const { strictEqual } = require("assert");
 
 // static----------------------------------------------------------------------------------------------------
 app.use(express.static("public")); // 서버에서 이미지를 다운받아야 할때 사용. static("열어줄 폴더")
@@ -247,9 +248,10 @@ let sess = {
   resave: "false", //세션에 변경사항이 없어도 항상 다시 저장할지 여부
   saveUninitialized: true, // 초기화되지 않은 세션을 저장소에 강제로 저장할지 여부
   cookie: {
+    // 로그인 되었다는 것을 클라이언트에도 알려주기 위해 쿠키에 저장
     httpOnly: true, // document.cookie해도 쿠키 정보를 볼 수 없음.
     secure: false, // https
-    maxAge: 1000 * 60 * 60, // 1000이 1초, 쿠키가 유지되는 시간
+    maxAge: 1000 * 60 * 60 * 8, // 1000이 1초, 쿠키가 유지되는 시간
   },
 };
 /*
@@ -262,21 +264,46 @@ app.use(session(sess));
 
 app.post("/login", async (req, res) => {
   // const { email, pw } = req.body.param;
-  // //데이터 베이스에 해당하는 사용자가 있는지, 비밀번호 맞는지 체크해야 함..있다면 로그인 시킴
-  // req.session.email = email;
-  // req.session.isLogined = true;
-  // req.session.save((err) => {
-  //   // 위에 두즐 저장
-  //   if (err) throw err;
+  const user = {
+    userEmail: req.body.user.email,
+    userPw: req.body.user.pw,
+  };
+  console.log(user.userEmail, user.userPw);
+  //데이터 베이스에 해당하는 사용자가 있는지, 비밀번호 맞는지 체크해야 함..있다면 로그인 시킴
+  let result = await mysql.query("getUser", user.userEmail);
+  result = JSON.parse(JSON.stringify(result));
+  console.log(result);
+  if (result.length == 0) {
+    res.json({
+      success: false,
+      message: "등록되지 않은 사용자입니다.",
+    });
+  } else {
+    if (result[0].user_pw == user.userPw) {
+      res.json({
+        success: true,
+        message: "로그인 성공",
+        userData: result[0],
+      });
+    } else {
+      res.json({
+        success: false,
+        message: "비밀번호가 틀렸습니다.",
+      });
+    }
+  }
+});
 
-  //   res.send(req.session);
-  // });
+// req.session.email = email;
+// req.session.isLogined = true;
+// req.session.save((err) => {
+//   // 위에 두즐 저장
+//   if (err) throw err;
 
-  // app.post("/api/auditor", async (req, res) => {
-  //   const result = await mysql.query("auditorInsert", req.body.param);
-  //   res.send(result);
-  // });
+//   res.send(req.session);
+// });
 
+/* 카카오 로그인
   try {
     await mysql.query("signUp", req.body.param);
     if (req.body.param.length > 0) {
@@ -290,26 +317,27 @@ app.post("/login", async (req, res) => {
     res.send({ error: "DB처리과정에서 오류발생!" });
   }
 });
+카카오로그인 끝 */
 
-// app.post("/logout", (req, res) => {
-//   if (req.session.email) {
-//     req.session.destroy();
-//     res.redirect("/login");
-//   }
-// });
+app.post("/logout", (req, res) => {
+  if (req.session.email) {
+    req.session.destroy();
+    res.redirect("/login");
+  }
+});
 
 // 반드시 로그인, 로그아웃 밑에 위치
 // 어떤 요청이 오더라도 먼저 로그인 되었는지 확인하고 로그인 되었으면 next로 다음 요청 수행
 // 이 코드 밑에 나오는 라우터 는 무조건 로그인 확인하는 것
 
-// app.all("*", (req, res, next) => {
-//   if (req.session.email) {
-//     console.log(req.cookies); // 사용자의 암호화된 쿠키정보 볼 수 있음.포스트맨 로그인 후 test실행하면.
-//     next();
-//   } else {
-//     res.redirect("/login");
-//   }
-// });
+app.all("*", (req, res, next) => {
+  if (req.session.email) {
+    console.log(req.cookies); // 사용자의 암호화된 쿠키정보 볼 수 있음.포스트맨 로그인 후 test실행하면.
+    next();
+  } else {
+    res.redirect("/login");
+  }
+});
 
 // app.get("/test", (req, res) => {
 //   // 무조건 로그인 됐는지 먼저 확인

@@ -7,4 +7,5 @@ module.exports = {
   getAuditor: `select * from auditor where auditor_id=?`,
   auditorListByCondition: `select * from auditor where lower(auditor_name) like ?`,
   signUp: `insert into user set ? on duplicate key update ?`,
+  getUser: `select * from user where user_email=?`,
 };
