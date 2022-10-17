@@ -8,4 +8,5 @@ module.exports = {
   auditorListByCondition: `select * from auditor where lower(auditor_name) like ?`,
   signUp: `insert into user set ? on duplicate key update ?`,
   getUser: `select * from user where user_email=?`,
+  insertCheckValue: `insert into test set ?`,
 };

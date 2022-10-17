@@ -90,7 +90,7 @@ app.post(
     console.log(req.body);
 
     const fileInfo = {
-      auditor_id: parseInt(req.body.auditor_id),
+      auditor_id: parseInt(req.body.customer_id),
       originalname: req.file.originalname,
       mimetype: req.file.mimetype,
       filename: req.file.filename,
@@ -206,6 +206,12 @@ app.delete("/api/auditor/:auditor_id", async (req, res) => {
 // auditor 검색 post
 app.post("/api/auditor/search", async (req, res) => {
   const result = await mysql.query("auditorListByCondition", req.body.param);
+  res.send(result);
+});
+
+// checkbox 저장 테스트
+app.post("/api/checkbox", async (req, res) => {
+  const result = await mysql.query("insertCheckValue", req.body.param);
   res.send(result);
 });
 

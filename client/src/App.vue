@@ -22,6 +22,6 @@ export default {
 }
 html,
 body {
-  background: #faedf0;
+  /* background: #faedf0; */
 }
 </style>
