@@ -1,10 +1,13 @@
 module.exports = {
   auditorList: `select * from auditor`,
+  customerList: `select * from customer`,
   auditorInsert: `insert into auditor set ?`,
+  customerInsert: `insert into customer set ?`,
   auditorImage: `insert into auditor_image set ?`,
   auditorUpdate: `update auditor set ? where auditor_id=?`,
   auditorDelete: `delete from auditor where auditor_id=?`,
   getAuditor: `select * from auditor where auditor_id=?`,
+  customerDetail: `select * from customer where customer_id=?`,
   auditorListByCondition: `select * from auditor where lower(auditor_name) like ?`,
   signUp: `insert into user set ? on duplicate key update ?`,
   getUser: `select * from user where user_email=?`,

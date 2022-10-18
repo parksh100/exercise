@@ -11,21 +11,17 @@ const routes = [
   //   name: 'login',
   //   component: LoginView
   // },
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
+
   {
     path: '/dashboard',
     name: 'dashboard',
     component: DashBoardView
   },
-  // {
-  //   path: '/home',
-  //   name: 'home',
-  //   component: HomeView
-  // },
+  {
+    path: '/home',
+    name: 'home',
+    component: HomeView
+  },
   {
     path: '/login',
     name: 'login',
@@ -64,6 +60,14 @@ const routes = [
     name: 'customerList',
     component: () =>
       import(/* webpackChunkName: "customer" */ '../views/CustomerListView.vue')
+  },
+  {
+    path: '/customer/detail',
+    name: 'customerDetail',
+    component: () =>
+      import(
+        /* webpackChunkName: "customer" */ '../views/CustomerDetailView.vue'
+      )
   }
 ]
 

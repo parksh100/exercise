@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-3">
+  <div class="container mt-5">
     <h3 class="mb-4 fw-bold">[인증심사신청]</h3>
     <!-- <hr style="width: 50%" /> -->
     <div class="row mb-3">
@@ -11,7 +11,7 @@
             type="radio"
             name=""
             id="initial"
-            value="initial"
+            value="최초"
             v-model="customer.certification_type"
           />
           <label class="form-check-label" for="initial">최초심사</label>
@@ -23,7 +23,7 @@
             type="radio"
             name="inlineRadioOptions"
             id="transSurveillance"
-            value="transSurveillance"
+            value="전환사후"
             v-model="customer.certification_type"
           />
           <label class="form-check-label" for="transSurveillance"
@@ -36,7 +36,7 @@
             type="radio"
             name="inlineRadioOptions"
             id="transRenewal"
-            value="transRenewal"
+            value="전환갱신"
             v-model="customer.certification_type"
           />
           <label class="form-check-label" for="transRenewal"
@@ -49,12 +49,11 @@
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">국문상호</label>
       <div class="col-sm-9">
-        <!-- <input
+        <input
           type="text"
           class="form-control"
-          v-model.trim="customer.business_no"
-        /> -->
-        <input type="text" class="form-control" />
+          v-model.trim="customer.name_ko"
+        />
       </div>
     </div>
     <div class="row mb-3">
@@ -69,7 +68,7 @@
           type="text"
           class="form-control"
           placeholder="대소문자 구분, Co., Ltd. 또는 Inc.구분 정확하게 기재"
-          v-model="customer.customer_name"
+          v-model="customer.name_en"
         />
       </div>
     </div>
@@ -95,7 +94,7 @@
       </div>
     </div>
     <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">대표자휴대폰번호</label>
+      <label class="col-sm-3 col-form-label">대표자 휴대폰번호</label>
       <div class="col-sm-9">
         <input
           type="text"
@@ -119,7 +118,7 @@
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">대표팩스번호</label>
       <div class="col-sm-9">
-        <input type="text" class="form-control" v-model.trim="customer.phone" />
+        <input type="text" class="form-control" v-model.trim="customer.fax" />
       </div>
     </div>
     <div class="row mb-3">
@@ -128,7 +127,7 @@
         <input
           type="text"
           class="form-control"
-          v-model.trim="customer.address"
+          v-model.trim="customer.address_ko"
         />
       </div>
     </div>
@@ -138,7 +137,7 @@
         <input
           type="text"
           class="form-control"
-          v-model.trim="customer.address"
+          v-model.trim="customer.address_en"
         />
       </div>
     </div>
@@ -181,7 +180,7 @@
         <input
           type="email"
           class="form-control"
-          v-model.trim="customer.contact_email"
+          v-model.trim="customer.homepage"
         />
       </div>
     </div>
@@ -304,7 +303,7 @@
           <textarea
             class="form-control"
             id="scope_ko"
-            v-model.trim="customer.certification_scope_kor"
+            v-model.trim="customer.scope_ko"
           ></textarea>
         </div>
       </div>
@@ -316,7 +315,7 @@
           <textarea
             class="form-control"
             id="scope_en"
-            v-model.trim="customer.certification_scope_eng"
+            v-model.trim="customer.scope_en"
           ></textarea>
         </div>
       </div>
@@ -332,7 +331,7 @@
             type="checkbox"
             id="certification_activity_1"
             value="설계개발"
-            v-model="customer.certification_activity"
+            v-model.trim="customer.activity"
           />
           <label class="form-check-label" for="certification_activity_1"
             >설계/개발</label
@@ -344,7 +343,7 @@
             type="checkbox"
             id="certification_activity_2"
             value="제조생산"
-            v-model="customer.certification_activity"
+            v-model="customer.activity"
           />
           <label class="form-check-label" for="certification_activity_2"
             >제조/생산</label
@@ -356,7 +355,7 @@
             type="checkbox"
             id="certification_activity_3"
             value="설치시공"
-            v-model="customer.certification_activity"
+            v-model="customer.activity"
           />
           <label class="form-check-label" for="certification_activity_3"
             >설치/시공</label
@@ -368,7 +367,7 @@
             type="checkbox"
             id="certification_activity_4"
             value="판매"
-            v-model="customer.certification_activity"
+            v-model="customer.activity"
           />
           <label class="form-check-label" for="certification_activity_4"
             >판매</label
@@ -380,7 +379,7 @@
             type="checkbox"
             id="certification_activity_5"
             value="서비스"
-            v-model="customer.certification_activity"
+            v-model="customer.activity"
           />
           <label class="form-check-label" for="certification_activity_5"
             >서비스</label
@@ -692,14 +691,15 @@
         />
       </div>
     </div>
-    <HR></HR>
+    <hr />
 
-    <div
+    <!-- <div
       v-show="
         customer.certification_standard.includes('ISO14001') === true ||
         customer.certification_standard.includes('ISO45001') === true
       "
-    >
+    > -->
+    <div>
       <h3 class="mb-5 fw-bold">[ISO14001/ISO45001 신청정보]</h3>
 
       <!-- <div class="row mb-3">
@@ -856,10 +856,11 @@
 
         <!-- 환경허가 신고사항 -->
 
-        <div
+        <!-- <div
           class="row mb-3"
           v-show="customer.certification_standard.includes('ISO14001') == true"
-        >
+        > -->
+        <div class="row mb-3">
           <label class="col-sm-3 col-form-label">환경허가 신고사항</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -898,10 +899,11 @@
 
         <!-- 최근3년 환경사고 -->
 
-        <div
+        <!-- <div
           class="row mb-3"
           v-show="customer.certification_standard.includes('ISO14001') == true"
-        >
+        > -->
+        <div class="row mb-3">
           <label class="col-sm-3 col-form-label">환경사고 유무</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -940,10 +942,11 @@
 
         <!-- 최근3년 안전보건사고 -->
 
-        <div
+        <!-- <div
           class="row mb-3"
           v-show="customer.certification_standard.includes('ISO45001') == true"
-        >
+        > -->
+        <div class="row mb-3">
           <label class="col-sm-3 col-form-label">안전보건사고 유무</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -984,10 +987,11 @@
 
         <!-- 사업장외부 근무자 -->
 
-        <div
+        <!-- <div
           class="row mb-3"
           v-show="customer.certification_standard.includes('ISO45001') == true"
-        >
+        >  -->
+        <div class="row mb-3">
           <label class="col-sm-3 col-form-label">사업장 외부 근무자</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -1028,13 +1032,14 @@
 
         <!--유해위험물질유형  -->
 
-        <div
+        <!-- <div
           class="row mb-3"
           v-show="
             customer.certification_standard.includes('ISO14001') == true ||
             customer.certification_standard.includes('ISO45001') == true
           "
-        >
+        > -->
+        <div class="row mb-3">
           <label class="col-sm-3 col-form-label">유해/위험물질 유형</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -1112,9 +1117,10 @@
         </div>
 
         <!-- 고객에 의해 파악된 환경측면 및 영향 -->
-        <div
+        <!-- <div
           v-show="customer.certification_standard.includes('ISO14001') === true"
-        >
+        > -->
+        <div>
           <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 환경측면 및 영향 ===</h5>
 
           <!-- 대기 -->
@@ -1673,9 +1679,10 @@
         </div>
       </div>
 
-      <div
+      <!-- <div
         v-show="customer.certification_standard.includes('ISO45001') === true"
-      >
+      > -->
+      <div>
         <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 위험요인 ===</h5>
 
         <!-- 기계적 위험요인 -->
@@ -2200,7 +2207,6 @@
           accept="application/pdf, image/png, image/jpeg, image/jpg"
           @change="uploadImage($event.target.files)"
         />
-        <img :src="imgSrc" alt="" style="width: 200px; height: auto" />
       </div>
     </div>
     <div class="alert alert-secondary mb-5" role="alert">
@@ -2220,7 +2226,9 @@ export default {
     user() {
       const data = this.$store.state.user
       console.log(data)
+      console.log(data.userInfo.name, data.userInfo.email)
       return data
+
       // return this.$store.state.user.user
       // return this.$store.user.userInfo
     }
@@ -2228,45 +2236,88 @@ export default {
   components: {},
   data() {
     return {
-      id: '',
-      searchName: '',
-      imgSrc: '',
+      // id: '',
+      // searchName: '',
+      // imgSrc: '',
       customer: {
-        customer_name: '',
+        id: -1,
+        certification_type: '',
+        name_ko: '',
+        name_en: '',
+        business_no: '',
+        ceo_name: '',
+        ceo_phone: '',
         email: '',
         phone: '',
-        address: '',
-        contact_name: '',
-        contact_phone: '',
-        contact_email: '',
-        business_no: '',
-        representative_name: '',
-        certification_type: '',
+        fax: '',
+        // address_ko: '',
+        // address_en: '',
+        // contact_name: '',
+        // contact_phone: '',
+        // contact_email: '',
+        // homepage: '',
+        // organization_scope: '',
         certification_standard: [],
-        hazardous_chemical: '',
-        hazardous_chemical_content: '',
-        air_pollution: [],
-        soil_pollution: [],
-        water_pollution: [],
-        air_pollution_content: '',
-        soil_pollution_content: '',
-        water_pollution_content: '',
-        natural_resource_pollution: [],
-        natural_resource_pollution_content: '',
-        energy_pollution: [],
-        energy_pollution_content: '',
-        waste_pollution: [],
-        waste_pollution_content: '',
-        safety_accident: '',
-        safety_accident_content: '',
-        machine_factor: [],
-        electric_factor: [],
-        work_factor: [],
-        chemical_factor: [],
-        biological_factor: [],
-        work_env: [],
-        certification_activity: [],
-        img_license: ''
+        // employee_count: '',
+        // design: '',
+        // development_count: '',
+        scope_ko: '',
+        // scope_en: '',
+        // activity: [],
+        // process: '',
+        // shift: '',
+        // shift_work_count: '',
+        // exclusion: '',
+        // exclusion_reason: '',
+        // transfer_date: '',
+        // s1_start_date: '',
+        // s1_end_date: '',
+        // s2_start_date: '',
+        // s2_end_date: '',
+        // s2_team: '',
+        // manual_date: '',
+        // internal_date: '',
+        // management_date: '',
+        // outsourcing: '',
+        // outsourcing_process: '',
+        // construction_license: '',
+        // construction_license_content: '',
+        // hazardous_chemical: '',
+        // hazardous_chemical_content: '',
+        // location: '',
+        // production_method: '',
+        // production_method_etc: '',
+        // environmental_permit: '',
+        // environmental_permit_content: '',
+        // environmental_accident: '',
+        // environmental_accident_content: '',
+        // safety_accident: '',
+        // safety_accident_content: '',
+        // outside_worker: '',
+        // outside_worker_content: '',
+        // hazardous_chemical_worker: '',
+        // hazardous_chemical_worker_content: '',
+        // air_pollution: [],
+        // air_pollution_content: '',
+        // soil_pollution: [],
+        // soil_pollution_content: '',
+        // water_pollution: [],
+        // water_pollution_content: '',
+        // natural_resource_pollution: [],
+        // natural_resource_pollution_content: '',
+        // energy_pollution: [],
+        // energy_pollution_content: '',
+        // waste_pollution: [],
+        // waste_pollution_content: '',
+        // machine_factor: [],
+        // electric_factor: [],
+        // chemical_factor: [],
+        // biological_factor: [],
+        // work_factor: [],
+        // work_env: [],
+        // img_license: '',
+        auditor_name: ''
+        // auditor_email: ''
       }
     }
   },
@@ -2287,12 +2338,14 @@ export default {
       console.log(this.customer.img_license)
     },
     async doSave() {
-      if (this.supplier.supplier_name === '') {
-        return this.$swal('Supplier Name을 입력하세요.')
-      }
+      // if (this.customer.name_ko === '') {
+      //   return this.$swal('국문회사명을 입력하세요.')
+      // }
+
+      console.log(this.customer.certification_standard)
 
       this.$swal({
-        title: '공급자를 생성 하시겠습니까?',
+        title: '인증신청을 생성 하시겠습니까?',
         // text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
@@ -2304,8 +2357,21 @@ export default {
         if (result.isConfirmed) {
           const loader = this.$loading.show({ canCancel: false })
 
-          const r = await this.$post('http://localhost:3000/api/supplier', {
-            param: this.supplier
+          const r = await this.$post('/api/customer', {
+            param: {
+              certification_type: this.customer.certification_type,
+              certification_standard: JSON.stringify(
+                this.customer.certification_standard
+              ),
+              name_ko: this.customer.name_ko,
+              name_en: this.customer.name_en,
+              business_no: this.customer.business_no,
+              ceo_name: this.customer.ceo_name,
+              ceo_phone: this.customer.ceo_phone,
+              email: this.customer.email,
+              phone: this.customer.phone,
+              fax: this.customer.fax
+            }
           })
 
           loader.hide()
@@ -2313,10 +2379,10 @@ export default {
           console.log(r)
 
           if (r.status === 200) {
-            this.$swal('공급자 정보가 저장되었습니다.')
+            this.$swal('인증신청 정보가 저장되었습니다.')
             this.$router.push({
-              path: '/supplier/detail',
-              query: { supplier_id: r.data.insertId }
+              path: '/customer/list'
+              //     query: { customer_id: r.data.insertId }
             })
           }
         }

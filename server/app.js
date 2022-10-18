@@ -180,9 +180,28 @@ app.get("/api/auditor/:auditor_id", async (req, res) => {
   res.send(getAuditor);
 });
 
+//customer 전체조회
+app.get("/api/customer", async (req, res) => {
+  const customerList = await mysql.query("customerList");
+  res.send(customerList);
+});
+
+//customer detail
+app.get("/api/customer/:customer_id", async (req, res) => {
+  const { customer_id } = req.params;
+  const customerDetail = await mysql.query("customerDetail", customer_id);
+  res.send(customerDetail[0]);
+});
+
 // auditor 생성
 app.post("/api/auditor", async (req, res) => {
   const result = await mysql.query("auditorInsert", req.body.param);
+  res.send(result);
+});
+
+// customer 생성
+app.post("/api/customer", async (req, res) => {
+  const result = await mysql.query("customerInsert", req.body.param);
   res.send(result);
 });
 
