@@ -12,173 +12,77 @@
         />
       </div>
       <div class="col-12">
-        <button class="btn btn-primary me-1" @click="getList">조회</button>
-        <button
-          class="btn btn-success me-1"
-          data-bs-toggle="modal"
-          data-bs-target="#auditorModal"
-          @click="openModal()"
-        >
+        <button class="btn btn-outline-primary me-1" @click="getList">
+          조회
+        </button>
+        <button class="btn btn-outline-success me-1" @click="goToList">
           생성
         </button>
-        <button class="btn btn-info me-1" @click="doExcel">엑셀다운로드</button>
+        <button class="btn btn-outline-dark me-1" @click="doExcel">
+          엑셀다운로드
+        </button>
       </div>
     </div>
-    <table class="table table-striped table-bordered">
+    <table
+      class="table table-striped table-bordered"
+      style="table-layout: fixed; font-size: 15px"
+    >
       <thead>
         <tr>
-          <th>ID</th>
-          <th>회사명</th>
-          <th>인증유형</th>
-          <th>인증표준</th>
-          <th>대표자명</th>
-          <th>종업원수</th>
-          <th>인증범위</th>
-          <th>담당자명</th>
-          <th>심사원</th>
-          <th>상태</th>
-          <th>생성일</th>
-          <th></th>
+          <!-- <th width="4%">ID</th> -->
+          <th width="15%">회사명</th>
+          <th width="7%">인증유형</th>
+          <th width="20%">인증표준</th>
+          <th width="5%">대표자</th>
+          <th width="5%">인원</th>
+          <th width="23%">인증범위</th>
+          <th width="8%">담당자</th>
+          <th width="5%">심사원</th>
+          <th width="4%">상태</th>
+          <th width="8%">생성일</th>
+          <!-- <th width="10%"></th> -->
         </tr>
       </thead>
       <tbody>
         <tr :key="item.customer_id" v-for="item in list">
-          <td>{{ item.customer_id }}</td>
+          <!-- <td>{{ item.customer_id }}</td> -->
           <td>
             <a @click="goToDetail(item.customer_id)" role="button">{{
               item.name_ko
             }}</a>
           </td>
           <td>{{ item.certification_type }}</td>
-          <td>{{ item.certification_standard }}</td>
-          <td>{{ item.ceo_name }}</td>
-          <td>{{ item.employee_count }}</td>
-          <td>{{ item.scope_ko }}</td>
-          <td>{{ item.contact_name }}</td>
-          <td>{{ item.auditor_name }}</td>
-          <td>{{ item.status_yn }}</td>
-          <td>{{ item.created_date }}</td>
-          <td>
+          <td style="word-break: break-all">
+            {{ item.certification_standard }}
+          </td>
+          <td style="word-break: break-all">{{ item.ceo_name }}</td>
+          <td style="word-break: break-all">{{ item.employee_count }}</td>
+          <td style="word-break: break-all">{{ item.scope_ko }}</td>
+          <td style="word-break: break-all">{{ item.contact_name }}</td>
+          <td style="word-break: break-all">{{ item.auditor_name }}</td>
+          <td style="word-break: break-all">{{ item.status_yn }}</td>
+          <td style="word-break: break-all">
+            {{ item.created_date.substr(0, 10) }}
+          </td>
+          <!-- <td>
             <button
               class="btn btn-danger me-1"
               @click="doDelete(item.customer_id)"
             >
               삭제
             </button>
-            <!-- <button
+            <button
               class="btn btn-warning"
               @click="
                 changeStatus(item.auditor_id, item.use_yn === 'Y' ? 'N' : 'Y')
               "
             >
               {{ item.use_yn === 'Y' ? '사용중지' : '사용' }}
-            </button> -->
-          </td>
+            </button>
+          </td> -->
         </tr>
       </tbody>
     </table>
-    <div
-      class="modal fade"
-      id="auditorModal"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
-      <!-- <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">심사원 정보</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="row mb-3">
-              <label class="col-sm-3 col-form-label">Name</label>
-              <div class="col-sm-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model.trim="selectedItem.auditor_name"
-                />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="col-sm-3 col-form-label">Scheme</label>
-              <div class="col-sm-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model.trim="selectedItem.auditor_scheme"
-                />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="col-sm-3 col-form-label">Grade</label>
-              <div class="col-sm-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model.trim="selectedItem.auditor_grade"
-                />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="col-sm-3 col-form-label">Email</label>
-              <div class="col-sm-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model.trim="selectedItem.auditor_email"
-                />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="col-sm-3 col-form-label">PW</label>
-              <div class="col-sm-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model.trim="selectedItem.auditor_pw"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-              ref="btnClose"
-              @click="clearSelectedItem"
-            >
-              닫기
-            </button>
-            <button
-              type="button"
-              v-if="selectedItem.auditor_id === -1"
-              class="btn btn-primary"
-              @click="doCreate"
-            >
-              생성
-            </button>
-            <button
-              type="button"
-              v-else
-              class="btn btn-primary"
-              @click="doSave"
-            >
-              저장
-            </button>
-          </div>
-        </div>
-      </div> -->
-    </div>
   </div>
 </template>
 <script>
@@ -228,7 +132,7 @@ export default {
     }
 
     this.list = await this.$get('/api/customer')
-    // console.log(r)
+    console.log(this.list)
   },
   unmounted() {},
   methods: {
@@ -265,7 +169,7 @@ export default {
         if (result.isConfirmed) {
           const loader = this.$loading.show({ canCancel: false })
 
-          const r = await this.$delete(`/api/auditor/${id}`)
+          const r = await this.$delete(`/api/customer/${id}`)
           console.log(r)
 
           loader.hide()
@@ -411,6 +315,9 @@ export default {
         auditor_email: '',
         auditor_pw: ''
       }
+    },
+    goToList() {
+      this.$router.push({ path: '/customer/create' })
     }
   }
 }

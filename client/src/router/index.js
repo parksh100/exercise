@@ -11,17 +11,17 @@ const routes = [
   //   name: 'login',
   //   component: LoginView
   // },
-
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView
+  },
   {
     path: '/dashboard',
     name: 'dashboard',
     component: DashBoardView
   },
-  {
-    path: '/home',
-    name: 'home',
-    component: HomeView
-  },
+
   {
     path: '/login',
     name: 'login',
@@ -68,6 +68,14 @@ const routes = [
       import(
         /* webpackChunkName: "customer" */ '../views/CustomerDetailView.vue'
       )
+  },
+  {
+    path: '/customer/change',
+    name: 'customerChange',
+    component: () =>
+      import(
+        /* webpackChunkName: "customer" */ '../views/CustomerChangeView.vue'
+      )
   }
 ]
 
@@ -79,23 +87,26 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   console.log('to', to)
   console.log('from', from)
-  // console.log(store.getters['user/isLogin'])
-  // 사용자가 로그인 되었으면 next()를 호출하고, 로그인이 되지 않았으면 login 페이지로 이동시킨다.
-  // use.js/getter에서 isLogin을 정의하고, 그 값을 이용한다.
-  // if (to.path === '/home') {
+
+  const isLogin = store.getters['user/isLogin']
+  console.log(isLogin)
+
+  // if (to.path === '/login') {
   //   next()
-  // } else {
-  //   if (store.getters['user/isLogin']) {
-  //     next()
+  // } else if (isLogin) {
+  //   if (to.path === '/') {
+  //     next({ path: '/' })
   //   } else {
-  //     store.commit('user/logout')
-  //     next('/')
+  //     next()
   //   }
+  // } else {
+  //   return next({ path: '/login' })
   // }
+
   if (to.path === '/') {
     next()
   } else {
-    if (store.getters['user/isLogin']) {
+    if (isLogin) {
       next()
     } else {
       store.commit('user/logout')

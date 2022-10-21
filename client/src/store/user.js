@@ -27,7 +27,7 @@ export const user = {
     setUser(state, userInfo) {
       // userInfo는 로그인 후 받아온 정보이다.
       state.userInfo = userInfo
-      VueCookies.set('userInfo', userInfo, '8h') // 사용자 정보를 쿠키에 저장한다. 8시간 동안 유지한다.
+      VueCookies.set('userInfo', userInfo, '8h') // 사용자 정보를 쿠키에 저장한다. 1시간 동안 유지한다.
     },
     logout(state) {
       this.state.userInfo = {} // vuex-persistedstate를 사용할때

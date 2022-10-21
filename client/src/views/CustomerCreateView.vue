@@ -121,7 +121,9 @@
         <input type="text" class="form-control" v-model.trim="customer.fax" />
       </div>
     </div>
-    <div class="row mb-3">
+
+    <!-- 국문주소 -->
+    <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">국문 주소</label>
       <div class="col-sm-9">
         <input
@@ -130,7 +132,75 @@
           v-model.trim="customer.address_ko"
         />
       </div>
+    </div> -->
+    <!-- end 국문주소 -->
+
+    <!--start daum api  -->
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">우편번호</label>
+      <div class="col-sm-5">
+        <input
+          type="text"
+          class="form-control"
+          id="postcode"
+          v-model="customer.postcode"
+          disabled
+        />
+      </div>
+      <div class="col-sm-4">
+        <button class="btn btn-secondary" @click="execDaumPostcode">
+          주소검색
+        </button>
+      </div>
     </div>
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">국문 주소</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          id="address"
+          v-model="customer.address_ko"
+          disabled
+        />
+      </div>
+    </div>
+    <!-- <label class="col-sm-3 col-form-label">지번주소</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          id="jibunAddress"
+          v-model.trim="customer.address_jibun"
+        />
+      </div> -->
+
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">상세주소</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          id="detailAddress"
+          v-model="customer.address_detail"
+        />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">참고항목</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          id="extraAddress"
+          v-model="customer.address_reference"
+          disabled
+        />
+      </div>
+    </div>
+
+    <!--end daum api  -->
+
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">영문 주소</label>
       <div class="col-sm-9">
@@ -138,6 +208,16 @@
           type="text"
           class="form-control"
           v-model.trim="customer.address_en"
+        />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">영문 상세주소</label>
+      <div class="col-sm-9">
+        <input
+          type="text"
+          class="form-control"
+          v-model.trim="customer.address_en_detail"
         />
       </div>
     </div>
@@ -202,7 +282,7 @@
             class="form-check-input"
             type="checkbox"
             id="certification_standard_1"
-            value="ISO9001"
+            value="QMS"
             v-model="customer.certification_standard"
           />
           <label class="form-check-label" for="certification_standard_1"
@@ -214,7 +294,7 @@
             class="form-check-input"
             type="checkbox"
             id="certification_standard_2"
-            value="ISO14001"
+            value="EMS"
             v-model="customer.certification_standard"
           />
           <label class="form-check-label" for="certification_standard_2"
@@ -226,7 +306,7 @@
             class="form-check-input"
             type="checkbox"
             id="certification_standard_3"
-            value="ISO45001"
+            value="OHSMS"
             v-model="customer.certification_standard"
           />
           <label class="form-check-label" for="certification_standard_3"
@@ -238,7 +318,7 @@
             class="form-check-input"
             type="checkbox"
             id="certification_standard_4"
-            value="ISO22716"
+            value="CGMP"
             v-model="customer.certification_standard"
           />
           <label class="form-check-label" for="certification_standard_4"
@@ -278,7 +358,7 @@
             type="radio"
             name="inlineRadioOptions"
             id="design_no"
-            value="no"
+            value="No"
             v-model="customer.design"
           />
           <label class="form-check-label" for="design_no">없음</label>
@@ -421,7 +501,7 @@
             type="radio"
             name="shift"
             id="shift_no"
-            value="no"
+            value="No"
             v-model="customer.shift"
           />
           <label class="form-check-label" for="shift_no">없음</label>
@@ -458,7 +538,7 @@
             type="radio"
             name="exclusion"
             id="exclusion_no"
-            value="no"
+            value="No"
             v-model="customer.exclusion"
           />
           <label class="form-check-label" for="exclusion_no">없음</label>
@@ -629,7 +709,7 @@
             type="radio"
             name="outsourcing"
             id="outsourcing_no"
-            value="no"
+            value="No"
             v-model="customer.outsourcing"
           />
           <label class="form-check-label" for="outsourcing_no">없음</label>
@@ -671,7 +751,7 @@
             type="radio"
             name="construction_license"
             id="construction_license_no"
-            value="no"
+            value="No"
             v-model="customer.construction_license"
           />
           <label class="form-check-label" for="construction_license_no"
@@ -878,7 +958,7 @@
                 class="form-check-input"
                 type="radio"
                 id="inlineRadio2"
-                value="no"
+                value="No"
                 v-model="customer.environmental_permit"
               />
               <label class="form-check-label" for="inlineRadio2">아니오</label>
@@ -921,7 +1001,7 @@
                 class="form-check-input"
                 type="radio"
                 id="inlineRadio4"
-                value="no"
+                value="No"
                 v-model="customer.environmental_accident"
               />
               <label class="form-check-label" for="inlineRadio4">아니오</label>
@@ -929,12 +1009,12 @@
           </div>
         </div>
         <div class="row mb-3" v-show="customer.environmental_accident == 'yes'">
-          <label class="col-sm-3 col-form-label">환경사고내역</label>
+          <label class="col-sm-3 col-form-label">환경사고내용</label>
           <div class="col-sm-9">
             <input
               type="text"
               class="form-control"
-              placeholder="환경사고내역"
+              placeholder="환경사고내용"
               v-model.trim="customer.environmental_accident_content"
             />
           </div>
@@ -964,7 +1044,7 @@
                 class="form-check-input"
                 type="radio"
                 id="safety_accident2"
-                value="no"
+                value="No"
                 v-model="customer.safety_accident"
               />
               <label class="form-check-label" for="safety_accident2"
@@ -1009,7 +1089,7 @@
                 class="form-check-input"
                 type="radio"
                 id="outside_worker2"
-                value="no"
+                value="No"
                 v-model="customer.outside_worker"
               />
               <label class="form-check-label" for="outside_worker2"
@@ -1208,7 +1288,7 @@
                 type="text"
                 class="form-control"
                 placeholder="대기 기타유형"
-                v-model.trim="customer.hazardous_chemical_content"
+                v-model.trim="customer.air_pollution_content"
               />
             </div>
           </div>
@@ -2215,6 +2295,7 @@
         <li>파일 확장자 : pdf, png, jpg만 가능</li>
       </ul>
     </div>
+
     <button class="btn btn-secondary me-1" @click="goToList">목록</button>
     <button class="btn btn-primary" @click="doSave">저장</button>
   </div>
@@ -2236,11 +2317,11 @@ export default {
   components: {},
   data() {
     return {
-      // id: '',
+      id: '',
       // searchName: '',
       // imgSrc: '',
       customer: {
-        id: -1,
+        // id: -1,
         certification_type: '',
         name_ko: '',
         name_en: '',
@@ -2250,74 +2331,79 @@ export default {
         email: '',
         phone: '',
         fax: '',
-        // address_ko: '',
-        // address_en: '',
-        // contact_name: '',
-        // contact_phone: '',
-        // contact_email: '',
-        // homepage: '',
-        // organization_scope: '',
+        postcode: '',
+        // address_jibun: '',
+        address_ko: '',
+        address_detail: '',
+        address_reference: '',
+        address_en: '',
+        address_en_detail: '',
+        contact_name: '',
+        contact_phone: '',
+        contact_email: '',
+        homepage: '',
+        organization_scope: '',
         certification_standard: [],
-        // employee_count: '',
-        // design: '',
-        // development_count: '',
+        employee_count: '',
+        design: '',
+        development_count: '',
         scope_ko: '',
-        // scope_en: '',
-        // activity: [],
-        // process: '',
-        // shift: '',
-        // shift_work_count: '',
-        // exclusion: '',
-        // exclusion_reason: '',
-        // transfer_date: '',
-        // s1_start_date: '',
-        // s1_end_date: '',
-        // s2_start_date: '',
-        // s2_end_date: '',
-        // s2_team: '',
-        // manual_date: '',
-        // internal_date: '',
-        // management_date: '',
-        // outsourcing: '',
-        // outsourcing_process: '',
-        // construction_license: '',
-        // construction_license_content: '',
-        // hazardous_chemical: '',
-        // hazardous_chemical_content: '',
-        // location: '',
-        // production_method: '',
-        // production_method_etc: '',
-        // environmental_permit: '',
-        // environmental_permit_content: '',
-        // environmental_accident: '',
-        // environmental_accident_content: '',
-        // safety_accident: '',
-        // safety_accident_content: '',
-        // outside_worker: '',
-        // outside_worker_content: '',
-        // hazardous_chemical_worker: '',
-        // hazardous_chemical_worker_content: '',
-        // air_pollution: [],
-        // air_pollution_content: '',
-        // soil_pollution: [],
-        // soil_pollution_content: '',
-        // water_pollution: [],
-        // water_pollution_content: '',
-        // natural_resource_pollution: [],
-        // natural_resource_pollution_content: '',
-        // energy_pollution: [],
-        // energy_pollution_content: '',
-        // waste_pollution: [],
-        // waste_pollution_content: '',
-        // machine_factor: [],
-        // electric_factor: [],
-        // chemical_factor: [],
-        // biological_factor: [],
-        // work_factor: [],
-        // work_env: [],
-        // img_license: '',
-        auditor_name: ''
-        // auditor_email: ''
+        scope_en: '',
+        activity: [],
+        process: '',
+        shift: '',
+        shift_work_count: '',
+        exclusion: '',
+        exclusion_reason: '',
+        transfer_date: '',
+        s1_start_date: '',
+        s1_end_date: '',
+        s2_start_date: '',
+        s2_end_date: '',
+        s2_team: '',
+        manual_date: '',
+        internal_date: '',
+        management_date: '',
+        outsourcing: '',
+        outsourcing_process: '',
+        construction_license: '',
+        construction_license_content: '',
+        hazardous_chemical: '',
+        hazardous_chemical_content: '',
+        location: '',
+        production_method: '',
+        production_method_etc: '',
+        environmental_permit: '',
+        environmental_permit_content: '',
+        environmental_accident: '',
+        environmental_accident_content: '',
+        safety_accident: '',
+        safety_accident_content: '',
+        outside_worker: '',
+        outside_worker_content: '',
+        hazardous_chemical_worker: '',
+        hazardous_chemical_worker_content: '',
+        air_pollution: [],
+        air_pollution_content: '',
+        soil_pollution: [],
+        soil_pollution_content: '',
+        water_pollution: [],
+        water_pollution_content: '',
+        natural_resource_pollution: [],
+        natural_resource_pollution_content: '',
+        energy_pollution: [],
+        energy_pollution_content: '',
+        waste_pollution: [],
+        waste_pollution_content: '',
+        machine_factor: [],
+        electric_factor: [],
+        chemical_factor: [],
+        biological_factor: [],
+        work_factor: [],
+        work_env: [],
+        img_license: '',
+        auditor_name: '',
+        auditor_email: ''
       }
     }
   },
@@ -2331,6 +2417,52 @@ export default {
   },
   unmounted() {},
   methods: {
+    execDaumPostcode() {
+      // @click을 사용할 때 함수는 이렇게 작성해야 한다.
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          console.log(data)
+          if (this.customer.address_extra !== '') {
+            this.customer.address_extra = ''
+          }
+          if (data.userSelectedType === 'R') {
+            // 사용자가 도로명 주소를 선택했을 경우
+            this.customer.address_ko = data.roadAddress
+          } else {
+            // 사용자가 지번 주소를 선택했을 경우(J)
+            this.customer.address_ko = data.jibunAddress
+          }
+
+          // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+          if (data.userSelectedType === 'R') {
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+              this.customer.address_reference += data.bname
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+              this.customer.address_reference +=
+                this.customer.address_reference !== ''
+                  ? `, ${data.buildingName}`
+                  : data.buildingName
+            }
+            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if (this.customer.address_detail !== '') {
+              this.customer.address_detail = `(${this.customer.address_detail})`
+            }
+          } else {
+            this.customer.address_reference = ''
+          }
+
+          // 영문주소
+          this.customer.address_en = data.addressEnglish
+
+          // 우편번호를 입력한다.
+          this.customer.postcode = data.zonecode
+        }
+      }).open()
+    },
     async uploadImage(files) {
       const r = this.$upload('/api/upload/file', files[0])
       console.log(r)
@@ -2370,7 +2502,80 @@ export default {
               ceo_phone: this.customer.ceo_phone,
               email: this.customer.email,
               phone: this.customer.phone,
-              fax: this.customer.fax
+              fax: this.customer.fax,
+              postcode: this.customer.postcode,
+              address_ko: this.customer.address_ko,
+              address_detail: this.customer.address_detail,
+              address_reference: this.customer.address_reference,
+              address_en: this.customer.address_en,
+              address_en_detail: this.customer.address_en_detail,
+              contact_name: this.customer.contact_name,
+              contact_phone: this.customer.contact_phone,
+              contact_email: this.customer.contact_email,
+              homepage: this.customer.homepage,
+              organization_scope: this.customer.organization_scope,
+              employee_count: this.customer.employee_count,
+              design: this.customer.design,
+              scope_ko: this.customer.scope_ko,
+              scope_en: this.customer.scope_en,
+              activity: JSON.stringify(this.customer.activity),
+              process: this.customer.process,
+              shift: this.customer.shift,
+              shift_work_count: this.customer.shift_work_count,
+              exclusion: this.customer.exclusion,
+              exclusion_reason: this.customer.exclusion_reason,
+              transfer_date: JSON.stringify(this.customer.transfer_date),
+              s1_start_date: JSON.stringify(this.customer.s1_start_date),
+              s1_end_date: JSON.stringify(this.customer.s1_end_date),
+              s2_start_date: JSON.stringify(this.customer.s2_start_date),
+              s2_end_date: JSON.stringify(this.customer.s2_end_date),
+              s2_team: this.customer.s2_team,
+              internal_date: JSON.stringify(this.customer.internal_date),
+              management_date: JSON.stringify(this.customer.management_date),
+              outsourcing: this.customer.outsourcing,
+              outsourcing_process: this.customer.outsourcing_process,
+              construction_license: this.customer.construction_license,
+              construction_license_content:
+                this.customer.construction_license_content,
+              hazardous_chemical: this.customer.hazardous_chemical,
+              hazardous_chemical_content:
+                this.customer.hazardous_chemical_content,
+              location: this.customer.location,
+              environmental_permit: this.customer.environmental_permit,
+              environmental_permit_content:
+                this.customer.environmental_permit_content,
+              environmental_accident: this.customer.environmental_accident,
+              environmental_accident_content:
+                this.customer.environmental_accident_content,
+              safety_accident: this.customer.safety_accident,
+              safety_accident_content: this.customer.safety_accident_content,
+              outside_worker: this.customer.outside_worker,
+              outside_worker_content: this.customer.outside_worker_content,
+              hazardous_chemical_worker:
+                this.customer.hazardous_chemical_worker,
+              air_pollution: JSON.stringify(this.customer.air_pollution),
+              air_pollution_content: this.customer.air_pollution_content,
+              soil_pollution: JSON.stringify(this.customer.soil_pollution),
+              soil_pollution_content: this.customer.soil_pollution_content,
+              natural_resource_pollution: JSON.stringify(
+                this.customer.natural_resource_pollution
+              ),
+              natural_resource_pollution_content:
+                this.customer.natural_resource_pollution_content,
+              energy_pollution: JSON.stringify(this.customer.energy_pollution),
+              energy_pollution_content: this.customer.energy_pollution_content,
+              waste_pollution: JSON.stringify(this.customer.waste_pollution),
+              waste_pollution_content: this.customer.waste_pollution_content,
+              machine_factor: JSON.stringify(this.customer.machine_factor),
+              electric_factor: JSON.stringify(this.customer.electric_factor),
+              chemical_factor: JSON.stringify(this.customer.chemical_factor),
+              biological_factor: JSON.stringify(
+                this.customer.biological_factor
+              ),
+              work_factor: JSON.stringify(this.customer.work_factor),
+              work_env: JSON.stringify(this.customer.work_env),
+              auditor_name: this.$store.state.user.userInfo.name,
+              auditor_email: this.$store.state.user.userInfo.email
             }
           })
 
@@ -2381,15 +2586,15 @@ export default {
           if (r.status === 200) {
             this.$swal('인증신청 정보가 저장되었습니다.')
             this.$router.push({
-              path: '/customer/list'
-              //     query: { customer_id: r.data.insertId }
+              path: '/customer/list',
+              query: { customer_id: r.data.insertId }
             })
           }
         }
       })
     },
     goToList() {
-      this.$router.push({ path: '/supplier/list' })
+      this.$router.push({ path: '/customer/list' })
     }
   }
 }

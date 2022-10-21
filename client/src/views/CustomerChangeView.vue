@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2 class="mb-5">[ISO인증심사 신청서]</h2>
+    <h2 class="mb-5">[ISO인증심사 신청서_수정화면]</h2>
     <!-- <div class="row mb-3">
       <label class="col-sm-2 col-form-label">ID</label>
       <div class="col-sm-10">{{ customer.customer_id }}</div>
@@ -19,11 +19,22 @@
         <tr>
           <th>심사유형</th>
           <td>
-            {{ customer.certification_type }}
+            <input
+              type="text"
+              class="form-control"
+              v-model="customer.certification_type"
+            />
           </td>
           <th>사업자등록번호</th>
-          <td>{{ customer.business_no }}</td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="customer.business_no"
+            />
+          </td>
         </tr>
+
         <tr>
           <th>회사명(국문)</th>
           <td>{{ customer.name_ko }}</td>
@@ -646,7 +657,7 @@
     </div>
 
     <button class="btn btn-secondary me-1" @click="goToList">목록</button>
-    <button class="btn btn-primary" @click="goToChange">수정</button>
+    <!-- <button class="btn btn-primary" @click="goToChange()">수정</button> -->
   </div>
 </template>
 <script>
@@ -661,10 +672,12 @@ export default {
   },
   setup() {},
   created() {
-    // console.log(this.customer)
-    // console.log(this.$route.query.id)
+    // CustomerDetail에서 보낸 id를 받아온다.
     this.id = this.$route.query.customer_id
-    // console.log(this.id)
+
+    // console.log(this.$route.query.customer_id)
+    // this.id = this.$route.query.customer_id
+    console.log(this.id)
 
     // this.searchName = this.$route.query.searchName
   },
@@ -686,21 +699,12 @@ export default {
     goToList() {
       this.$router.push({ path: '/customer/list' })
     },
-    // push selected customer id to change page
     goToChange() {
-      console.log(this.id)
       this.$router.push({
-        path: '/customer/change',
-        query: { customer_id: this.id }
+        name: 'customerChange',
+        params: { id: this.id }
       })
     }
-    // goToChange() {
-    //   console.log(this.id)
-    //   this.$router.push({
-    //     name: 'customerChange',
-    //     params: { id: this.id }
-    //   })
-    // }
   }
 }
 </script>

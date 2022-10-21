@@ -222,9 +222,22 @@ app.delete("/api/auditor/:auditor_id", async (req, res) => {
   res.send(result);
 });
 
+// customer 삭제
+app.delete("/api/customer/:customer_id", async (req, res) => {
+  const { customer_id } = req.params;
+  const result = await mysql.query("customerDelete", customer_id);
+  res.send(result);
+});
+
 // auditor 검색 post
 app.post("/api/auditor/search", async (req, res) => {
   const result = await mysql.query("auditorListByCondition", req.body.param);
+  res.send(result);
+});
+
+// customer 검색 post
+app.post("/api/customer/search", async (req, res) => {
+  const result = await mysql.query("customerListByCondition", req.body.param);
   res.send(result);
 });
 
