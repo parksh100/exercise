@@ -39,7 +39,9 @@ export default {
       return (
         await axios
           .post(url, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
+            headers: {
+              'Content-Type': 'multipart/form-data; accept-charset=utf-8'
+            }
           })
           .catch((e) => {
             console.log(e)
@@ -71,6 +73,8 @@ export default {
 
       saveAs(new Blob([await wb.xlsx.writeBuffer()]), `${fileName}.xlsx`)
     },
+
+    // 숫자폼
     $convertNumberFormat(amount, format) {
       let currencySymbol = ''
       let lastSymbol = ''

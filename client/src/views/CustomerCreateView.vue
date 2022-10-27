@@ -21,7 +21,7 @@
           <input
             class="form-check-input"
             type="radio"
-            name="inlineRadioOptions"
+            name=""
             id="transSurveillance"
             value="전환사후"
             v-model="customer.certification_type"
@@ -34,7 +34,7 @@
           <input
             class="form-check-input"
             type="radio"
-            name="inlineRadioOptions"
+            name=""
             id="transRenewal"
             value="전환갱신"
             v-model="customer.certification_type"
@@ -52,6 +52,7 @@
         <input
           type="text"
           class="form-control"
+          ref="name_ko"
           v-model.trim="customer.name_ko"
         />
       </div>
@@ -325,6 +326,7 @@
             >ISO22716</label
           >
         </div>
+        <div>{{ customer.certification_standard }}</div>
       </div>
     </div>
     <div class="row mb-3">
@@ -2284,15 +2286,28 @@
         <input
           type="file"
           class="form-control"
-          accept="application/pdf, image/png, image/jpeg, image/jpg"
-          @change="uploadImage($event.target.files)"
+          accept="application/pdf, image/*"
+          accept-charset="utf-8"
+          @change="uploadFile($event.target.files)"
+        />
+        <input
+          type="text"
+          class="form-control mt-2"
+          v-model="customer.img_license_originalname"
+          v-if="customer.img_license_originalname"
         />
       </div>
+      <!-- <img
+        :src="imgSrc"
+        alt=""
+        style="width: 100px; height: auto"
+      /> -->
     </div>
+
     <div class="alert alert-secondary mb-5" role="alert">
       <ul>
         <li>최대 1개 가능</li>
-        <li>파일 확장자 : pdf, png, jpg만 가능</li>
+        <li>파일 확장자 : pdf, 이미지 파일만 가능</li>
       </ul>
     </div>
 
@@ -2319,7 +2334,8 @@ export default {
     return {
       id: '',
       // searchName: '',
-      // imgSrc: '',
+      imgSrc: '',
+      imgExt: '',
       customer: {
         // id: -1,
         certification_type: '',
@@ -2402,6 +2418,8 @@ export default {
         work_factor: [],
         work_env: [],
         img_license: '',
+        img_license_originalname: '',
+        imgExt: '',
         auditor_name: '',
         auditor_email: ''
       }
@@ -2463,18 +2481,63 @@ export default {
         }
       }).open()
     },
-    async uploadImage(files) {
-      const r = this.$upload('/api/upload/file', files[0])
+    async uploadFile(files) {
+      const r = await this.$upload('/api/upload/file', files[0])
       console.log(r)
+      this.imgSrc = `http://localhost:3000/static/uploads/${r.filename}`
       this.customer.img_license = r.filename
+      this.customer.img_license_originalname = r.originalname
+      this.imgExt = r.mimetype
       console.log(this.customer.img_license)
+      console.log(this.customer.img_license_originalname)
+      console.log(this.imgExt)
     },
     async doSave() {
+      // if (this.customer.certification_type === '') {
+      //   return this.$swal('인증유형을 선택해주세요.')
+      // }
       // if (this.customer.name_ko === '') {
       //   return this.$swal('국문회사명을 입력하세요.')
       // }
-
-      console.log(this.customer.certification_standard)
+      // if (this.customer.name_en === '') {
+      //   return this.$swal('영문회사명을 입력하세요.')
+      // }
+      // if (this.customer.business_no === '') {
+      //   return this.$swal('사업자등록번호를 입력하세요.')
+      // }
+      // if (this.customer.ceo_name === '') {
+      //   return this.$swal('대표자명을 입력하세요.')
+      // }
+      // if (this.customer.email === '') {
+      //   return this.$swal('대표이메일을 입력하세요.')
+      // }
+      // if (this.customer.phone === '') {
+      //   return this.$swal('대표전화번호를 입력하세요.')
+      // }
+      // if (this.customer.address_ko === '') {
+      //   return this.$swal('주소를 입력하세요.')
+      // }
+      // if (this.customer.contact_name === '') {
+      //   return this.$swal('담당자명/직위를 입력하세요.')
+      // }
+      // if (this.customer.contact_phone === '') {
+      //   return this.$swal('담당자 연락처를 입력하세요.')
+      // }
+      // if (this.customer.contact_email === '') {
+      //   return this.$swal('담당자 이메일을 입력하세요.')
+      // }
+      // if (this.customer.organization_scope === '') {
+      //   return this.$swal('조직의 범위를 입력하세요.')
+      // }
+      // if (this.customer.certification_standard === '') {
+      //   return this.$swal('신청 인증표준을 입력하세요.')
+      // }
+      // if (this.customer.design === '') {
+      //   return this.$swal('설계/개발 유무를 입력하세요.')
+      // }
+      // if (this.customer.scope_ko === '') {
+      //   return this.$swal('국문 인증범위를 입력하세요.')
+      // }
 
       this.$swal({
         title: '인증신청을 생성 하시겠습니까?',
@@ -2575,7 +2638,10 @@ export default {
               work_factor: JSON.stringify(this.customer.work_factor),
               work_env: JSON.stringify(this.customer.work_env),
               auditor_name: this.$store.state.user.userInfo.name,
-              auditor_email: this.$store.state.user.userInfo.email
+              auditor_email: this.$store.state.user.userInfo.email,
+              img_license: this.customer.img_license,
+              img_license_originalname: this.customer.img_license_originalname,
+              imgExt: this.customer.imgExt
             }
           })
 

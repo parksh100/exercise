@@ -5,6 +5,7 @@ module.exports = {
   customerInsert: `insert into customer set ?`,
   auditorImage: `insert into auditor_image set ?`,
   auditorUpdate: `update auditor set ? where auditor_id=?`,
+  customerUpdate: `update customer set ? where customer_id=?`,
   auditorDelete: `delete from auditor where auditor_id=?`,
   customerDelete: `delete from customer where customer_id=?`,
   getAuditor: `select * from auditor where auditor_id=?`,

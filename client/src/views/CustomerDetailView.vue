@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2 class="mb-5">[ISO인증심사 신청서]</h2>
+    <h2 class="mb-5">[ISO인증심사신청 상세페이지]</h2>
     <!-- <div class="row mb-3">
       <label class="col-sm-2 col-form-label">ID</label>
       <div class="col-sm-10">{{ customer.customer_id }}</div>
@@ -208,11 +208,11 @@
     <table class="table table-bordered" style="table-layout: fixed">
       <tbody class="text-center">
         <tr>
-          <td>사업장 입지조건</td>
+          <th>사업장 입지조건</th>
           <td>
             {{ customer.location }}
           </td>
-          <td>생산방법</td>
+          <th>생산방법</th>
           <td>{{ customer.production_method }}</td>
         </tr>
         <tr>
@@ -321,6 +321,30 @@
           <td>{{ customer.work_factor }}</td>
           <th>작업환경 요인</th>
           <td>{{ customer.work_env }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h5 class="fw-bold mt-3 mb-3">IV. 심사원정보</h5>
+
+    <table class="table table-bordered" style="table-layout: fixed">
+      <tbody class="text-center">
+        <tr>
+          <th>심사원명</th>
+          <td>{{ $store.state.user.userInfo.name }}</td>
+          <th>심사원 이메일</th>
+          <td>{{ $store.state.user.userInfo.email }}</td>
+        </tr>
+        <tr>
+          <th>첨부파일</th>
+          <td colspan="2">
+            {{ customer.img_license_originalname }}
+          </td>
+          <td>
+            <button class="btn btn-secondary" @click="fileDownload">
+              다운로드
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -669,19 +693,38 @@ export default {
     // this.searchName = this.$route.query.searchName
   },
   mounted() {
+    console.log(this.id)
+
     this.getCustomer()
+
+    // console.log(typeof this.customer.certification_standard)
   },
   unmounted() {},
   methods: {
+    fileDownload() {
+      // request file download
+      const dbFilename = this.customer.img_license
+      console.log(dbFilename)
+      try {
+        const element = document.createElement('a')
+        element.setAttribute(
+          'href',
+          `http://localhost:3000/api/file/${dbFilename}`
+        )
+        element.click()
+      } catch (e) {
+        console.log(e)
+      }
+    },
     printApplication() {
       window.print()
     },
     async getCustomer() {
       // console.log(this.id)
-
       this.customer = await this.$get(
         `http://localhost:3000/api/customer/${this.id}`
       )
+      console.log(this.customer)
     },
     goToList() {
       this.$router.push({ path: '/customer/list' })
@@ -697,8 +740,8 @@ export default {
     // goToChange() {
     //   console.log(this.id)
     //   this.$router.push({
-    //     name: 'customerChange',
-    //     params: { id: this.id }
+    //     name: 'CustomerChangeView',
+    //     params: { detailId: this.customer.customer_id }
     //   })
     // }
   }

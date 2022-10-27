@@ -22,8 +22,9 @@ const cron = require("node-cron"); // 작업스케줄러
 const { strictEqual } = require("assert");
 
 // static----------------------------------------------------------------------------------------------------
-app.use(express.static("public")); // 서버에서 이미지를 다운받아야 할때 사용. static("열어줄 폴더")
+// app.use(express.static("public")); // 서버에서 이미지를 다운받아야 할때 사용. static("열어줄 폴더")
 // 브라우저에 localhost:3000//images/q8.jpg 입력하면 이미지 바로 볼 수 있음.
+app.use("/static/uploads", express.static("uploads")); // 서버에서 이미지를 다운받아야 할때 사용. static("열어줄 폴더")
 
 // ---------------------------------------------------------------------------------------------------------
 // 클라이언트 요청 body를 json으로 파싱 처리
@@ -34,7 +35,15 @@ app.use(
   })
 );
 
-// multer 이미지 업로드---------------------------------------------------------------------------------------------
+//cors -------------------------------------------------------------------------------------------------------
+const corsOptions = {
+  origin: "http://localhost:8080", // 허용할 도메인
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
+// multer 심사원 이미지 업로드---------------------------------------------------------------------------------------------
 
 const imageStorage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -54,11 +63,16 @@ app.post(
   imageUpload.single("attachment"),
   async (req, res) => {
     console.log(req.file);
-    console.log(req.body);
+    // console.log(req.body);
 
     const fileInfo = {
       auditor_id: parseInt(req.body.auditor_id),
-      originalname: req.file.originalname,
+      originalname: StringUtils.cleanPath(
+        new String(
+          file.getOriginalFilename().getBytes("8859_1"),
+          StandardCharsets.UTF_8
+        )
+      ),
       mimetype: req.file.mimetype,
       filename: req.file.filename,
       path: req.file.path,
@@ -67,7 +81,7 @@ app.post(
   }
 );
 
-// multer 일반파일 업로드---------------------------------------------------------------------------------------------
+// multer customer 사업자등록증 일반파일 업로드---------------------------------------------------------------------------------------------
 
 const fileStorage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -90,8 +104,11 @@ app.post(
     console.log(req.body);
 
     const fileInfo = {
-      auditor_id: parseInt(req.body.customer_id),
-      originalname: req.file.originalname,
+      customer_id: parseInt(req.body.customer_id),
+      originalname: Buffer.from(req.file.originalname, "latin1").toString(
+        "utf-8"
+      ),
+      // originalname: req.file.originalname,
       mimetype: req.file.mimetype,
       filename: req.file.filename,
       path: req.file.path,
@@ -158,14 +175,6 @@ app.listen(port, () => {
   console.log(`Server start on port ${port}!!`);
 });
 
-//cors -------------------------------------------------------------------------------------------------------
-const corsOptions = {
-  origin: "http://localhost:8080", // 허용할 도메인
-  optionsSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
-
 //라우트 동록---------------------------------------------------------------------------------------------------
 //auditor 전체조회
 app.get("/api/auditor", async (req, res) => {
@@ -211,6 +220,16 @@ app.put("/api/auditor/:auditor_id", async (req, res) => {
   const result = await mysql.query("auditorUpdate", [
     req.body.param,
     auditor_id,
+  ]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
+  res.send(result);
+});
+
+// customer 수정
+app.put("/api/customer/:customer_id", async (req, res) => {
+  const { customer_id } = req.params;
+  const result = await mysql.query("customerUpdate", [
+    req.body.param,
+    customer_id,
   ]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
   res.send(result);
 });
@@ -263,9 +282,20 @@ app.post("/api/email", async (req, res) => {
 
 // File download --------------------------------------------------------------------------------------------------------------
 app.get("/api/file/:filename", (req, res) => {
+  // 다운로드 받고 싶은 파일명
+  // const fileName = req.params.filename;
+
+  console.log(req.params.filename);
   const file = "./uploads/" + req.params.filename;
+  console.log(file);
   try {
     if (fs.existsSync(file)) {
+      // const mimetype = mime.getType(file);
+      // const filename = path.basename(file);
+      // res.setHeader("Content-disposition", "attachment; filename=" + filename); // 다운 파일명
+      // res.setHeader("Content-type", mimetype); // 파일 형식 지정
+      // const filestream = fs.createReadStream(file);
+      // filestream.pipe(res);
       res.download(file);
     } else {
       res.send("요청한 파일이 존재하지 않습니다");

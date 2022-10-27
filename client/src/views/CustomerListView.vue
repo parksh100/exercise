@@ -132,7 +132,7 @@ export default {
     }
 
     this.list = await this.$get('/api/customer')
-    console.log(this.list)
+    // console.log(this.list)
   },
   unmounted() {},
   methods: {

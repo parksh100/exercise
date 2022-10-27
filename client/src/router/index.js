@@ -71,7 +71,7 @@ const routes = [
   },
   {
     path: '/customer/change',
-    name: 'customerChange',
+    name: 'CustomerChangeView',
     component: () =>
       import(
         /* webpackChunkName: "customer" */ '../views/CustomerChangeView.vue'
