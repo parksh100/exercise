@@ -81,7 +81,7 @@ export default {
                 name: res.data.userData.user_name,
                 email: res.data.userData.user_email
               })
-              this.$router.push({ path: '/home' })
+              this.$router.push({ path: '/' })
             }
           },
           (err) => {

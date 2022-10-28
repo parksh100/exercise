@@ -9,11 +9,14 @@ export const user = {
   },
   getters: {
     isLogin(state) {
-      // if(state.userInfo.name){
-      //   return true}
-      //   else{return false}
+      // === pertisitedstate 사용할때
+      //   if (state.userInfo.name) {
+      //     return true
+      //   } else {
+      //     return false
+      //   }
       // }
-
+      // ====vue-cookies 사용할때
       if (VueCookies.get('userInfo')) {
         return true
       } else {
@@ -22,16 +25,17 @@ export const user = {
     }
   },
   mutations: {
-    // vue-cookies 설치
-    // vuex-persistedstate 설치
+    // 방법1. vue-cookies 설치 ; 시간설정 할수 있음.
+    // 방법2. vuex-persistedstate 설치: 로컬스토리지에 저장됨.
     setUser(state, userInfo) {
       // userInfo는 로그인 후 받아온 정보이다.
       state.userInfo = userInfo
-      VueCookies.set('userInfo', userInfo, '8h') // 사용자 정보를 쿠키에 저장한다. 1시간 동안 유지한다.
+      // 새로고침해도 사용자 정보를 유지하기 위해 쿠키에 저장한다. ===================
+      VueCookies.set('userInfo', userInfo, '1h')
     },
     logout(state) {
-      this.state.userInfo = {} // vuex-persistedstate를 사용할때
-      this.VueCookies.remove('userInfo') // vue-cookies를 사용할때
+      state.userInfo = {} // vuex-persistedstate를 사용할때
+      VueCookies.remove('userInfo') // vue-cookies를 사용할때
     }
   },
   actions: {

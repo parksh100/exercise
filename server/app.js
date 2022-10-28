@@ -287,7 +287,7 @@ app.get("/api/file/:filename", (req, res) => {
 
   console.log(req.params.filename);
   const file = "./uploads/" + req.params.filename;
-  console.log(file);
+  // console.log(file);
   try {
     if (fs.existsSync(file)) {
       // const mimetype = mime.getType(file);
@@ -312,14 +312,14 @@ app.use(cookieParser());
 // express-session -----------------------------------------------------------------------------------------------------
 
 let sess = {
-  secret: "secret key",
+  secret: "secret key", // 암호화해서 상용하는 문자열키 아무거나 넣어도 상관없음.
   resave: "false", //세션에 변경사항이 없어도 항상 다시 저장할지 여부
   saveUninitialized: true, // 초기화되지 않은 세션을 저장소에 강제로 저장할지 여부
   cookie: {
     // 로그인 되었다는 것을 클라이언트에도 알려주기 위해 쿠키에 저장
     httpOnly: true, // document.cookie해도 쿠키 정보를 볼 수 없음.
     secure: false, // https
-    maxAge: 1000 * 60 * 60 * 8, // 1000이 1초, 쿠키가 유지되는 시간
+    maxAge: 1000 * 60 * 2, // 1000이 1초, 쿠키가 유지되는 시간
   },
 };
 /*
@@ -360,16 +360,21 @@ app.post("/login", async (req, res) => {
       });
     }
   }
+
+  // session이용해서 로그인 처리
+  // req.session.email = user.userEmail;
+  // console.log(req.session.email);
+  // req.session.isLogined = true;
+  // console.log(req.session.isLogined);
+  // console.log(req.session);
+  // req.session.save((err) => {
+  //   // 위에 두즐 저장
+  //   if (err) throw err;
+
+  //   res.send(req.session);
+  // });
+  // ==end session이용해서 로그인 처리 =====
 });
-
-// req.session.email = email;
-// req.session.isLogined = true;
-// req.session.save((err) => {
-//   // 위에 두즐 저장
-//   if (err) throw err;
-
-//   res.send(req.session);
-// });
 
 /* 카카오 로그인
   try {

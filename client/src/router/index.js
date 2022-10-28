@@ -88,31 +88,35 @@ router.beforeEach((to, from, next) => {
   console.log('to', to)
   console.log('from', from)
 
-  const isLogin = store.getters['user/isLogin']
-  console.log(isLogin)
+  // const isLogin = store.getters['user/isLogin']
+  // console.log(isLogin)
 
-  // if (to.path === '/login') {
-  //   next()
-  // } else if (isLogin) {
-  //   if (to.path === '/') {
-  //     next({ path: '/' })
-  //   } else {
-  //     next()
-  //   }
-  // } else {
-  //   return next({ path: '/login' })
-  // }
-
-  if (to.path === '/') {
+  if (to.path === '/login') {
     next()
   } else {
-    if (isLogin) {
+    if (store.getters['user/isLogin']) {
       next()
     } else {
-      store.commit('user/logout')
+      store.commit('/user/logout')
       next('/login')
     }
   }
 })
+//   //     next()
+//   //   }
+//   // } else {
+//   //   return next({ path: '/login' })
+//   // }
+
+// if (to.path === '/') {
+//   next()
+// } else {
+//   if (isLogin) {
+//     next()
+//   } else {
+//     // store.commit('user/logout')
+//     next('/login')
+//   }
+// }
 
 export default router
