@@ -2463,6 +2463,7 @@ export default {
         outsourcing_process: '',
         construction_license: '',
         construction_license_content: '',
+        audit_fee: 0,
         hazardous_chemical: '',
         hazardous_chemical_content: '',
         location: '',
@@ -2600,6 +2601,7 @@ export default {
     this.customer.construction_license = dbData.construction_license
     this.customer.construction_license_content =
       dbData.construction_license_content
+    this.customer.audit_fee = dbData.audit_fee
     this.customer.location = dbData.location
     this.customer.production_method = dbData.production_method
     this.customer.production_method_etc = dbData.production_method_etc
@@ -2946,6 +2948,7 @@ export default {
               s2_end_date: JSON.stringify(this.customer.s2_end_date),
               s2_team: this.customer.s2_team,
               internal_date: JSON.stringify(this.customer.internal_date),
+              manual_date: JSON.stringify(this.customer.manual_date),
               management_date: JSON.stringify(this.customer.management_date),
               outsourcing: this.customer.outsourcing,
               outsourcing_process: this.customer.outsourcing_process,
@@ -2970,6 +2973,8 @@ export default {
                 this.customer.hazardous_chemical_worker,
               air_pollution: JSON.stringify(this.customer.air_pollution),
               air_pollution_content: this.customer.air_pollution_content,
+              water_pollution: JSON.stringify(this.customer.water_pollution),
+              water_pollution_content: this.customer.water_pollution_content,
               soil_pollution: JSON.stringify(this.customer.soil_pollution),
               soil_pollution_content: this.customer.soil_pollution_content,
               natural_resource_pollution: JSON.stringify(

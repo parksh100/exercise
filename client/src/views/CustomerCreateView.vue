@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
-    <h3 class="mb-4 fw-bold">[인증심사신청]</h3>
-    <!-- <hr style="width: 50%" /> -->
+    <h3 class="mb-4 fw-bold text-center">인증심사신청</h3>
+    <hr />
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">심사유형</label>
       <div class="col-sm-9">
@@ -81,6 +81,7 @@
           class="form-control"
           v-model.trim="customer.business_no"
           placeholder="숫자만 입력"
+          @keyup="getBusinessNoMask(customer.business_no)"
         />
       </div>
     </div>
@@ -101,6 +102,9 @@
           type="text"
           class="form-control"
           v-model.trim="customer.ceo_phone"
+          placeholder="숫자만 입력"
+          @keyup="getMobileMask(customer.ceo_phone)"
+          limit="11"
         />
       </div>
     </div>
@@ -113,13 +117,25 @@
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">대표전화번호</label>
       <div class="col-sm-9">
-        <input type="text" class="form-control" v-model.trim="customer.phone" />
+        <input
+          type="text"
+          class="form-control"
+          v-model.trim="customer.phone"
+          @keyup="getPhoneMask(customer.phone)"
+          placeholder="숫자만 입력"
+        />
       </div>
     </div>
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">대표팩스번호</label>
       <div class="col-sm-9">
-        <input type="text" class="form-control" v-model.trim="customer.fax" />
+        <input
+          type="text"
+          class="form-control"
+          v-model.trim="customer.fax"
+          @keyup="getFaxMask(customer.fax)"
+          placeholder="숫자만 입력"
+        />
       </div>
     </div>
 
@@ -240,8 +256,9 @@
         <input
           type="text"
           class="form-control"
-          placeholder="010-1234-5678"
+          placeholder="숫자만 입력"
           v-model.trim="customer.contact_phone"
+          @keyup="getContactPhoneMask(customer.contact_phone)"
         />
       </div>
     </div>
@@ -557,7 +574,7 @@
         />
       </div>
     </div>
-    <div class="row mb-3" v-show="customer.certification_type !== 'initial'">
+    <!-- <div class="row mb-3" v-show="customer.certification_type !== 'initial'">
       <label class="col-sm-3 col-form-label">전환(방문)심사일</label>
       <div class="col-sm-9">
         <input
@@ -618,7 +635,7 @@
           v-model.trim="customer.s2_team"
         />
       </div>
-    </div>
+    </div> -->
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">매뉴얼 제/개정일</label>
       <div class="col-sm-9">
@@ -773,44 +790,29 @@
         />
       </div>
     </div>
-    <hr />
-
-    <!-- <div
-      v-show="
-        customer.certification_standard.includes('ISO14001') === true ||
-        customer.certification_standard.includes('ISO45001') === true
-      "
-    > -->
-    <div>
-      <h3 class="mb-5 fw-bold">[ISO14001/ISO45001 신청정보]</h3>
-
-      <!-- <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">인증이력</label>
-      <div class="col-sm-9">
-        <select
-          class="form-select"
-          aria-label="Default select example"
-          v-model.trim="customer.certification_history"
-        >
-          <option sel>선택하세요</option>
-          <option value="y">있음</option>
-          <option value="n">없음</option>
-        </select>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">인증이력 경영시스템</label>
+    <!-- <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">심사비(원)(VAT별도)</label>
       <div class="col-sm-9">
         <input
-          type="text"
+          type="number"
           class="form-control"
-          v-model.trim="customer.certification_history_standard"
+          placeholder=""
+          v-model="customer.audit_fee"
         />
       </div>
     </div> -->
+    <hr />
+
+    <div
+      v-show="
+        customer.certification_standard.includes('EMS') === true ||
+        customer.certification_standard.includes('OHSMS') === true
+      "
+    >
+      <h3 class="mb-5 fw-bold">[ISO14001/ISO45001 신청정보]</h3>
 
       <!-- iso14001인증 신청 -->
-      <div>
+      <div v-show="customer.certification_standard.includes('EMS') === true">
         <div class="row mb-3">
           <label class="col-sm-3 col-form-label">사업장 입지조건</label>
           <div class="col-sm-9">
@@ -1021,746 +1023,715 @@
             />
           </div>
         </div>
+      </div>
 
-        <!-- 최근3년 안전보건사고 -->
+      <!-- 사업장외부 근무자 -->
 
-        <!-- <div
-          class="row mb-3"
-          v-show="customer.certification_standard.includes('ISO45001') == true"
-        > -->
-        <div class="row mb-3">
-          <label class="col-sm-3 col-form-label">안전보건사고 유무</label>
-          <div class="col-sm-9">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="safety_accident1"
-                value="yes"
-                v-model="customer.safety_accident"
-              />
-              <label class="form-check-label" for="safety_accident1">예</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="safety_accident2"
-                value="No"
-                v-model="customer.safety_accident"
-              />
-              <label class="form-check-label" for="safety_accident2"
-                >아니오</label
-              >
-            </div>
-          </div>
-        </div>
-        <div class="row mb-3" v-show="customer.safety_accident == 'yes'">
-          <label class="col-sm-3 col-form-label">안전보건 사고내역</label>
-          <div class="col-sm-9">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="안전보건 사고내역"
-              v-model.trim="customer.safety_accident_content"
-            />
-          </div>
-        </div>
-
-        <!-- 사업장외부 근무자 -->
-
-        <!-- <div
+      <!-- <div
           class="row mb-3"
           v-show="customer.certification_standard.includes('ISO45001') == true"
         >  -->
-        <div class="row mb-3">
-          <label class="col-sm-3 col-form-label">사업장 외부 근무자</label>
-          <div class="col-sm-9">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="outside_worker1"
-                value="yes"
-                v-model="customer.outside_worker"
-              />
-              <label class="form-check-label" for="outside_worker1">예</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="outside_worker2"
-                value="No"
-                v-model="customer.outside_worker"
-              />
-              <label class="form-check-label" for="outside_worker2"
-                >아니오</label
-              >
-            </div>
-          </div>
-        </div>
-        <div class="row mb-3" v-show="customer.outside_worker == 'yes'">
-          <label class="col-sm-3 col-form-label">업무내용</label>
-          <div class="col-sm-9">
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">사업장 외부 근무자</label>
+        <div class="col-sm-9">
+          <div class="form-check form-check-inline">
             <input
-              type="text"
-              class="form-control"
-              placeholder="자업장 외부근무자 업무 기술"
-              v-model.trim="customer.outside_worker_content"
+              class="form-check-input"
+              type="radio"
+              id="outside_worker1"
+              value="yes"
+              v-model="customer.outside_worker"
             />
+            <label class="form-check-label" for="outside_worker1">예</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="outside_worker2"
+              value="No"
+              v-model="customer.outside_worker"
+            />
+            <label class="form-check-label" for="outside_worker2">아니오</label>
           </div>
         </div>
+      </div>
+      <div class="row mb-3" v-show="customer.outside_worker == 'yes'">
+        <label class="col-sm-3 col-form-label">업무내용</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="사업장 외부근무자 업무 기술"
+            v-model.trim="customer.outside_worker_content"
+          />
+        </div>
+      </div>
 
-        <!--유해위험물질유형  -->
+      <!--유해위험물질유형  -->
 
-        <!-- <div
+      <!-- <div
           class="row mb-3"
           v-show="
             customer.certification_standard.includes('ISO14001') == true ||
             customer.certification_standard.includes('ISO45001') == true
           "
         > -->
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">유해/위험물질 유형</label>
+        <div class="col-sm-9">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="hazardous_chemical1"
+              value="해당없음"
+              v-model="customer.hazardous_chemical"
+            />
+            <label class="form-check-label" for="hazardous_chemical1"
+              >해당없음</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="hazardous_chemical2"
+              value="용액"
+              v-model="customer.hazardous_chemical"
+            />
+            <label class="form-check-label" for="hazardous_chemical2"
+              >용액</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="hazardous_chemical3"
+              value="금속"
+              v-model="customer.hazardous_chemical"
+            />
+            <label class="form-check-label" for="hazardous_chemical3"
+              >금속</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="hazardous_chemical4"
+              value="화학물"
+              v-model="customer.hazardous_chemical"
+            />
+            <label class="form-check-label" for="hazardous_chemical4"
+              >화학물</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="hazardous_chemical5"
+              value="기타"
+              v-model="customer.hazardous_chemical"
+            />
+            <label class="form-check-label" for="hazardous_chemical5"
+              >기타</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3" v-show="customer.hazardous_chemical == '기타'">
+        <label class="col-sm-3 col-form-label">기타유형</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="기타유형"
+            v-model.trim="customer.hazardous_chemical_content"
+          />
+        </div>
+      </div>
+
+      <div>
+        <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 환경측면 및 영향 ===</h5>
+
+        <!-- 대기 -->
         <div class="row mb-3">
-          <label class="col-sm-3 col-form-label">유해/위험물질 유형</label>
+          <label class="col-sm-3 col-form-label">(대기)환경측면</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
-                type="radio"
-                id="hazardous_chemical1"
+                type="checkbox"
+                id="air_pollution1"
                 value="해당없음"
-                v-model="customer.hazardous_chemical"
+                v-model="customer.air_pollution"
               />
-              <label class="form-check-label" for="hazardous_chemical1"
+              <label class="form-check-label" for="air_pollution1"
                 >해당없음</label
               >
             </div>
             <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
-                type="radio"
-                id="hazardous_chemical2"
-                value="용액"
-                v-model="customer.hazardous_chemical"
+                type="checkbox"
+                id="air_pollution2"
+                value="미립자"
+                v-model="customer.air_pollution"
               />
-              <label class="form-check-label" for="hazardous_chemical2"
-                >용액</label
+              <label class="form-check-label" for="air_pollution2"
+                >미립자</label
               >
             </div>
             <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
-                type="radio"
-                id="hazardous_chemical3"
-                value="금속"
-                v-model="customer.hazardous_chemical"
+                type="checkbox"
+                id="air_pollution3"
+                value="가스"
+                v-model="customer.air_pollution"
               />
-              <label class="form-check-label" for="hazardous_chemical3"
-                >금속</label
+              <label class="form-check-label" for="air_pollution3">가스</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="air_pollution4"
+                value="소음"
+                v-model="customer.air_pollution"
+              />
+              <label class="form-check-label" for="air_pollution4">소음</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="air_pollution5"
+                value="악취"
+                v-model="customer.air_pollution"
+              />
+              <label class="form-check-label" for="air_pollution5">악취</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="air_pollution6"
+                value="기타"
+                v-model="customer.air_pollution"
+              />
+              <label class="form-check-label" for="air_pollution6">기타</label>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3" v-show="customer.air_pollution == '기타'">
+          <label class="col-sm-3 col-form-label">기타유형</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="대기 기타유형"
+              v-model.trim="customer.air_pollution_content"
+            />
+          </div>
+        </div>
+
+        <!-- 토양 -->
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">(토양)환경측면</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="soil_pollution1"
+                value="해당없음"
+                v-model="customer.soil_pollution"
+              />
+              <label class="form-check-label" for="soil_pollution1"
+                >해당없음</label
               >
             </div>
             <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
-                type="radio"
-                id="hazardous_chemical4"
+                type="checkbox"
+                id="soil_pollution2"
+                value="매립"
+                v-model="customer.soil_pollution"
+              />
+              <label class="form-check-label" for="soil_pollution2">매립</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="soil_pollution3"
+                value="토양침식"
+                v-model="customer.soil_pollution"
+              />
+              <label class="form-check-label" for="soil_pollution3"
+                >토양침식</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="soil_pollution4"
+                value="고체폐기물"
+                v-model="customer.soil_pollution"
+              />
+              <label class="form-check-label" for="soil_pollution4"
+                >고체폐기물</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="soil_pollution5"
+                value="화학폐기물"
+                v-model="customer.soil_pollution"
+              />
+              <label class="form-check-label" for="soil_pollution5"
+                >화학폐기물</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="soil_pollution6"
+                value="기타"
+                v-model="customer.soil_pollution"
+              />
+              <label class="form-check-label" for="soil_pollution6">기타</label>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3" v-show="customer.soil_pollution == '기타'">
+          <label class="col-sm-3 col-form-label">기타유형</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="토양 기타유형"
+              v-model.trim="customer.soil_pollution_content"
+            />
+          </div>
+        </div>
+        <!-- 수질 -->
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">(수질)환경측면</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="water_pollution1"
+                value="해당없음"
+                v-model="customer.water_pollution"
+              />
+              <label class="form-check-label" for="water_pollution1"
+                >해당없음</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="water_pollution2"
+                value="폐수"
+                v-model="customer.water_pollution"
+              />
+              <label class="form-check-label" for="water_pollution2"
+                >폐수</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="water_pollution3"
+                value="지하수"
+                v-model="customer.water_pollution"
+              />
+              <label class="form-check-label" for="water_pollution3"
+                >지하수</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="water_pollution4"
+                value="지표수"
+                v-model="customer.water_pollution"
+              />
+              <label class="form-check-label" for="water_pollution4"
+                >지표수</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="water_pollution5"
+                value="빗물"
+                v-model="customer.water_pollution"
+              />
+              <label class="form-check-label" for="water_pollution5"
+                >빗물</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="water_pollution6"
+                value="기타"
+                v-model="customer.water_pollution"
+              />
+              <label class="form-check-label" for="water_pollution6"
+                >기타</label
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3" v-show="customer.water_pollution == '기타'">
+          <label class="col-sm-3 col-form-label">기타유형</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="수질 기타유형"
+              v-model.trim="customer.water_pollution_content"
+            />
+          </div>
+        </div>
+
+        <!--천연자원  -->
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">(천연자원)환경측면</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="natural_resource_pollution1"
+                value="해당없음"
+                v-model="customer.natural_resource_pollution"
+              />
+              <label class="form-check-label" for="natural_resource_pollution1"
+                >해당없음</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="natural_resource_pollution2"
+                value="화석"
+                v-model="customer.natural_resource_pollution"
+              />
+              <label class="form-check-label" for="natural_resource_pollution2"
+                >화석</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="natural_resource_pollution3"
+                value="물"
+                v-model="customer.natural_resource_pollution"
+              />
+              <label class="form-check-label" for="natural_resource_pollution3"
+                >물</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="natural_resource_pollution4"
+                value="석면"
+                v-model="customer.natural_resource_pollution"
+              />
+              <label class="form-check-label" for="natural_resource_pollution4"
+                >석면</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="natural_resource_pollution5"
+                value="광물"
+                v-model="customer.natural_resource_pollution"
+              />
+              <label class="form-check-label" for="natural_resource_pollution5"
+                >광물</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="natural_resource_pollution6"
+                value="기타"
+                v-model="customer.natural_resource_pollution"
+              />
+              <label class="form-check-label" for="natural_resource_pollution6"
+                >기타</label
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="row mb-3"
+          v-show="customer.natural_resource_pollution == '기타'"
+        >
+          <label class="col-sm-3 col-form-label">기타유형</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="천연자원 기타유형"
+              v-model.trim="customer.natural_resource_pollution_content"
+            />
+          </div>
+        </div>
+
+        <!-- 에너지 -->
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">(에너지)환경측면</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="energy_pollution1"
+                value="해당없음"
+                v-model="customer.energy_pollution"
+              />
+              <label class="form-check-label" for="energy_pollution1"
+                >해당없음</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="energy_pollution2"
+                value="열발산"
+                v-model="customer.energy_pollution"
+              />
+              <label class="form-check-label" for="energy_pollution2"
+                >열발산</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="energy_pollution3"
+                value="방사선"
+                v-model="customer.energy_pollution"
+              />
+              <label class="form-check-label" for="energy_pollution3"
+                >방사선</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="energy_pollution4"
+                value="진동"
+                v-model="customer.energy_pollution"
+              />
+              <label class="form-check-label" for="energy_pollution4"
+                >진동</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="energy_pollution5"
+                value="전자파"
+                v-model="customer.energy_pollution"
+              />
+              <label class="form-check-label" for="energy_pollution5"
+                >전자파</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="energy_pollution6"
+                value="기타"
+                v-model="customer.energy_pollution"
+              />
+              <label class="form-check-label" for="energy_pollution6"
+                >기타</label
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3" v-show="customer.energy_pollution == '기타'">
+          <label class="col-sm-3 col-form-label">기타유형</label>
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="에너지 기타유형"
+              v-model.trim="customer.energy_pollution_content"
+            />
+          </div>
+        </div>
+
+        <!-- 폐기물 -->
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">(폐기물)환경측면</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="waste_pollution1"
+                value="해당없음"
+                v-model="customer.waste_pollution"
+              />
+              <label class="form-check-label" for="waste_pollution1"
+                >해당없음</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="waste_pollution2"
+                value="재활용"
+                v-model="customer.waste_pollution"
+              />
+              <label class="form-check-label" for="waste_pollution2"
+                >재활용</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="waste_pollution3"
+                value="비부패물"
+                v-model="customer.waste_pollution"
+              />
+              <label class="form-check-label" for="waste_pollution3"
+                >비부패물</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="waste_pollution4"
+                value="부패물"
+                v-model="customer.waste_pollution"
+              />
+              <label class="form-check-label" for="waste_pollution4"
+                >부패물</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="waste_pollution5"
                 value="화학물"
-                v-model="customer.hazardous_chemical"
+                v-model="customer.waste_pollution"
               />
-              <label class="form-check-label" for="hazardous_chemical4"
+              <label class="form-check-label" for="waste_pollution5"
                 >화학물</label
               >
             </div>
             <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
-                type="radio"
-                id="hazardous_chemical5"
+                type="checkbox"
+                id="waste_pollution6"
                 value="기타"
-                v-model="customer.hazardous_chemical"
+                v-model="customer.waste_pollution"
               />
-              <label class="form-check-label" for="hazardous_chemical5"
+              <label class="form-check-label" for="waste_pollution6"
                 >기타</label
               >
             </div>
           </div>
         </div>
-        <div class="row mb-3" v-show="customer.hazardous_chemical == '기타'">
+        <div class="row mb-3" v-show="customer.waste_pollution == '기타'">
           <label class="col-sm-3 col-form-label">기타유형</label>
           <div class="col-sm-9">
             <input
               type="text"
               class="form-control"
-              placeholder="기타유형"
-              v-model.trim="customer.hazardous_chemical_content"
+              placeholder="폐기물 기타유형"
+              v-model.trim="customer.waste_pollution_content"
             />
           </div>
         </div>
+      </div>
+    </div>
+    <!-- 최근3년 안전보건사고 -->
 
-        <!-- 고객에 의해 파악된 환경측면 및 영향 -->
-        <!-- <div
-          v-show="customer.certification_standard.includes('ISO14001') === true"
-        > -->
-        <div>
-          <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 환경측면 및 영향 ===</h5>
-
-          <!-- 대기 -->
-          <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">(대기)환경측면</label>
-            <div class="col-sm-9">
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="air_pollution1"
-                  value="해당없음"
-                  v-model="customer.air_pollution"
-                />
-                <label class="form-check-label" for="air_pollution1"
-                  >해당없음</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="air_pollution2"
-                  value="미립자"
-                  v-model="customer.air_pollution"
-                />
-                <label class="form-check-label" for="air_pollution2"
-                  >미립자</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="air_pollution3"
-                  value="가스"
-                  v-model="customer.air_pollution"
-                />
-                <label class="form-check-label" for="air_pollution3"
-                  >가스</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="air_pollution4"
-                  value="소음"
-                  v-model="customer.air_pollution"
-                />
-                <label class="form-check-label" for="air_pollution4"
-                  >소음</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="air_pollution5"
-                  value="악취"
-                  v-model="customer.air_pollution"
-                />
-                <label class="form-check-label" for="air_pollution5"
-                  >악취</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="air_pollution6"
-                  value="기타"
-                  v-model="customer.air_pollution"
-                />
-                <label class="form-check-label" for="air_pollution6"
-                  >기타</label
-                >
-              </div>
-            </div>
+    <div
+      class="row mb-3"
+      v-show="customer.certification_standard.includes('OHSMS') == true"
+    >
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">안전보건사고 유무</label>
+        <div class="col-sm-9">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="safety_accident1"
+              value="yes"
+              v-model="customer.safety_accident"
+            />
+            <label class="form-check-label" for="safety_accident1">예</label>
           </div>
-          <div class="row mb-3" v-show="customer.air_pollution == '기타'">
-            <label class="col-sm-3 col-form-label">기타유형</label>
-            <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="대기 기타유형"
-                v-model.trim="customer.air_pollution_content"
-              />
-            </div>
-          </div>
-
-          <!-- 토양 -->
-          <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">(토양)환경측면</label>
-            <div class="col-sm-9">
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="soil_pollution1"
-                  value="해당없음"
-                  v-model="customer.soil_pollution"
-                />
-                <label class="form-check-label" for="soil_pollution1"
-                  >해당없음</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="soil_pollution2"
-                  value="매립"
-                  v-model="customer.soil_pollution"
-                />
-                <label class="form-check-label" for="soil_pollution2"
-                  >매립</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="soil_pollution3"
-                  value="토양침식"
-                  v-model="customer.soil_pollution"
-                />
-                <label class="form-check-label" for="soil_pollution3"
-                  >토양침식</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="soil_pollution4"
-                  value="고체폐기물"
-                  v-model="customer.soil_pollution"
-                />
-                <label class="form-check-label" for="soil_pollution4"
-                  >고체폐기물</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="soil_pollution5"
-                  value="화학폐기물"
-                  v-model="customer.soil_pollution"
-                />
-                <label class="form-check-label" for="soil_pollution5"
-                  >화학폐기물</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="soil_pollution6"
-                  value="기타"
-                  v-model="customer.soil_pollution"
-                />
-                <label class="form-check-label" for="soil_pollution6"
-                  >기타</label
-                >
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3" v-show="customer.soil_pollution == '기타'">
-            <label class="col-sm-3 col-form-label">기타유형</label>
-            <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="토양 기타유형"
-                v-model.trim="customer.soil_pollution_content"
-              />
-            </div>
-          </div>
-          <!-- 수질 -->
-          <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">(수질)환경측면</label>
-            <div class="col-sm-9">
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="water_pollution1"
-                  value="해당없음"
-                  v-model="customer.water_pollution"
-                />
-                <label class="form-check-label" for="water_pollution1"
-                  >해당없음</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="water_pollution2"
-                  value="폐수"
-                  v-model="customer.water_pollution"
-                />
-                <label class="form-check-label" for="water_pollution2"
-                  >폐수</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="water_pollution3"
-                  value="지하수"
-                  v-model="customer.water_pollution"
-                />
-                <label class="form-check-label" for="water_pollution3"
-                  >지하수</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="water_pollution4"
-                  value="지표수"
-                  v-model="customer.water_pollution"
-                />
-                <label class="form-check-label" for="water_pollution4"
-                  >지표수</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="water_pollution5"
-                  value="빗물"
-                  v-model="customer.water_pollution"
-                />
-                <label class="form-check-label" for="water_pollution5"
-                  >빗물</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="water_pollution6"
-                  value="기타"
-                  v-model="customer.water_pollution"
-                />
-                <label class="form-check-label" for="water_pollution6"
-                  >기타</label
-                >
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3" v-show="customer.water_pollution == '기타'">
-            <label class="col-sm-3 col-form-label">기타유형</label>
-            <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="수질 기타유형"
-                v-model.trim="customer.water_pollution_content"
-              />
-            </div>
-          </div>
-
-          <!--천연자원  -->
-          <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">(천연자원)환경측면</label>
-            <div class="col-sm-9">
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="natural_resource_pollution1"
-                  value="해당없음"
-                  v-model="customer.natural_resource_pollution"
-                />
-                <label
-                  class="form-check-label"
-                  for="natural_resource_pollution1"
-                  >해당없음</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="natural_resource_pollution2"
-                  value="화석"
-                  v-model="customer.natural_resource_pollution"
-                />
-                <label
-                  class="form-check-label"
-                  for="natural_resource_pollution2"
-                  >화석</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="natural_resource_pollution3"
-                  value="물"
-                  v-model="customer.natural_resource_pollution"
-                />
-                <label
-                  class="form-check-label"
-                  for="natural_resource_pollution3"
-                  >물</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="natural_resource_pollution4"
-                  value="석면"
-                  v-model="customer.natural_resource_pollution"
-                />
-                <label
-                  class="form-check-label"
-                  for="natural_resource_pollution4"
-                  >석면</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="natural_resource_pollution5"
-                  value="광물"
-                  v-model="customer.natural_resource_pollution"
-                />
-                <label
-                  class="form-check-label"
-                  for="natural_resource_pollution5"
-                  >광물</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="natural_resource_pollution6"
-                  value="기타"
-                  v-model="customer.natural_resource_pollution"
-                />
-                <label
-                  class="form-check-label"
-                  for="natural_resource_pollution6"
-                  >기타</label
-                >
-              </div>
-            </div>
-          </div>
-          <div
-            class="row mb-3"
-            v-show="customer.natural_resource_pollution == '기타'"
-          >
-            <label class="col-sm-3 col-form-label">기타유형</label>
-            <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="천연자원 기타유형"
-                v-model.trim="customer.natural_resource_pollution_content"
-              />
-            </div>
-          </div>
-
-          <!-- 에너지 -->
-          <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">(에너지)환경측면</label>
-            <div class="col-sm-9">
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="energy_pollution1"
-                  value="해당없음"
-                  v-model="customer.energy_pollution"
-                />
-                <label class="form-check-label" for="energy_pollution1"
-                  >해당없음</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="energy_pollution2"
-                  value="열발산"
-                  v-model="customer.energy_pollution"
-                />
-                <label class="form-check-label" for="energy_pollution2"
-                  >열발산</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="energy_pollution3"
-                  value="방사선"
-                  v-model="customer.energy_pollution"
-                />
-                <label class="form-check-label" for="energy_pollution3"
-                  >방사선</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="energy_pollution4"
-                  value="진동"
-                  v-model="customer.energy_pollution"
-                />
-                <label class="form-check-label" for="energy_pollution4"
-                  >진동</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="energy_pollution5"
-                  value="전자파"
-                  v-model="customer.energy_pollution"
-                />
-                <label class="form-check-label" for="energy_pollution5"
-                  >전자파</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="energy_pollution6"
-                  value="기타"
-                  v-model="customer.energy_pollution"
-                />
-                <label class="form-check-label" for="energy_pollution6"
-                  >기타</label
-                >
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3" v-show="customer.energy_pollution == '기타'">
-            <label class="col-sm-3 col-form-label">기타유형</label>
-            <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="에너지 기타유형"
-                v-model.trim="customer.energy_pollution_content"
-              />
-            </div>
-          </div>
-
-          <!-- 폐기물 -->
-          <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">(폐기물)환경측면</label>
-            <div class="col-sm-9">
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="waste_pollution1"
-                  value="해당없음"
-                  v-model="customer.waste_pollution"
-                />
-                <label class="form-check-label" for="waste_pollution1"
-                  >해당없음</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="waste_pollution2"
-                  value="재활용"
-                  v-model="customer.waste_pollution"
-                />
-                <label class="form-check-label" for="waste_pollution2"
-                  >재활용</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="waste_pollution3"
-                  value="비부패물"
-                  v-model="customer.waste_pollution"
-                />
-                <label class="form-check-label" for="waste_pollution3"
-                  >비부패물</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="waste_pollution4"
-                  value="부패물"
-                  v-model="customer.waste_pollution"
-                />
-                <label class="form-check-label" for="waste_pollution4"
-                  >부패물</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="waste_pollution5"
-                  value="화학물"
-                  v-model="customer.waste_pollution"
-                />
-                <label class="form-check-label" for="waste_pollution5"
-                  >화학물</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="waste_pollution6"
-                  value="기타"
-                  v-model="customer.waste_pollution"
-                />
-                <label class="form-check-label" for="waste_pollution6"
-                  >기타</label
-                >
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3" v-show="customer.waste_pollution == '기타'">
-            <label class="col-sm-3 col-form-label">기타유형</label>
-            <div class="col-sm-9">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="폐기물 기타유형"
-                v-model.trim="customer.waste_pollution_content"
-              />
-            </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="safety_accident2"
+              value="No"
+              v-model="customer.safety_accident"
+            />
+            <label class="form-check-label" for="safety_accident2"
+              >아니오</label
+            >
           </div>
         </div>
       </div>
-
+      <div class="row mb-3" v-show="customer.safety_accident == 'yes'">
+        <label class="col-sm-3 col-form-label">안전보건 사고내역</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="안전보건 사고내역"
+            v-model.trim="customer.safety_accident_content"
+          />
+        </div>
+      </div>
       <!-- <div
         v-show="customer.certification_standard.includes('ISO45001') === true"
       > -->
@@ -2345,7 +2316,7 @@ export default {
         ceo_name: '',
         ceo_phone: '',
         email: '',
-        phone: '',
+        phone: null,
         fax: '',
         postcode: '',
         // address_jibun: '',
@@ -2384,6 +2355,7 @@ export default {
         outsourcing_process: '',
         construction_license: '',
         construction_license_content: '',
+        audit_fee: 0,
         hazardous_chemical: '',
         hazardous_chemical_content: '',
         location: '',
@@ -2435,6 +2407,216 @@ export default {
   },
   unmounted() {},
   methods: {
+    getBusinessNoMask(val) {
+      const res = this.BizMask(val)
+      this.customer.business_no = res
+      // 서버 전송 값에는 '-' 제거
+      this.model.customer.business_no = this.customer.business_no.replace(
+        /[^0-9]/g,
+        ''
+      )
+    },
+    getMobileMask(val) {
+      const res = this.MobileMask(val)
+      this.customer.ceo_phone = res
+      // 서버 전송 값에는 '-' 제거
+      this.model.customer.ceo_phone = this.customer.ceo_phone.replace(
+        /[^0-9]/g,
+        ''
+      )
+    },
+    getContactPhoneMask(val) {
+      const res = this.MobileMask(val)
+      this.customer.contact_phone = res
+      // 서버 전송 값에는 '-' 제거
+      this.model.customer.contact_phone = this.customer.contact_phone.replace(
+        /[^0-9]/g,
+        ''
+      )
+    },
+    getPhoneMask(val) {
+      const res = this.getMask(val)
+      this.customer.phone = res
+      // 서버 전송 값에는 '-' 제거
+      this.model.customer.phone = this.customer.phone.replace(/[^0-9]/g, '')
+    },
+    getFaxMask(val) {
+      const res = this.getMask(val)
+      this.customer.fax = res
+      // 서버 전송 값에는 '-' 제거
+      this.model.customer.fax = this.customer.fax.replace(/[^0-9]/g, '')
+    },
+    getMask(phoneNumber) {
+      if (!phoneNumber) return phoneNumber
+      phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+
+      let res = ''
+      if (phoneNumber.length < 3) {
+        res = phoneNumber
+      } else {
+        if (phoneNumber.substr(0, 2) === '02') {
+          if (phoneNumber.length <= 5) {
+            // 02-123-5678
+            res = phoneNumber.substr(0, 2) + '-' + phoneNumber.substr(2, 3)
+          } else if (phoneNumber.length > 5 && phoneNumber.length <= 9) {
+            // 02-123-5678
+            res =
+              phoneNumber.substr(0, 2) +
+              '-' +
+              phoneNumber.substr(2, 3) +
+              '-' +
+              phoneNumber.substr(5)
+          } else if (phoneNumber.length > 9) {
+            // 02-1234-5678
+            res =
+              phoneNumber.substr(0, 2) +
+              '-' +
+              phoneNumber.substr(2, 4) +
+              '-' +
+              phoneNumber.substr(6)
+          }
+        } else {
+          if (phoneNumber.length < 8) {
+            res = phoneNumber
+          } else if (phoneNumber.length === 8) {
+            res = phoneNumber.substr(0, 4) + '-' + phoneNumber.substr(4)
+          } else if (phoneNumber.length === 9) {
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 3) +
+              '-' +
+              phoneNumber.substr(6)
+          } else if (phoneNumber.length === 10) {
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 3) +
+              '-' +
+              phoneNumber.substr(6)
+          } else if (phoneNumber.length > 10) {
+            // 010-1234-5678
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 4) +
+              '-' +
+              phoneNumber.substr(7)
+          }
+        }
+      }
+      return res
+    }, // getMask
+
+    MobileMask(phoneNumber) {
+      if (!phoneNumber) return phoneNumber
+      phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+
+      let res = ''
+      if (phoneNumber.length < 4) {
+        res = phoneNumber
+      } else {
+        if (phoneNumber.substr(0, 2) === '02') {
+          if (phoneNumber.length <= 5) {
+            // 02-123-5678
+            res = phoneNumber.substr(0, 2) + '-' + phoneNumber.substr(2, 3)
+          } else if (phoneNumber.length > 5 && phoneNumber.length <= 9) {
+            // 02-123-5678
+            res =
+              phoneNumber.substr(0, 2) +
+              '-' +
+              phoneNumber.substr(2, 3) +
+              '-' +
+              phoneNumber.substr(5)
+          } else if (phoneNumber.length > 9) {
+            // 02-1234-5678
+            res =
+              phoneNumber.substr(0, 2) +
+              '-' +
+              phoneNumber.substr(2, 4) +
+              '-' +
+              phoneNumber.substr(6)
+          }
+        } else {
+          if (phoneNumber.length < 8) {
+            res = phoneNumber
+          } else if (phoneNumber.length === 8) {
+            res = phoneNumber.substr(0, 4) + '-' + phoneNumber.substr(4)
+          } else if (phoneNumber.length === 9) {
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 3) +
+              '-' +
+              phoneNumber.substr(6)
+          } else if (phoneNumber.length === 10) {
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 3) +
+              '-' +
+              phoneNumber.substr(6)
+          } else if (phoneNumber.length === 11) {
+            // 010-1234-5678
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 4) +
+              '-' +
+              phoneNumber.substr(7)
+          } else if (phoneNumber.length >= 12) {
+            this.$swal('휴대폰 번호를 확인해주세요.')
+          }
+        }
+      }
+      return res
+    },
+    BizMask(bizNo) {
+      if (!bizNo) return bizNo
+      bizNo = bizNo.replace(/[^0-9]/g, '')
+
+      let res = ''
+      if (bizNo.length <= 3) {
+        res = bizNo
+      } else {
+        if (bizNo.length <= 5) {
+          // res = bizNo
+          res = bizNo.substr(0, 3) + '-' + bizNo.substr(3)
+        } else if (bizNo.length <= 10) {
+          res =
+            bizNo.substr(0, 3) +
+            '-' +
+            bizNo.substr(3, 2) +
+            '-' +
+            bizNo.substr(5, 5)
+        } else if (bizNo.length >= 11) {
+          this.$swal('사업자 번호를 확인해주세요.')
+        }
+        // if (bizNo.substr(0, 2) === '02') {
+        //   if (bizNo.length <= 5) {
+        //     // 02-123-5678
+        //     res = bizNo.substr(0, 3) + '-' + bizNo.substr(3, 5)
+        //   } else if (bizNo.length > 5 && bizNo.length <= 10) {
+        //     // 02-123-5678
+        //     res =
+        //       bizNo.substr(0, 3) +
+        //       '-' +
+        //       bizNo.substr(3, 5) +
+        //       '-' +
+        //       bizNo.substr(8)
+        //   } else if (bizNo.length > 9) {
+        //     // 02-1234-5678
+        //     res =
+        //       bizNo.substr(0, 2) +
+        //       '-' +
+        //       bizNo.substr(2, 4) +
+        //       '-' +
+        //       bizNo.substr(6)
+        //   }
+        // }
+      }
+      return res
+    },
     execDaumPostcode() {
       // @click을 사용할 때 함수는 이렇게 작성해야 한다.
       new window.daum.Postcode({
@@ -2593,11 +2775,13 @@ export default {
               s2_start_date: JSON.stringify(this.customer.s2_start_date),
               s2_end_date: JSON.stringify(this.customer.s2_end_date),
               s2_team: this.customer.s2_team,
+              manual_date: JSON.stringify(this.customer.manual_date),
               internal_date: JSON.stringify(this.customer.internal_date),
               management_date: JSON.stringify(this.customer.management_date),
               outsourcing: this.customer.outsourcing,
               outsourcing_process: this.customer.outsourcing_process,
               construction_license: this.customer.construction_license,
+              audit_fee: this.customer.audit_fee,
               construction_license_content:
                 this.customer.construction_license_content,
               hazardous_chemical: this.customer.hazardous_chemical,
@@ -2618,8 +2802,11 @@ export default {
                 this.customer.hazardous_chemical_worker,
               air_pollution: JSON.stringify(this.customer.air_pollution),
               air_pollution_content: this.customer.air_pollution_content,
-              soil_pollution: JSON.stringify(this.customer.soil_pollution),
               soil_pollution_content: this.customer.soil_pollution_content,
+              water_pollution: JSON.stringify(this.customer.water_pollution),
+              water_pollution_content: JSON.stringify(
+                this.customer.water_pollution_content
+              ),
               natural_resource_pollution: JSON.stringify(
                 this.customer.natural_resource_pollution
               ),

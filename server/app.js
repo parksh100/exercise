@@ -195,11 +195,50 @@ app.get("/api/customer", async (req, res) => {
   res.send(customerList);
 });
 
+// cr 전체조회
+// app.get("/api/customer/cr", async (req, res) => {
+//   const crList = await mysql.query("crList");
+//   res.send(crList);
+// });
+
+//cr join 조회
+app.get("/api/customer/cr", async (req, res) => {
+  const crList = await mysql.query("crSelectedList");
+  res.send(crList);
+});
+
+//인증심사리스트 조회
+app.get("/api/customer/cert/list", async (req, res) => {
+  const auditList = await mysql.query("auditList");
+  res.send(auditList);
+});
+
 //customer detail
 app.get("/api/customer/:customer_id", async (req, res) => {
   const { customer_id } = req.params;
   const customerDetail = await mysql.query("customerDetail", customer_id);
   res.send(customerDetail[0]);
+});
+
+//인증심사 detail
+app.get("/api/customer/cert/:audit_id", async (req, res) => {
+  const { audit_id } = req.params;
+  const certDetail = await mysql.query("certDetail", audit_id);
+  res.send(certDetail[0]);
+});
+
+//cr detail
+app.get("/api/customer/cr/:customer_id", async (req, res) => {
+  const { customer_id } = req.params;
+  const crDetail = await mysql.query("crDetail", customer_id);
+  res.send(crDetail[0]);
+});
+
+//active customer
+app.get("/api/customer/active", async (req, res) => {
+  const activeCustomers = await mysql.query("activeCustomers");
+  console.log(activeCustomers);
+  res.send(activeCustomers);
 });
 
 // auditor 생성
@@ -211,6 +250,24 @@ app.post("/api/auditor", async (req, res) => {
 // customer 생성
 app.post("/api/customer", async (req, res) => {
   const result = await mysql.query("customerInsert", req.body.param);
+  res.send(result);
+});
+
+// 1단계보고서 생성
+app.post("/api/report/s1", async (req, res) => {
+  const result = await mysql.query("reportS1Insert", req.body.param);
+  res.send(result);
+});
+
+// 계약검토 생성
+app.post("/api/cr", async (req, res) => {
+  const result = await mysql.query("crInsert", req.body.param);
+  res.send(result);
+});
+
+// 사후/갱신 심사신청 생성
+app.post("/api/cert/surveillance", async (req, res) => {
+  const result = await mysql.query("certPostInsert", req.body.param);
   res.send(result);
 });
 
@@ -257,6 +314,13 @@ app.post("/api/auditor/search", async (req, res) => {
 // customer 검색 post
 app.post("/api/customer/search", async (req, res) => {
   const result = await mysql.query("customerListByCondition", req.body.param);
+  res.send(result);
+});
+
+// 심사정보 auditList 검색 post
+app.post("/api/customer/cert/list/search", async (req, res) => {
+  const result = await mysql.query("auditListByCondition", req.body.param);
+  console.log(result);
   res.send(result);
 });
 

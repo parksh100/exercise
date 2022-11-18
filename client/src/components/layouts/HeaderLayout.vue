@@ -61,9 +61,9 @@
             <!-- <li class="nav-item">
               <a
                 class="nav-link"
-                :class="{ active: $route.path == '/shipper' }"
-                @click="goToMenu('/shipper')"
-                >Shipper</a
+                :class="{ active: $route.path == '/admin/list' }"
+                @click="goToMenu('/admin/list')"
+                >관리자페이지</a
               >
             </li> -->
           </ul>

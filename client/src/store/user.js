@@ -31,7 +31,7 @@ export const user = {
       // userInfo는 로그인 후 받아온 정보이다.
       state.userInfo = userInfo
       // 새로고침해도 사용자 정보를 유지하기 위해 쿠키에 저장한다. ===================
-      VueCookies.set('userInfo', userInfo, '1h')
+      VueCookies.set('userInfo', userInfo, '3h')
     },
     logout(state) {
       state.userInfo = {} // vuex-persistedstate를 사용할때

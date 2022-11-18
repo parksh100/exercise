@@ -30,56 +30,74 @@
       <thead>
         <tr>
           <!-- <th width="4%">ID</th> -->
-          <th width="15%">회사명</th>
-          <th width="7%">인증유형</th>
-          <th width="20%">인증표준</th>
-          <th width="5%">대표자</th>
-          <th width="5%">인원</th>
-          <th width="23%">인증범위</th>
-          <th width="8%">담당자</th>
-          <th width="5%">심사원</th>
-          <th width="4%">상태</th>
-          <th width="8%">생성일</th>
-          <!-- <th width="10%"></th> -->
+          <th style="width: 20%">회사명</th>
+          <th style="width: 7%">인증유형</th>
+          <th style="width: 20">인증표준</th>
+          <th style="width: 7%">심사원</th>
+          <th style="width: 5%">상태</th>
+          <th style="width: 10%">등록일</th>
+          <th style="width: 31%">비고</th>
         </tr>
       </thead>
       <tbody>
         <tr :key="item.customer_id" v-for="item in list">
           <!-- <td>{{ item.customer_id }}</td> -->
           <td>
-            <a @click="goToDetail(item.customer_id)" role="button">{{
-              item.name_ko
-            }}</a>
+            <a
+              @click="goToDetail(item.customer_id)"
+              style="text-decoration: underline"
+              role="button"
+              >{{ item.name_ko }}</a
+            >
           </td>
           <td>{{ item.certification_type }}</td>
           <td style="word-break: break-all">
             {{ item.certification_standard }}
           </td>
-          <td style="word-break: break-all">{{ item.ceo_name }}</td>
-          <td style="word-break: break-all">{{ item.employee_count }}</td>
-          <td style="word-break: break-all">{{ item.scope_ko }}</td>
-          <td style="word-break: break-all">{{ item.contact_name }}</td>
-          <td style="word-break: break-all">{{ item.auditor_name }}</td>
-          <td style="word-break: break-all">{{ item.status_yn }}</td>
-          <td style="word-break: break-all">
+          <td>{{ item.auditor_name }}</td>
+          <td>{{ item.status_yn }}</td>
+          <td>
             {{ item.created_date.substr(0, 10) }}
           </td>
-          <!-- <td>
-            <button
-              class="btn btn-danger me-1"
+          <td>
+            <!-- <button
+              class="btn btn-primary btn-sm me-1"
+              @click="goToDetail(item.customer_id)"
+            >
+              상세보기
+            </button> -->
+            <!-- <button
+              class="btn btn-danger btn-sm me-1"
               @click="doDelete(item.customer_id)"
             >
               삭제
+            </button> -->
+            <button
+              class="btn btn-primary btn-sm me-1"
+              @click="goToCert(item.customer_id)"
+            >
+              심사신청
             </button>
             <button
-              class="btn btn-warning"
+              class="btn btn-info btn-sm me-1"
+              @click="goToCR(item.customer_id)"
+            >
+              계약검토
+            </button>
+
+            <button class="btn btn-success btn-sm me-1">심사계획서</button>
+            <button
+              class="btn btn-warning btn-sm me-1"
               @click="
-                changeStatus(item.auditor_id, item.use_yn === 'Y' ? 'N' : 'Y')
+                changeStatus(
+                  item.customer_id,
+                  item.status_yn === 'Y' ? 'N' : 'Y'
+                )
               "
             >
-              {{ item.use_yn === 'Y' ? '사용중지' : '사용' }}
+              {{ item.status_yn === 'Y' ? '사용중지' : '사용' }}
             </button>
-          </td> -->
+          </td>
         </tr>
       </tbody>
     </table>
@@ -146,12 +164,34 @@ export default {
       console.log(this.list)
       loader.hide()
     },
+
     goToDetail(id) {
       this.$router.push({
         path: '/customer/detail',
         query: { customer_id: id }
       })
     },
+
+    goToCert(id) {
+      // go to /cert/post with customer_id
+      this.$router.push({
+        path: '/customer/cert/list',
+        query: { customer_id: id }
+      })
+      // this.$router.push({
+      //   path: '/cert/post',
+      //   query: { customer_id: id }
+      // })
+      console.log('사후심사신청으로 넘긴 id :', id)
+    },
+
+    goToCR(id) {
+      this.$router.push({
+        path: '/customer/cr/list',
+        query: { customer_id: id }
+      })
+    },
+
     doExcel() {
       this.$ExcelFromTable(this.headers, this.list, 'customers', {})
     },
@@ -186,9 +226,9 @@ export default {
       })
     },
     changeStatus(id, useYN) {
-      let title = '심사원 정보 사용을 \n중지하시겠습니까?'
+      let title = '고객사 인증을 취소하시겠습니까?'
       if (useYN === 'Y') {
-        title = '심사원 정보를 \n다시 사용하시겠습니까?'
+        title = '고객사 인증을 \n다시 사용하시겠습니까?'
       }
       this.$swal({
         title: title,
@@ -203,8 +243,8 @@ export default {
         if (result.isConfirmed) {
           const loader = this.$loading.show({ canCancel: false })
 
-          const r = await this.$put(`/api/auditor/${id}`, {
-            param: { use_yn: useYN }
+          const r = await this.$put(`/api/customer/${id}`, {
+            param: { status_yn: useYN }
           })
           console.log(r)
 

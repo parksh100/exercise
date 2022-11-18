@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <h2 class="mb-4 fw-bold text-center">심사정보 상세보기</h2>
+    <h2 class="mb-4 fw-bold text-center">인증심사 계약검토보고서</h2>
     <hr />
     <table class="table table-bordered" style="table-layout: fixed">
       <!-- <thead>
@@ -13,89 +13,143 @@
       </thead> -->
       <tbody class="text-center">
         <tr>
-          <th>고객ID</th>
-          <td>
-            {{ list.customer_id }}
-          </td>
-          <th>심사ID</th>
-          <td>{{ list.audit_id }}</td>
-        </tr>
-        <tr>
           <th>심사번호</th>
           <td>
-            {{ list.audit_no }}
+            {{ cr.audit_no }}
           </td>
           <th>국문상호</th>
-          <td>{{ list.name_ko }}</td>
+          <td>{{ customer.name_ko }}</td>
+        </tr>
+
+        <tr>
+          <th>심사팀장</th>
+          <td>
+            {{ customer.auditor_name }}
+          </td>
+          <th>심사팀원</th>
+          <td>{{ customer.s2_team }}</td>
         </tr>
 
         <tr>
           <th>심사유형</th>
-          <td>
-            {{ list.audit_type }}
-          </td>
-          <th>심사차수</th>
-          <td>{{ list.audit_degree }}</td>
+          <td>{{ customer.certification_type }}</td>
+          <th>대표자명</th>
+          <td>{{ customer.ceo_name }}</td>
         </tr>
-        <tr>
-          <th>심사팀장</th>
-          <td>
-            {{ list.audit_leader }}
-          </td>
-          <th>심사팀원</th>
-          <td>{{ list.audit_auditor }}</td>
-        </tr>
-
         <tr>
           <th>종업원 수</th>
-          <td>{{ list.employee_count }}</td>
-          <th>심사비</th>
-          <td>{{ $convertNumberFormat(list.audit_fee, '#,###') }}원</td>
+          <td>{{ customer.employee_count }}</td>
+          <th>회사규모</th>
+          <td>{{ cr.organization_scale }}</td>
         </tr>
-
         <tr>
           <th>인증표준</th>
-          <td colspan="3">{{ list.certification_standard }}</td>
+          <td>{{ customer.certification_standard }}</td>
+          <th>사업장</th>
+          <td>{{ cr.type_workspace }}</td>
+        </tr>
+        <tr>
+          <th>국문인증범위</th>
+          <td colspan="3">
+            {{ customer.scope_ko }}
+          </td>
+          <!-- <th>대표자 휴대폰번호</th>
+          <td>{{ customer.email }}</td> -->
+        </tr>
+        <tr>
+          <th>영문인증범위</th>
+          <td colspan="3">
+            {{ customer.scope_en }}
+          </td>
+          <!-- <th>대표자 휴대폰번호</th>
+          <td>{{ customer.email }}</td> -->
+        </tr>
+        <tr>
+          <th>환경복잡성</th>
+          <td>{{ cr.env_complexity }}</td>
+          <th>안전보건위험성</th>
+          <td>{{ cr.sh_risk }}</td>
         </tr>
 
         <tr>
-          <th>국문인증범위</th>
-          <td colspan="3">{{ list.scope_ko }}</td>
-          <!-- <th>대표자 휴대폰번호</th>
-          <td>{{ customer.email }}</td> -->
+          <th>심사코드</th>
+          <td>{{ cr.iafcode }}</td>
+          <th>심사가능여부</th>
+          <td>{{ cr.possibility_audit }}</td>
+        </tr>
+
+        <tr>
+          <th>내부심사여부</th>
+          <td>
+            {{ cr.internal_audit }}
+          </td>
+          <th>경영검토여부</th>
+          <td>{{ cr.management_review }}</td>
+        </tr>
+
+        <tr>
+          <th>1단계 MD</th>
+          <td>
+            {{ cr.s1_md }}
+          </td>
+          <th>2단계 MD</th>
+          <td>{{ cr.s2_md }}</td>
         </tr>
 
         <tr>
           <th>1단계심사 시작일</th>
           <td>
-            {{ list.audit_s1_start }}
+            {{ customer.s1_start_date }}
           </td>
           <th>2단계심사 시작일</th>
-          <td>{{ list.audit_s2_start }}</td>
+          <td>{{ customer.s1_end_date }}</td>
         </tr>
 
         <tr>
           <th>1단계심사 종료일</th>
           <td>
-            {{ list.audit_s1_end }}
+            {{ customer.s2_start_date }}
           </td>
           <th>2단계심사 종료일</th>
-          <td>{{ list.audit_s2_end }}</td>
+          <td>{{ customer.s2_end_date }}</td>
+        </tr>
+
+        <tr>
+          <th>MD적합성</th>
+          <td>
+            {{ cr.md_adequity }}
+          </td>
+          <th>기술전문가 필요성</th>
+          <td>{{ cr.need_tech_expert }}</td>
+        </tr>
+        <tr>
+          <th>심사비</th>
+          <td>
+            {{ cr.audit_fee }}
+          </td>
+          <th>심사구분</th>
+          <td>{{ cr.class_audit }}</td>
+        </tr>
+        <tr>
+          <th>계약자 및 검토자 의견</th>
+          <td>
+            {{ cr.opinion }}
+          </td>
+          <th>계약변경</th>
+          <td>{{ cr.change }}</td>
         </tr>
       </tbody>
     </table>
-    <!-- <div class="d-flex text-center">
+    <div class="d-flex text-center">
       <p class="col">작성자 :</p>
       <p class="col">검토자 :</p>
       <p class="col">승인자 :</p>
       <span></span>
-    </div> -->
+    </div>
 
     <!-- 버튼 -->
     <div class="d-flex justify-content-center mt-5">
-      <button class="btn btn-secondary me-1" @click="goToAuditList">
-        목록
-      </button>
+      <button class="btn btn-secondary me-1" @click="goToCRList">목록</button>
       <button class="btn btn-primary" @click="printApplication">
         인쇄하기
       </button>
@@ -125,38 +179,63 @@ export default {
       imgSrc: '',
       imgExt: '',
       customer: {},
-      list: {}
+      cr: {
+        customer_id: -1,
+        audit_no: '',
+        certification_type: '',
+        name_ko: '',
+        name_en: '',
+        ceo_name: '',
+        organization_scale: '',
+        certification_standard: [],
+        employee_count: '',
+        scope_ko: '',
+        scope_en: '',
+        env_complexity: '',
+        sh_risk: '',
+        iafcode: [],
+        cr_result: '',
+        class_audit: '',
+        possibility_audit: '',
+        type_workspace: '',
+        s1_md: null,
+        s2_md: null,
+        md_adequity: '',
+        need_tech_expert: '',
+        opinion: '',
+        change: '',
+        s1_start_date: '',
+        s1_end_date: '',
+        s2_start_date: '',
+        s2_end_date: '',
+        s2_team: '',
+        manual_date: '',
+        internal_audit: '',
+        management_review: '',
+        leader_auditor: '',
+        auditors: '',
+        audit_fee: '',
+        auditor_name: '',
+        auditor_email: ''
+      }
     }
   },
   created() {
-    // this.id = this.$route.query.customer_id
-    // console.log('넘어온 id : ', this.id)
-    this.id = this.$route.query.audit_id
-    console.log('넘어온 audit_id :', this.id)
+    this.id = this.$route.query.customer_id
   },
-  async mounted() {
+  mounted() {
     // console.log(this.user.userInfo.email)
     if (this.user.userInfo.email === undefined) {
       alert('로그인이 필요합니다.')
       this.$router.push({ path: '/login' })
     }
-
-    // this.list = await this.$get('/api/customer/cert/list')
-    // this.list = await this.$get('/api/customer')
-    // this.customer = await this.$get('/api/customer')
-    console.log(this.list)
     console.log(this.id)
 
-    this.getList()
+    this.getCustomer()
+    this.crInfo()
   },
   unmounted() {},
   methods: {
-    async getList() {
-      // const loader = this.$loading.show({ canCancel: false })
-      this.list = await this.$get(`/api/customer/cert/${this.id}`)
-      console.log(this.list)
-      // loader.hide()
-    },
     async getCustomer() {
       // console.log(this.id)
       this.customer = await this.$get(
@@ -238,9 +317,6 @@ export default {
     },
     goToCRList() {
       this.$router.push({ path: '/customer/cr/list' })
-    },
-    goToAuditList() {
-      this.$router.push({ path: '/customer/cert/list' })
     },
     printApplication() {
       window.print()

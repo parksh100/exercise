@@ -5,8 +5,11 @@
       <label class="col-sm-2 col-form-label">ID</label>
       <div class="col-sm-10">{{ customer.customer_id }}</div>
     </div> -->
-    <h5 class="fw-bold">I. 기본정보</h5>
-    <table class="table table-bordered" style="table-layout: fixed">
+    <h5 class="fw-bold">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      기본정보
+    </h5>
+    <table class="table table-bordered table-sm" style="table-layout: fixed">
       <!-- <thead>
         <tr>
           <th class="col">#</th>
@@ -94,9 +97,12 @@
       </tbody>
     </table>
 
-    <h5 class="fw-bold mt-3 mb-3">II. 인증신청정보</h5>
+    <h5 class="fw-bold mt-3 mb-3">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      인증신청정보
+    </h5>
 
-    <table class="table table-bordered" style="table-layout: fixed">
+    <table class="table table-bordered table-sm" style="table-layout: fixed">
       <tbody class="text-center">
         <tr>
           <th>신청 인증표준</th>
@@ -156,7 +162,7 @@
         <tr>
           <th>전환(방문)심사일</th>
           <td>{{ customer.transfer_date }}</td>
-          <th></th>
+          <th>심사비{{ customer.audit_fee }}</th>
           <td></td>
         </tr>
 
@@ -203,9 +209,12 @@
       </tbody>
     </table>
 
-    <h5 class="fw-bold mt-3 mb-3">III. ISO14001/45001신청정보</h5>
+    <h5 class="fw-bold mt-3 mb-3">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      ISO14001/45001신청정보
+    </h5>
 
-    <table class="table table-bordered" style="table-layout: fixed">
+    <table class="table table-bordered table-sm" style="table-layout: fixed">
       <tbody class="text-center">
         <tr>
           <th>사업장 입지조건</th>
@@ -246,9 +255,12 @@
       </tbody>
     </table>
 
-    <h5 class="fw-bold mt-3 mb-3">III-1. 고객에 의해 파악된 환경측면</h5>
+    <h5 class="fw-bold mt-3 mb-3">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      고객에 의해 파악된 환경측면
+    </h5>
 
-    <table class="table table-bordered" style="table-layout: fixed">
+    <table class="table table-bordered table-sm" style="table-layout: fixed">
       <tbody class="text-center">
         <tr>
           <th>유해/위험물질 유형</th>
@@ -299,9 +311,12 @@
       </tbody>
     </table>
 
-    <h5 class="fw-bold mt-3 mb-3">III-2. 고객에 의해 파악된 위험요인</h5>
+    <h5 class="fw-bold mt-3 mb-3">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      고객에 의해 파악된 위험요인
+    </h5>
 
-    <table class="table table-bordered" style="table-layout: fixed">
+    <table class="table table-bordered table-sm" style="table-layout: fixed">
       <tbody class="text-center">
         <tr>
           <th>기계(설비) 요인</th>
@@ -325,9 +340,12 @@
       </tbody>
     </table>
 
-    <h5 class="fw-bold mt-3 mb-3">IV. 심사원정보</h5>
+    <h5 class="fw-bold mt-3 mb-3">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      심사원정보
+    </h5>
 
-    <table class="table table-bordered" style="table-layout: fixed">
+    <table class="table table-bordered table-sm" style="table-layout: fixed">
       <tbody class="text-center">
         <tr>
           <th>심사원명</th>
@@ -341,320 +359,13 @@
             {{ customer.img_license_originalname }}
           </td>
           <td>
-            <button class="btn btn-secondary" @click="fileDownload">
+            <button class="btn btn-outline-secondary" @click="fileDownload">
               다운로드
             </button>
           </td>
         </tr>
       </tbody>
     </table>
-
-    <!-- <div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">심사유형</label>
-      <div class="col-sm-10">{{ customer.certification_type }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">회사명(국문)</label>
-      <div class="col-sm-10">{{ customer.name_ko }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">회사명(영문)</label>
-      <div class="col-sm-10">{{ customer.name_en }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">사업자등록번호</label>
-      <div class="col-sm-10">{{ customer.business_no }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">대표자명</label>
-      <div class="col-sm-10">{{ customer.ceo_name }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">대표자 연락처</label>
-      <div class="col-sm-10">{{ customer.ceo_phone }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">이메일</label>
-      <div class="col-sm-10">{{ customer.email }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">대표전화번호</label>
-      <div class="col-sm-10">{{ customer.phone }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">주소(국문)</label>
-      <div class="col-sm-10">{{ customer.address_ko }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">주소(영문)</label>
-      <div class="col-sm-10">
-        {{ customer.address_en_detail + ', ' + customer.address_en }}
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">담당자명</label>
-      <div class="col-sm-10">{{ customer.contact_name }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">담당자이메일</label>
-      <div class="col-sm-10">{{ customer.contact_email }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">홈페이지</label>
-      <div class="col-sm-10">{{ customer.homepage }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">조직범위</label>
-      <div class="col-sm-10">
-        {{ customer.organization_scope }}
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">신청표준</label>
-      <div class="col-sm-10">{{ customer.certification_standard }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">종업원수</label>
-      <div class="col-sm-10">{{ customer.employee_count }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">설계개발유무</label>
-      <div class="col-sm-10">{{ customer.design }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.design === 'yes'">
-      <label class="col-sm-2 col-form-label">설계개발인원수</label>
-      <div class="col-sm-10">{{ customer.development_count }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">인증범위(국문)</label>
-      <div class="col-sm-10">{{ customer.scope_ko }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">인증범위(영문)</label>
-      <div class="col-sm-10">{{ customer.scope_en }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">인증범위활동</label>
-      <div class="col-sm-10">{{ customer.activity }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">제품(서비스)공정</label>
-      <div class="col-sm-10">{{ customer.process }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">교대근무여부</label>
-      <div class="col-sm-10">{{ customer.shift }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.shift === 'yes'">
-      <label class="col-sm-2 col-form-label">교대근무인원수</label>
-      <div class="col-sm-10">{{ customer.shift_work_count }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">적용제외유무</label>
-      <div class="col-sm-10">{{ customer.exclusion }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.exclusion === 'yes'">
-      <label class="col-sm-2 col-form-label">적용제외근거</label>
-      <div class="col-sm-10">{{ customer.exclusion_reason }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">전환심사일</label>
-      <div class="col-sm-10">{{ customer.transfer_date }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">1단계심사시작일</label>
-      <div class="col-sm-10">{{ customer.s1_start_date }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">1단계심사종료일</label>
-      <div class="col-sm-10">{{ customer.s1_end_date }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">2단계심사시작일</label>
-      <div class="col-sm-10">{{ customer.s2_start_date }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">2단계심사종료일</label>
-      <div class="col-sm-10">{{ customer.s2_end_date }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">2단계 심사팀원</label>
-      <div class="col-sm-10">{{ customer.s2_team }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">매뉴얼제/개정일</label>
-      <div class="col-sm-10">{{ customer.manual_date }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">내부심사일</label>
-      <div class="col-sm-10">{{ customer.internal_date }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">경영검토일</label>
-      <div class="col-sm-10">{{ customer.management_date }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">아웃소싱유무</label>
-      <div class="col-sm-10">{{ customer.outsourcing }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">아웃소싱 유무</label>
-      <div class="col-sm-10">{{ customer.outsourcing }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.outsourcing === 'yes'">
-      <label class="col-sm-2 col-form-label">외주처리 프로세스</label>
-      <div class="col-sm-10">{{ customer.outsourcing_process }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">건설면허보유여부</label>
-      <div class="col-sm-10">{{ customer.construction_license }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.construction_license == 'yes'">
-      <label class="col-sm-2 col-form-label">건설면허 내용</label>
-      <div class="col-sm-10">{{ customer.construction_license_content }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">유해/위험물질 유형</label>
-      <div class="col-sm-10">{{ customer.hazardous_chemical }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.hazardous_chemical === '기타'">
-      <label class="col-sm-2 col-form-label">유해/위험물질 기타</label>
-      <div class="col-sm-10">{{ customer.hazardous_chemical_content }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">사업장입지조건</label>
-      <div class="col-sm-10">{{ customer.location }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">생산방법</label>
-      <div class="col-sm-10">{{ customer.production_method }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.production_method == '기타'">
-      <label class="col-sm-2 col-form-label">생산방법 기타</label>
-      <div class="col-sm-10">{{ customer.production_method_etc }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">환경허가 신고여부</label>
-      <div class="col-sm-10">{{ customer.environmental_permit }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.environmental_permit == 'yes'">
-      <label class="col-sm-2 col-form-label">환경허가 신고내용</label>
-      <div class="col-sm-10">{{ customer.environmental_permit_content }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">환경사고 유무</label>
-      <div class="col-sm-10">{{ customer.environmental_accident }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.environmental_accident == 'yes'">
-      <label class="col-sm-2 col-form-label">환경사고 내용</label>
-      <div class="col-sm-10">{{ customer.environmental_accident_content }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">안전보건사고 유무</label>
-      <div class="col-sm-10">{{ customer.safety_accident }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.safety_accident == 'yes'">
-      <label class="col-sm-2 col-form-label">안전보건사고 내용</label>
-      <div class="col-sm-10">{{ customer.safety_accident_content }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">사업장 외부 근무자</label>
-      <div class="col-sm-10">{{ customer.outside_worker }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.outside_worker == 'yes'">
-      <label class="col-sm-2 col-form-label">업무내용</label>
-      <div class="col-sm-10">{{ customer.outside_worker_content }}</div>
-    </div>
-
-    <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 환경측면 및 영향 ===</h5>
-
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">(대기)환경측면</label>
-      <div class="col-sm-10">{{ customer.air_pollution }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.air_pollution == '기타'">
-      <label class="col-sm-2 col-form-label">기타유형</label>
-      <div class="col-sm-10">{{ customer.air_pollution_content }}</div>
-    </div>
-
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">(토양)환경측면</label>
-      <div class="col-sm-10">{{ customer.soil_pollution }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.soil_pollution == '기타'">
-      <label class="col-sm-2 col-form-label">기타유형</label>
-      <div class="col-sm-10">{{ customer.soil_pollution_content }}</div>
-    </div>
-
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">(수질)환경측면</label>
-      <div class="col-sm-10">{{ customer.water_pollution }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.water_pollution == '기타'">
-      <label class="col-sm-2 col-form-label">기타유형</label>
-      <div class="col-sm-10">{{ customer.water_pollution_content }}</div>
-    </div>
-
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">(천연자원)환경측면</label>
-      <div class="col-sm-10">{{ customer.natural_resource_pollution }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.water_pollution == '기타'">
-      <label class="col-sm-2 col-form-label">기타유형</label>
-      <div class="col-sm-10">
-        {{ customer.natural_resource_pollution_content }}
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">(에너지)환경측면</label>
-      <div class="col-sm-10">{{ customer.energy_pollution }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.water_pollution == '기타'">
-      <label class="col-sm-2 col-form-label">기타유형</label>
-      <div class="col-sm-10">
-        {{ customer.energy_pollution_content }}
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">(폐기물)환경측면</label>
-      <div class="col-sm-10">{{ customer.waste_pollution }}</div>
-    </div>
-    <div class="row mb-3" v-show="customer.water_pollution == '기타'">
-      <label class="col-sm-2 col-form-label">기타유형</label>
-      <div class="col-sm-10">
-        {{ customer.waste_pollution_content }}
-      </div>
-    </div>
-    <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 위험요인 ===</h5>
-
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">기계(설비) 요인</label>
-      <div class="col-sm-10">{{ customer.machine_factor }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">전기적 요인</label>
-      <div class="col-sm-10">{{ customer.electric_factor }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">화학(물질)적 요인</label>
-      <div class="col-sm-10">{{ customer.chemical_factor }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">생물학적 요인</label>
-      <div class="col-sm-10">{{ customer.biological_factor }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">작업특성 요인</label>
-      <div class="col-sm-10">{{ customer.work_factor }}</div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">작업환경 요인</label>
-      <div class="col-sm-10">{{ customer.work_env }}</div>
-    </div>
-  </div> -->
     <div>
       <p>
         당사는 KAI의 인증시스템 심사절차에 따라 제반정보를 제공하고 상기와 같은
@@ -668,19 +379,173 @@
       </p>
       <span></span>
     </div>
+    <hr class="mt-5 mb-5" />
+    <!-- 계약검토 -->
+    <!-- <div class="mb-5">
+      <h5 class="fw-bold">
+        <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+        계약검토
+      </h5>
+      <table class="table table-bordered table-sm">
+        <tbody class="text-center align-middle">
+          <tr>
+            <th style="width: 20%">심사번호</th>
+            <td style="width: 30%">
+              {{ cr.audit_no }}
+            </td>
+            <th style="width: 20%">조직규모</th>
+            <td style="width: 30%">
+              {{ cr.company_scale }}
+            </td>
+          </tr>
+          <tr>
+            <th>환경복잡성</th>
+            <td colspan="3" class="text-start">
+              {{ cr.env_complexity }}
+            </td>
+          </tr>
+          <tr>
+            <th>안전보건 위험성</th>
+            <td colspan="3" class="text-start">
+              {{ cr.sh_risk }}
+            </td>
+          </tr>
+          <tr>
+            <th>심사코드</th>
+            <td colspan="3" class="text-start ps-5">
+              {{ cr.iafcode }}
+            </td>
+          </tr>
+          <tr>
+            <th>심사구분</th>
+            <td>
+              {{ cr.class_audit }}
+            </td>
+            <th>심사가능여부</th>
+            <td>
+              {{ cr.possibility_audit }}
+            </td>
+          </tr>
+          <tr>
+            <th>사업장</th>
+            <td colspan="3">
+              {{ cr.type_workspace }}
+            </td>
+          </tr>
+
+          <tr>
+            <th>내부심사실시</th>
+            <td>
+              {{ cr.internal_audit }}
+            </td>
+            <th>경영검토 실시여부</th>
+            <td>
+              {{ cr.management_review }}
+            </td>
+          </tr>
+
+          <tr>
+            <th>심사팀장</th>
+            <td>
+              {{ customer.auditor_name }}
+            </td>
+            <th>심사원</th>
+            <td>
+              {{ customer.s2_team }}
+            </td>
+          </tr>
+
+          <tr>
+            <th>MD적합성</th>
+            <td>
+              {{ cr.md_conformity }}
+            </td>
+            <th>기술전문가</th>
+            <td>
+              {{ cr.need_tech_expert }}
+            </td>
+          </tr>
+
+          <tr>
+            <th>1단계 심사 MD</th>
+            <td>{{ cr.s1_md }} M/D</td>
+            <th>2단계 심사 MD</th>
+            <td>{{ cr.s2_md }} M/D</td>
+          </tr>
+
+          <tr>
+            <th>계약자 및 검토자 의견</th>
+            <td colspan="3">
+              {{ cr.opinion }}
+            </td>
+          </tr>
+          <tr>
+            <th>계약변경</th>
+            <td colspan="3">
+              {{ cr.change }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <p>작성자 :</p>
+        <p>검토자 :</p>
+        <p>승인자 :</p>
+        <span></span>
+      </div>
+    </div> -->
 
     <button class="btn btn-secondary me-1" @click="goToList">목록</button>
-    <button class="btn btn-primary" @click="goToChange">수정</button>
+    <button class="btn btn-primary me-1" @click="goToChange">수정</button>
+    <button class="btn btn-warning me-1" @click="goToCR">계약검토</button>
+    <button class="btn btn-success me-1" @click="goToApply">심사신청</button>
   </div>
 </template>
 <script>
 export default {
+  computed: {
+    user() {
+      const data = this.$store.state.user
+      console.log(data)
+      console.log(data.userInfo.name, data.userInfo.email)
+      return data
+
+      // return this.$store.state.user.user
+      // return this.$store.user.userInfo
+    }
+  },
+
   components: {},
   data() {
     return {
       id: '',
       searchName: '',
-      customer: {}
+      customer: {},
+      cr: {
+        customer_id: -1,
+        audit_no: '22QEOC###',
+        company_scale: '소',
+        env_complexity: '',
+        sh_risk: '',
+        iafcode: [],
+        class_audit: '',
+        cr_result: '',
+        possibility_audit: '가능',
+        type_workspace: '단일사업장',
+        s1_md: null,
+        s2_md: null,
+        md_conformity: '적합',
+        need_tech_expert: '불필요',
+        opinion: '',
+        change: '',
+        internal_audit: '진행완료',
+        management_review: '진행완료',
+        leader_auditor: '',
+        auditors: '',
+        audit_fee: '',
+        auditor_name: '',
+        auditor_email: ''
+      }
     }
   },
   setup() {},
@@ -693,14 +558,32 @@ export default {
     // this.searchName = this.$route.query.searchName
   },
   mounted() {
+    // console.log(this.user.userInfo.email)
+    if (this.user.userInfo.email === undefined) {
+      alert('로그인이 필요합니다.')
+      this.$router.push({ path: '/login' })
+    }
     console.log(this.id)
 
     this.getCustomer()
-
-    // console.log(typeof this.customer.certification_standard)
+    this.crInfo()
   },
   unmounted() {},
   methods: {
+    async getCustomer() {
+      // console.log(this.id)
+      this.customer = await this.$get(
+        `http://localhost:3000/api/customer/${this.id}`
+      )
+      console.log(this.customer)
+    },
+    async crInfo() {
+      // console.log(this.id)
+      this.cr = await this.$get(
+        `http://localhost:3000/api/customer/cr/${this.id}`
+      )
+      console.log(this.cr)
+    },
     fileDownload() {
       // request file download
       const dbFilename = this.customer.img_license
@@ -719,13 +602,62 @@ export default {
     printApplication() {
       window.print()
     },
-    async getCustomer() {
-      // console.log(this.id)
-      this.customer = await this.$get(
-        `http://localhost:3000/api/customer/${this.id}`
-      )
-      console.log(this.customer)
+    async doSave() {
+      // if (this.customer.certification_type === '') {
+      //   return this.$swal('인증유형을 선택해주세요.')
+      // }
+
+      this.$swal({
+        title: '계약검토를 저장 하시겠습니까?',
+        // text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: '취소',
+        confirmButtonText: '저장'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const loader = this.$loading.show({ canCancel: false })
+
+          const r = await this.$post('/api/cr', {
+            param: {
+              customer_id: this.id,
+              audit_no: this.cr.audit_no,
+              company_scale: this.cr.company_scale,
+              env_complexity: this.cr.env_complexity,
+              sh_risk: this.cr.sh_risk,
+              iafcode: JSON.stringify(this.cr.iafcode),
+              cr_result: this.cr.cr_result,
+              class_audit: this.cr.class_audit,
+              possibility_audit: this.cr.possibility_audit,
+              type_workspace: this.cr.type_workspace,
+              s1_md: this.cr.s1_md,
+              s2_md: this.cr.s2_md,
+              md_conformity: this.cr.md_conformity,
+              need_tech_expert: this.cr.need_tech_expert,
+              opinion: this.cr.opinion,
+              change: this.cr.change,
+              internal_audit: this.cr.internal_audit,
+              management_review: this.cr.management_review
+            }
+          })
+
+          loader.hide()
+
+          console.log(r)
+
+          if (r.status === 200) {
+            this.$swal('계약검토 정보가 저장되었습니다.')
+            this.$router.push({
+              path: '/customer/change',
+              query: { customer_id: r.data.insertId }
+            })
+          }
+        }
+      })
     },
+
     goToList() {
       this.$router.push({ path: '/customer/list' })
     },
@@ -734,6 +666,20 @@ export default {
       console.log(this.id)
       this.$router.push({
         path: '/customer/change',
+        query: { customer_id: this.id }
+      })
+    },
+    goToCR() {
+      console.log(this.id)
+      this.$router.push({
+        path: '/customer/cr',
+        query: { customer_id: this.id }
+      })
+    },
+    goToApply() {
+      console.log(this.id)
+      this.$router.push({
+        path: '/customer/cert',
         query: { customer_id: this.id }
       })
     }

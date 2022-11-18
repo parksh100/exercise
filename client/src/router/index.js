@@ -76,6 +76,73 @@ const routes = [
       import(
         /* webpackChunkName: "customer" */ '../views/CustomerChangeView.vue'
       )
+  },
+  {
+    path: '/customer/cert',
+    name: 'CertCreateView',
+    component: () =>
+      import(/* webpackChunkName: "cert" */ '../views/CertCreateView.vue')
+  },
+  {
+    path: '/customer/cert/list',
+    name: 'AuditListView',
+    component: () =>
+      import(/* webpackChunkName: "cert" */ '../views/AuditListView.vue')
+  },
+  {
+    path: '/customer/cert/detail',
+    name: 'AuditDetailView',
+    component: () =>
+      import(/* webpackChunkName: "cert" */ '../views/AuditDetailView.vue')
+  },
+
+  {
+    path: '/customer/cr',
+    name: 'CustomerDoCRView',
+    component: () =>
+      import(/* webpackChunkName: "cr" */ '../views/CustomerDoCRView.vue')
+  },
+  {
+    path: '/customer/cr/list',
+    name: 'CRListView',
+    component: () =>
+      import(/* webpackChunkName: "cr" */ '../views/CRListView.vue')
+  },
+  {
+    path: '/customer/cr/detail',
+    name: 'CrDetailView',
+    component: () =>
+      import(/* webpackChunkName: "cr" */ '../views/CrDetailView.vue')
+  },
+  // {
+  //   path: '/admin/list',
+  //   name: 'adminView',
+  //   component: () =>
+  //     import(/* webpackChunkName: "admin" */ '../views/AdminView.vue')
+  // },
+  {
+    path: '/report/trans',
+    name: 'ReportTransView',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/ReportTransView.vue')
+  },
+  {
+    path: '/report/s1',
+    name: 'ReportS1View',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/ReportS1View.vue')
+  },
+  {
+    path: '/report/s2',
+    name: 'ReportS2View',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/ReportS2View.vue')
+  },
+  {
+    path: '/report/contract',
+    name: 'ContractView',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/ContractView.vue')
   }
 ]
 
@@ -84,6 +151,7 @@ const router = createRouter({
   routes
 })
 
+// ==라우터 네비게이션 ==============================
 router.beforeEach((to, from, next) => {
   console.log('to', to)
   console.log('from', from)

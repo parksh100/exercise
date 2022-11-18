@@ -74,12 +74,14 @@ export default {
           (res) => {
             // 로그인 성공
             console.log(res)
-            alert(res.data.message)
+            // alert(res.data.message)
+            this.$swal(res.data.message)
             // console.log(res.data.userData.user_name)
             if (res.data.success === true) {
               this.$store.commit('user/setUser', {
                 name: res.data.userData.user_name,
-                email: res.data.userData.user_email
+                email: res.data.userData.user_email,
+                role: res.data.userData.user_role
               })
               this.$router.push({ path: '/' })
             }
@@ -87,11 +89,11 @@ export default {
           (err) => {
             console.log(err)
             // 로그인 실패
-            alert('로그인 실패')
+            this.$swal('로그인 실패')
           }
         )
         .catch((err) => {
-          alert(err)
+          this.$swal(err)
         })
     }
   }

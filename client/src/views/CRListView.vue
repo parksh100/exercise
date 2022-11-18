@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    <h3 class="mb-4 fw-bold text-center">인증심사현황</h3>
-    <hr />
     <!-- 조회조건 -->
     <div class="row row-cols-lg-auto g-3 align-items-center mb-1">
       <div class="col-12">
@@ -9,15 +7,15 @@
           type="search"
           class="form-control"
           v-model.trim="searchName"
-          @keyup.enter="getList"
+          @keyup.enter="getCRList"
           placeholder="Name"
         />
       </div>
       <div class="col-12">
-        <button class="btn btn-outline-primary me-1" @click="getList">
+        <button class="btn btn-outline-primary me-1" @click="getCRList">
           조회
         </button>
-        <button class="btn btn-outline-success me-1" @click="getList">
+        <button class="btn btn-outline-success me-1" @click="getCRList">
           생성
         </button>
         <button class="btn btn-outline-dark me-1" @click="doExcel">
@@ -31,9 +29,9 @@
           <!-- <th width="4%">ID</th> -->
           <th style="width: 20%">회사명</th>
           <th style="width: 10%">심사번호</th>
-          <th style="width: 25">심사유형</th>
-          <th style="width: 10">심사차수</th>
-          <th style="width: 10%">심사비</th>
+          <!-- <th style="width: 25">인증표준</th> -->
+          <th style="width: 10">IAF CODE</th>
+          <th style="width: 5%">MD</th>
           <th style="width: 10%">심사원</th>
           <th style="width: 10%">등록일</th>
           <th style="width: %">비고</th>
@@ -52,11 +50,10 @@
             {{ item.name_ko }}
           </td>
           <td>{{ item.audit_no }}</td>
-          <td>{{ item.audit_type }}</td>
-          <td>{{ item.audit_degree }}</td>
-          <td>{{ $convertNumberFormat(item.audit_fee, '#,###') }}원</td>
-          <td>{{ item.audit_auditor }}</td>
-          <td>{{ item.created_date.substr(0, 10) }}</td>
+          <td>{{ item.iafcode }}</td>
+          <td>{{ item.s1_md + item.s2_md }}</td>
+          <td>{{ item.auditor_name }}</td>
+          <td>{{ item.created_at.substr(0, 10) }}</td>
           <td>
             <!-- <button
               class="btn btn-primary btn-sm me-1"
@@ -72,9 +69,9 @@
             </button> -->
             <button
               class="btn btn-primary btn-sm me-1"
-              @click="goToAuditDetail(item.audit_id)"
+              @click="goToCrDetail(item.customer_id)"
             >
-              상세보기
+              계약검토
             </button>
             <!-- <button
               class="btn btn-warning btn-sm me-1"
@@ -119,7 +116,9 @@ export default {
         { title: '인증상태', key: 'status_yn' },
         { title: '생성일', key: 'created_date' }
       ],
+      customer: {},
       list: [],
+      crList: [],
       searchName: ''
       // selectedItem: {
       //   auditor_id: -1,
@@ -139,17 +138,27 @@ export default {
       this.$router.push({ path: '/login' })
     }
 
-    this.list = await this.$get('/api/customer/cert/list')
+    this.list = await this.$get('/api/customer/cr')
     // this.list = await this.$get('/api/customer')
     // this.customer = await this.$get('/api/customer')
     console.log(this.list)
   },
   unmounted() {},
   methods: {
+    async getCRList() {
+      const loader = this.$loading.show({ canCancel: false })
+      this.cr = (
+        await this.$get('/api/customer/cr/search', {
+          param: `%${this.searchName.toLowerCase()}%`
+        })
+      ).data
+      console.log(this.list)
+      loader.hide()
+    },
     async getList() {
       const loader = this.$loading.show({ canCancel: false })
       this.list = (
-        await this.$post('/api/customer/cert/list/search', {
+        await this.$post('/api/customer/search', {
           param: `%${this.searchName.toLowerCase()}%`
         })
       ).data
@@ -174,19 +183,6 @@ export default {
         query: { customer_id: id }
       })
     },
-    goToAuditDetail(id) {
-      console.log(id)
-      this.$router.push({
-        path: '/customer/cert/detail',
-        query: { audit_id: id }
-      })
-    },
-    // goToAuditDetail(id) {
-    //   this.$router.push({
-    //     path: '/customer/cert/detail',
-    //     query: { customer_id: id }
-    //   })
-    // },
     doExcel() {
       this.$ExcelFromTable(this.headers, this.list, 'customers', {})
     },
