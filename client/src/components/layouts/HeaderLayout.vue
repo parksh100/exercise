@@ -22,6 +22,7 @@
                 :class="{ active: $route.path == '/' }"
                 aria-current="page"
                 @click="goToMenu('/')"
+                role="button"
                 >홈페이지</a
               >
             </li>
@@ -30,6 +31,7 @@
                 class="nav-link"
                 :class="{ active: $route.path == '/dashboard' }"
                 @click="goToMenu('/dashboard')"
+                role="button"
                 >대시보드
               </a>
             </li>
@@ -38,6 +40,7 @@
                 class="nav-link"
                 :class="{ active: $route.path == '/auditor' }"
                 @click="goToMenu('/auditor')"
+                role="button"
                 >심사원</a
               >
             </li>
@@ -47,7 +50,8 @@
                 class="nav-link"
                 :class="{ active: $route.path == '/customer/list' }"
                 @click="goToMenu('/customer/list')"
-                >업체리스트</a
+                role="button"
+                >고객리스트</a
               >
             </li>
             <li class="nav-item">
@@ -55,17 +59,19 @@
                 class="nav-link"
                 :class="{ active: $route.path == '/customer/create' }"
                 @click="goToMenu('/customer/create')"
+                role="button"
                 >인증심사신청</a
               >
             </li>
-            <!-- <li class="nav-item">
+            <li class="nav-item">
               <a
                 class="nav-link"
-                :class="{ active: $route.path == '/admin/list' }"
-                @click="goToMenu('/admin/list')"
-                >관리자페이지</a
+                :class="{ active: $route.path == '/customer/cert/list' }"
+                @click="goToMenu('/customer/cert/list')"
+                role="button"
+                >심사현황</a
               >
-            </li> -->
+            </li>
           </ul>
 
           <div class="d-flex">

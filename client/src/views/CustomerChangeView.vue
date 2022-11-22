@@ -1,8 +1,9 @@
 <template>
   <div class="container mt-5">
-    <h3 class="mb-4 fw-bold">[인증심사신청_수정화면]</h3>
+    <h3 class="mb-4 fw-bold text-center">인증심사신청_수정화면</h3>
+    <hr />
     <!-- <hr style="width: 50%" /> -->
-    <div class="row mb-3">
+    <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">심사유형</label>
       <div class="col-sm-9">
         <div class="form-check form-check-inline">
@@ -44,7 +45,7 @@
           >
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">국문상호</label>
@@ -476,6 +477,572 @@
         </div>
       </div>
     </div>
+    <!-- iaf code -->
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">IAF 코드</label>
+      <div class="col-sm-9">
+        <div>
+          <div class="bg-danger">
+            <label class="form-check-label text-white"
+              >심사원의 심사가능코드</label
+            >
+            <p class="text-white">
+              12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28
+            </p>
+          </div>
+          <div>
+            {{ customer.iaf_code }}
+            <small class="text-primary"
+              >* 인증원의 계약검토를 통해 확정됩니다.</small
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_35"
+              value="01"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_35"
+              >01-Q(농,수산업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_36"
+              value="02"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_36"
+              >02-Q(광업 및 채석업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_1"
+              value="03"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_1"
+              >03-QE(음식료 및 담배)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_2"
+              value="04"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_2"
+              >04-Q(섬유 및 섬유제품)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_3"
+              value="05"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_3"
+              >05Q(가죽 및 가죽제품)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_4"
+              value="06"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_4"
+              >06-QE(목재 및 목재제품)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_5"
+              value="07"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_5"
+              >07-Q(펄프, 종이, 종이제품)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_6"
+              value="08"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              disabled
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_6">08(출판업)</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_7"
+              value="09"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              disabled
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_7">09(인쇄업)</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_8"
+              value="10"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_8"
+              >10-Q(코크스, 연탄 및 석유정제품 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_9"
+              value="12"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_9"
+              >12-QE(화학물질, 화학제품 및 화학섬유 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_10"
+              value="13"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_10"
+              >13(의료용 물질 및 의약품 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_11"
+              value="14"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_11"
+              >14-QE(고무제품 및 플라스틱제품 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_12"
+              value="15"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_12"
+              >15-QE(비금속 광물제품 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_13"
+              value="16"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_13"
+              >16-QE(콘크리트, 시멘트, 석회 및 플라스터 등 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_14"
+              value="17"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_14"
+              >17-QEO(1차 금속 및 금속가공제품 제조업 중 1차 금속 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_15"
+              value="18"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_15"
+              >18-QEO(기계 및 장비 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_16"
+              value="19"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_16"
+              >19-QEO(전기기기 및 광학기기 제조업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_17"
+              value="20"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_17">20(조선업)</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_18"
+              value="21"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_18"
+              >21(항공기 제조업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_19"
+              value="22"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_19"
+              >22-EO(기타 운송장비 제조업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_20"
+              value="23"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_20"
+              >23-QE(기타 제조업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_40"
+              value="24"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_40">24(재생업)</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_21"
+              value="25"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_21">25(전기공급업)</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_22"
+              value="26"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_22"
+              >26(연료용 가스 공급업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_23"
+              value="27"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_23"
+              >27(수도 및 증기 공급업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_24"
+              value="28"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_24">28-QEO(건설업)</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_25"
+              value="29"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_25"
+              >29-QEO(도소매업, 자동차 및 모터사이클 수리업, 개인 및 가정용품
+              수리업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_26"
+              value="30"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_26"
+              >30-QE(숙박업, 음식점업 및 주점업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_27"
+              value="31"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_27"
+              >31-QE(운송업, 창고업 및 통신업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_28"
+              value="32"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_28"
+              >32-QEO(금융업, 보험업, 부동산업 및 임대업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_29"
+              value="33"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_29"
+              >33-QEO(정보기술업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_41"
+              value="34"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_41"
+              >34-QEO(전문, 과학 및 기술서비스업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_30"
+              value="35"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_30"
+              >35-QEO(기타 서비스업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_31"
+              value="36"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_31"
+              >36-QEO(공공 행정)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_32"
+              value="37"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_32"
+              >37-QEO(교육 서비스업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_33"
+              value="38"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_33"
+              >38(보건업 및 사회복지 서비스업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_34"
+              value="39"
+              name="iaf_code"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_34"
+              >39-Q(기타 사회 서비스업)</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- 공정 -->
     <div class="row mb-3">
@@ -490,7 +1057,7 @@
     </div>
 
     <!-- 교대근무 -->
-    <div class="row mb-3">
+    <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">교대근무</label>
       <div class="col-sm-9">
         <div class="form-check form-check-inline">
@@ -516,7 +1083,7 @@
           <label class="form-check-label" for="shift_no">없음</label>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="row mb-3" v-show="customer.shift == 'yes'">
       <label class="col-sm-3 col-form-label">교대근무 횟 수 / 인원 수</label>
       <div class="col-sm-9">
@@ -564,68 +1131,7 @@
         />
       </div>
     </div>
-    <div class="row mb-3" v-show="customer.certification_type !== 'initial'">
-      <label class="col-sm-3 col-form-label">전환(방문)심사일</label>
-      <div class="col-sm-9">
-        <input
-          type="date"
-          class="form-control"
-          v-model.trim="customer.transfer_date"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">1단계 심사시작일</label>
-      <div class="col-sm-9">
-        <input
-          type="date"
-          class="form-control"
-          v-model.trim="customer.s1_start_date"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">1단계 심사종료일</label>
-      <div class="col-sm-9">
-        <input
-          type="date"
-          class="form-control"
-          v-model.trim="customer.s1_end_date"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">2단계 심사시작일</label>
-      <div class="col-sm-9">
-        <input
-          type="date"
-          class="form-control"
-          v-model.trim="customer.s2_start_date"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">2단계 심사종료일</label>
-      <div class="col-sm-9">
-        <input
-          type="date"
-          class="form-control"
-          v-model.trim="customer.s2_end_date"
-        />
-      </div>
-    </div>
 
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">2단계 심사팀원</label>
-      <div class="col-sm-9">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="2단계 심사를 같이 진행할 팀원을 입력해주세요."
-          v-model.trim="customer.s2_team"
-        />
-      </div>
-    </div>
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">매뉴얼 제/개정일</label>
       <div class="col-sm-9">
@@ -789,7 +1295,7 @@
       "
     > -->
     <div>
-      <h3 class="mb-5 fw-bold">[ISO14001/ISO45001 신청정보]</h3>
+      <h3 class="mb-5 fw-bold">ISO14001/ISO45001 신청정보</h3>
 
       <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">인증이력</label>
@@ -818,7 +1324,7 @@
 
       <!-- iso14001인증 신청 -->
       <div>
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">사업장 입지조건</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -878,9 +1384,9 @@
               <label class="form-check-label" for="inlineCheckbox5">농촌</label>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">생산방법</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -941,7 +1447,7 @@
               v-model.trim="customer.production_method_etc"
             />
           </div>
-        </div>
+        </div> -->
 
         <!-- 환경허가 신고사항 -->
 
@@ -949,6 +1455,31 @@
           class="row mb-3"
           v-show="customer.certification_standard.includes('ISO14001') == true"
         > -->
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">환경측면 파악여부</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="env_aspect1"
+                value="yes"
+                v-model="customer.environmental_aspect"
+              />
+              <label class="form-check-label" for="env_aspect1">예</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="env_aspect2"
+                value="no"
+                v-model="customer.environmental_aspect"
+              />
+              <label class="form-check-label" for="env_aspect2">아니오</label>
+            </div>
+          </div>
+        </div>
         <div class="row mb-3">
           <label class="col-sm-3 col-form-label">환경허가 신고사항</label>
           <div class="col-sm-9">
@@ -967,7 +1498,7 @@
                 class="form-check-input"
                 type="radio"
                 id="inlineRadio2"
-                value="No"
+                value="no"
                 v-model="customer.environmental_permit"
               />
               <label class="form-check-label" for="inlineRadio2">아니오</label>
@@ -1010,7 +1541,7 @@
                 class="form-check-input"
                 type="radio"
                 id="inlineRadio4"
-                value="No"
+                value="no"
                 v-model="customer.environmental_accident"
               />
               <label class="form-check-label" for="inlineRadio4">아니오</label>
@@ -1035,6 +1566,31 @@
           class="row mb-3"
           v-show="customer.certification_standard.includes('ISO45001') == true"
         > -->
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">위험요인파악 여부</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="risk_factor1"
+                value="yes"
+                v-model="customer.risk_factor"
+              />
+              <label class="form-check-label" for="risk_factor1">예</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                id="risk_factor2"
+                value="no"
+                v-model="customer.risk_factor"
+              />
+              <label class="form-check-label" for="risk_factor2">아니오</label>
+            </div>
+          </div>
+        </div>
         <div class="row mb-3">
           <label class="col-sm-3 col-form-label">안전보건사고 유무</label>
           <div class="col-sm-9">
@@ -1128,7 +1684,7 @@
             customer.certification_standard.includes('ISO45001') == true
           "
         > -->
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">유해/위험물질 유형</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -1203,17 +1759,17 @@
               v-model.trim="customer.hazardous_chemical_content"
             />
           </div>
-        </div>
+        </div> -->
 
         <!-- 고객에 의해 파악된 환경측면 및 영향 -->
         <!-- <div
           v-show="customer.certification_standard.includes('ISO14001') === true"
         > -->
         <div>
-          <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 환경측면 및 영향 ===</h5>
+          <!-- <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 환경측면 및 영향 ===</h5> -->
 
           <!-- 대기 -->
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <label class="col-sm-3 col-form-label">(대기)환경측면</label>
             <div class="col-sm-9">
               <div class="form-check form-check-inline">
@@ -1295,8 +1851,8 @@
                 >
               </div>
             </div>
-          </div>
-          <div class="row mb-3" v-show="customer.air_pollution == '기타'">
+          </div> -->
+          <!-- <div class="row mb-3" v-show="customer.air_pollution == '기타'">
             <label class="col-sm-3 col-form-label">기타유형</label>
             <div class="col-sm-9">
               <input
@@ -1306,10 +1862,10 @@
                 v-model.trim="customer.air_pollution_content"
               />
             </div>
-          </div>
+          </div> -->
 
           <!-- 토양 -->
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <label class="col-sm-3 col-form-label">(토양)환경측면</label>
             <div class="col-sm-9">
               <div class="form-check form-check-inline">
@@ -1391,8 +1947,8 @@
                 >
               </div>
             </div>
-          </div>
-          <div class="row mb-3" v-show="customer.soil_pollution == '기타'">
+          </div> -->
+          <!-- <div class="row mb-3" v-show="customer.soil_pollution == '기타'">
             <label class="col-sm-3 col-form-label">기타유형</label>
             <div class="col-sm-9">
               <input
@@ -1402,9 +1958,9 @@
                 v-model.trim="customer.soil_pollution_content"
               />
             </div>
-          </div>
+          </div> -->
           <!-- 수질 -->
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <label class="col-sm-3 col-form-label">(수질)환경측면</label>
             <div class="col-sm-9">
               <div class="form-check form-check-inline">
@@ -1486,8 +2042,8 @@
                 >
               </div>
             </div>
-          </div>
-          <div class="row mb-3" v-show="customer.water_pollution == '기타'">
+          </div> -->
+          <!-- <div class="row mb-3" v-show="customer.water_pollution == '기타'">
             <label class="col-sm-3 col-form-label">기타유형</label>
             <div class="col-sm-9">
               <input
@@ -1497,10 +2053,10 @@
                 v-model.trim="customer.water_pollution_content"
               />
             </div>
-          </div>
+          </div> -->
 
           <!--천연자원  -->
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <label class="col-sm-3 col-form-label">(천연자원)환경측면</label>
             <div class="col-sm-9">
               <div class="form-check form-check-inline">
@@ -1594,8 +2150,8 @@
                 >
               </div>
             </div>
-          </div>
-          <div
+          </div> -->
+          <!-- <div
             class="row mb-3"
             v-show="customer.natural_resource_pollution == '기타'"
           >
@@ -1608,10 +2164,10 @@
                 v-model.trim="customer.natural_resource_pollution_content"
               />
             </div>
-          </div>
+          </div> -->
 
           <!-- 에너지 -->
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <label class="col-sm-3 col-form-label">(에너지)환경측면</label>
             <div class="col-sm-9">
               <div class="form-check form-check-inline">
@@ -1693,8 +2249,8 @@
                 >
               </div>
             </div>
-          </div>
-          <div class="row mb-3" v-show="customer.energy_pollution == '기타'">
+          </div> -->
+          <!-- <div class="row mb-3" v-show="customer.energy_pollution == '기타'">
             <label class="col-sm-3 col-form-label">기타유형</label>
             <div class="col-sm-9">
               <input
@@ -1704,10 +2260,10 @@
                 v-model.trim="customer.energy_pollution_content"
               />
             </div>
-          </div>
+          </div> -->
 
           <!-- 폐기물 -->
-          <div class="row mb-3">
+          <!-- <div class="row mb-3">
             <label class="col-sm-3 col-form-label">(폐기물)환경측면</label>
             <div class="col-sm-9">
               <div class="form-check form-check-inline">
@@ -1800,7 +2356,7 @@
                 v-model.trim="customer.waste_pollution_content"
               />
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -1808,10 +2364,10 @@
         v-show="customer.certification_standard.includes('ISO45001') === true"
       > -->
       <div>
-        <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 위험요인 ===</h5>
+        <!-- <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 위험요인 ===</h5> -->
 
         <!-- 기계적 위험요인 -->
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">기계(설비) 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -1894,10 +2450,10 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- 전기적 위험요인 -->
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">전기적 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -1941,10 +2497,10 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- 화학(물질적) 위험요인 -->
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">화학(물질)적 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -2066,10 +2622,10 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- 생물학적 위험요인 -->
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">생물학적 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -2139,10 +2695,10 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- 작업특성 위험요인 -->
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">작업특성 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -2273,10 +2829,10 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- 작업환경 위험요인 -->
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">작업환경 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -2357,7 +2913,7 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -2388,9 +2944,10 @@
         <li>파일 확장자 : pdf, png, jpg만 가능</li>
       </ul>
     </div>
-
-    <button class="btn btn-secondary me-1" @click="goToDetail">취소</button>
-    <button class="btn btn-primary" @click="doSave">저장</button>
+    <div class="text-end">
+      <button class="btn btn-secondary me-1" @click="goToDetail">취소</button>
+      <button class="btn btn-primary" @click="doSave">저장</button>
+    </div>
   </div>
 </template>
 
@@ -2446,16 +3003,16 @@ export default {
         scope_en: '',
         activity: [],
         process: '',
-        shift: '',
-        shift_work_count: '',
+        // shift: '',
+        // shift_work_count: '',
         exclusion: '',
         exclusion_reason: '',
-        transfer_date: '',
-        s1_start_date: '',
-        s1_end_date: '',
-        s2_start_date: '',
-        s2_end_date: '',
-        s2_team: '',
+        // transfer_date: '',
+        // s1_start_date: '',
+        // s1_end_date: '',
+        // s2_start_date: '',
+        // s2_end_date: '',
+        // s2_team: '',
         manual_date: '',
         internal_date: '',
         management_date: '',
@@ -2463,12 +3020,13 @@ export default {
         outsourcing_process: '',
         construction_license: '',
         construction_license_content: '',
-        audit_fee: 0,
-        hazardous_chemical: '',
-        hazardous_chemical_content: '',
-        location: '',
-        production_method: '',
-        production_method_etc: '',
+        iaf_code: [],
+        // audit_fee: 0,
+        // hazardous_chemical: '',
+        // hazardous_chemical_content: '',
+        // location: '',
+        // production_method: '',
+        // production_method_etc: '',
         environmental_permit: '',
         environmental_permit_content: '',
         environmental_accident: '',
@@ -2477,26 +3035,31 @@ export default {
         safety_accident_content: '',
         outside_worker: '',
         outside_worker_content: '',
-        hazardous_chemical_worker: '',
-        hazardous_chemical_worker_content: '',
-        air_pollution: [],
-        air_pollution_content: '',
-        soil_pollution: [],
-        soil_pollution_content: '',
-        water_pollution: [],
-        water_pollution_content: '',
-        natural_resource_pollution: [],
-        natural_resource_pollution_content: '',
-        energy_pollution: [],
-        energy_pollution_content: '',
-        waste_pollution: [],
-        waste_pollution_content: '',
-        machine_factor: [],
-        electric_factor: [],
-        chemical_factor: [],
-        biological_factor: [],
-        work_factor: [],
-        work_env: [],
+        // hazardous_chemical_worker: '',
+        // hazardous_chemical_worker_content: '',
+        environmental_aspect: '',
+        risk_factor: '',
+        environment_complexity: '',
+        safety_health_risk: '',
+        classify_audit: '',
+        // air_pollution: [],
+        // air_pollution_content: '',
+        // soil_pollution: [],
+        // soil_pollution_content: '',
+        // water_pollution: [],
+        // water_pollution_content: '',
+        // natural_resource_pollution: [],
+        // natural_resource_pollution_content: '',
+        // energy_pollution: [],
+        // energy_pollution_content: '',
+        // waste_pollution: [],
+        // waste_pollution_content: '',
+        // machine_factor: [],
+        // electric_factor: [],
+        // chemical_factor: [],
+        // biological_factor: [],
+        // work_factor: [],
+        // work_env: [],
         img_license: '',
         img_license_originalname: '',
         auditor_name: '',
@@ -2572,6 +3135,7 @@ export default {
 
     // activity
     const dbActivity = JSON.parse(dbData.activity)
+    // console.log('dbActivity : ', dbActivity)
     const checkboxActivity = document.getElementsByName(
       'certification_activity'
     )
@@ -2582,17 +3146,30 @@ export default {
         }
       }
     }
+
+    // iaf_code
+    // const dbIAFCode = JSON.stringify(dbData.iaf_code)
+    const dbIAFCode = JSON.parse(dbData.iaf_code)
+    console.log('dbIAFCode : ', dbIAFCode)
+    // console.log(dbIAFCode.length)
+    const checkboxIAFCode = document.getElementsByName('iaf_code')
+    // console.log('checkboxIAFCode : ', checkboxIAFCode)
+    if (dbIAFCode.length > 0) {
+      for (let i = 0; i < dbIAFCode.length; i++) {
+        for (let j = 0; j < checkboxIAFCode.length; j++) {
+          if (dbIAFCode[i] === checkboxIAFCode[j].value) {
+            this.customer.iaf_code.push(checkboxIAFCode[j].value)
+          }
+        }
+      }
+    }
+
     this.customer.process = dbData.process
     this.customer.shift = dbData.shift
     this.customer.shift_work_count = dbData.shift_work_count
     this.customer.exclusion = dbData.exclusion
     this.customer.exclusion_reason = dbData.exclusion_reason
-    this.customer.transfer_date = JSON.parse(dbData.transfer_date)
-    this.customer.s1_start_date = JSON.parse(dbData.s1_start_date)
-    this.customer.s1_end_date = JSON.parse(dbData.s1_end_date)
-    this.customer.s2_start_date = JSON.parse(dbData.s2_start_date)
-    this.customer.s2_end_date = JSON.parse(dbData.s2_end_date)
-    this.customer.s2_team = dbData.s2_team
+
     this.customer.manual_date = JSON.parse(dbData.manual_date)
     this.customer.internal_date = JSON.parse(dbData.internal_date)
     this.customer.management_date = JSON.parse(dbData.management_date)
@@ -2601,213 +3178,216 @@ export default {
     this.customer.construction_license = dbData.construction_license
     this.customer.construction_license_content =
       dbData.construction_license_content
-    this.customer.audit_fee = dbData.audit_fee
-    this.customer.location = dbData.location
-    this.customer.production_method = dbData.production_method
-    this.customer.production_method_etc = dbData.production_method_etc
+    // this.customer.audit_fee = dbData.audit_fee
+    // this.customer.location = dbData.location
+    // this.customer.production_method = dbData.production_method
+    // this.customer.production_method_etc = dbData.production_method_etc
+    this.customer.environmental_aspect = dbData.environmental_aspect
     this.customer.environmental_permit = dbData.environmental_permit
     this.customer.environmental_permit_content =
       dbData.environmental_permit_content
     this.customer.environmental_accident = dbData.environmental_accident
     this.customer.environmental_accident_content =
       dbData.environmental_accident_content
+    this.customer.risk_factor = dbData.risk_factor
     this.customer.safety_accident = dbData.safety_accident
     this.customer.safety_accident_content = dbData.safety_accident_content
     this.customer.outside_worker = dbData.outside_worker
     this.customer.outside_worker_content = dbData.outside_worker_content
-    this.customer.hazardous_chemical = dbData.hazardous_chemical
-    this.customer.hazardous_chemical_content = dbData.hazardous_chemical_content
+
+    // this.customer.hazardous_chemical = dbData.hazardous_chemical
+    // this.customer.hazardous_chemical_content = dbData.hazardous_chemical_content
 
     // air_pollution
-    const dbAirPollution = JSON.parse(dbData.air_pollution)
-    const checkboxAirPollution = document.getElementsByName('air_aspect')
-    if (dbAirPollution.length > 0) {
-      for (let i = 0; i < dbAirPollution.length; i++) {
-        for (let j = 0; j < checkboxAirPollution.length; j++) {
-          if (dbAirPollution[i] === checkboxAirPollution[j].value) {
-            this.customer.air_pollution.push(checkboxAirPollution[j].value)
-          }
-        }
-      }
-    }
-    this.customer.air_pollution_content = dbData.air_pollution_content
+    // const dbAirPollution = JSON.parse(dbData.air_pollution)
+    // const checkboxAirPollution = document.getElementsByName('air_aspect')
+    // if (dbAirPollution.length > 0) {
+    //   for (let i = 0; i < dbAirPollution.length; i++) {
+    //     for (let j = 0; j < checkboxAirPollution.length; j++) {
+    //       if (dbAirPollution[i] === checkboxAirPollution[j].value) {
+    //         this.customer.air_pollution.push(checkboxAirPollution[j].value)
+    //       }
+    //     }
+    //   }
+    // }
+    // this.customer.air_pollution_content = dbData.air_pollution_content
 
     // soil_pollution
-    const dbSoilPollution = JSON.parse(dbData.soil_pollution)
-    const checkboxSoilPollution = document.getElementsByName('soil_aspect')
-    if (dbSoilPollution.length > 0) {
-      for (let i = 0; i < dbSoilPollution.length; i++) {
-        for (let j = 0; j < checkboxSoilPollution.length; j++) {
-          if (dbSoilPollution[i] === checkboxSoilPollution[j].value) {
-            this.customer.soil_pollution.push(checkboxSoilPollution[j].value)
-          }
-        }
-      }
-    }
+    // const dbSoilPollution = JSON.parse(dbData.soil_pollution)
+    // const checkboxSoilPollution = document.getElementsByName('soil_aspect')
+    // if (dbSoilPollution.length > 0) {
+    //   for (let i = 0; i < dbSoilPollution.length; i++) {
+    //     for (let j = 0; j < checkboxSoilPollution.length; j++) {
+    //       if (dbSoilPollution[i] === checkboxSoilPollution[j].value) {
+    //         this.customer.soil_pollution.push(checkboxSoilPollution[j].value)
+    //       }
+    //     }
+    //   }
+    // }
 
-    this.customer.soil_pollution_content = dbData.soil_pollution_content
+    // this.customer.soil_pollution_content = dbData.soil_pollution_content
 
     // water_pollution
     // console.log('water_pollution : ', dbData.water_pollution)
     // console.log(JSON.parse(dbData.water_pollution))
-    const dbWaterPollution = JSON.parse(dbData.water_pollution)
+    // const dbWaterPollution = JSON.parse(dbData.water_pollution)
     // console.log('dbWaterPollution : ', dbWaterPollution)
-    const checkboxWaterPollution = document.getElementsByName('water_aspect')
+    // const checkboxWaterPollution = document.getElementsByName('water_aspect')
     // console.log('checkboxWaterPollution : ', checkboxWaterPollution)
-    if (dbWaterPollution !== null) {
-      for (let i = 0; i < dbWaterPollution.length; i++) {
-        for (let j = 0; j < checkboxWaterPollution.length; j++) {
-          if (dbWaterPollution[i] === checkboxWaterPollution[j].value) {
-            this.customer.water_pollution.push(checkboxWaterPollution[j].value)
-          }
-        }
-      }
-    } else {
-      this.customer.water_pollution = []
-    }
+    // if (dbWaterPollution !== null) {
+    //   for (let i = 0; i < dbWaterPollution.length; i++) {
+    //     for (let j = 0; j < checkboxWaterPollution.length; j++) {
+    //       if (dbWaterPollution[i] === checkboxWaterPollution[j].value) {
+    //         this.customer.water_pollution.push(checkboxWaterPollution[j].value)
+    //       }
+    //     }
+    //   }
+    // } else {
+    //   this.customer.water_pollution = []
+    // }
 
     // nature_resource_pollution
     // console.log(dbData.natural_resource_pollution)
 
-    const dbNatureResourcePollution = JSON.parse(
-      dbData.natural_resource_pollution
-    )
-    const checkboxNatureResourcePollution =
-      document.getElementsByName('natural_aspect')
-    if (dbNatureResourcePollution.length > 0) {
-      for (let i = 0; i < dbNatureResourcePollution.length; i++) {
-        for (let j = 0; j < checkboxNatureResourcePollution.length; j++) {
-          if (
-            dbNatureResourcePollution[i] ===
-            checkboxNatureResourcePollution[j].value
-          ) {
-            this.customer.natural_resource_pollution.push(
-              checkboxNatureResourcePollution[j].value
-            )
-          }
-        }
-      }
-    }
+    // const dbNatureResourcePollution = JSON.parse(
+    //   dbData.natural_resource_pollution
+    // )
+    // const checkboxNatureResourcePollution =
+    //   document.getElementsByName('natural_aspect')
+    // if (dbNatureResourcePollution.length > 0) {
+    //   for (let i = 0; i < dbNatureResourcePollution.length; i++) {
+    //     for (let j = 0; j < checkboxNatureResourcePollution.length; j++) {
+    //       if (
+    //         dbNatureResourcePollution[i] ===
+    //         checkboxNatureResourcePollution[j].value
+    //       ) {
+    //         this.customer.natural_resource_pollution.push(
+    //           checkboxNatureResourcePollution[j].value
+    //         )
+    //       }
+    //     }
+    //   }
+    // }
 
-    this.customer.natural_resource_pollution_content =
-      dbData.natural_resource_pollution_content
+    // this.customer.natural_resource_pollution_content =
+    //   dbData.natural_resource_pollution_content
 
     // energy_pollution
-    const dbEnergyPollution = JSON.parse(dbData.energy_pollution)
-    const checkboxEnergyPollution = document.getElementsByName('energy_aspect')
-    if (dbEnergyPollution.length > 0) {
-      for (let i = 0; i < dbEnergyPollution.length; i++) {
-        for (let j = 0; j < checkboxEnergyPollution.length; j++) {
-          if (dbEnergyPollution[i] === checkboxEnergyPollution[j].value) {
-            this.customer.energy_pollution.push(
-              checkboxEnergyPollution[j].value
-            )
-          }
-        }
-      }
-    }
-    this.customer.energy_pollution_content = dbData.energy_pollution_content
+    // const dbEnergyPollution = JSON.parse(dbData.energy_pollution)
+    // const checkboxEnergyPollution = document.getElementsByName('energy_aspect')
+    // if (dbEnergyPollution.length > 0) {
+    //   for (let i = 0; i < dbEnergyPollution.length; i++) {
+    //     for (let j = 0; j < checkboxEnergyPollution.length; j++) {
+    //       if (dbEnergyPollution[i] === checkboxEnergyPollution[j].value) {
+    //         this.customer.energy_pollution.push(
+    //           checkboxEnergyPollution[j].value
+    //         )
+    //       }
+    //     }
+    //   }
+    // }
+    // this.customer.energy_pollution_content = dbData.energy_pollution_content
 
     // waste_pollution
-    const dbWastePollution = JSON.parse(dbData.waste_pollution)
-    const checkboxWastePollution = document.getElementsByName('waste_aspect')
-    if (dbWastePollution.length > 0) {
-      for (let i = 0; i < dbWastePollution.length; i++) {
-        for (let j = 0; j < checkboxWastePollution.length; j++) {
-          if (dbWastePollution[i] === checkboxWastePollution[j].value) {
-            this.customer.waste_pollution.push(checkboxWastePollution[j].value)
-          }
-        }
-      }
-    }
-    this.customer.waste_pollution_content = dbData.waste_pollution_content
+    // const dbWastePollution = JSON.parse(dbData.waste_pollution)
+    // const checkboxWastePollution = document.getElementsByName('waste_aspect')
+    // if (dbWastePollution.length > 0) {
+    //   for (let i = 0; i < dbWastePollution.length; i++) {
+    //     for (let j = 0; j < checkboxWastePollution.length; j++) {
+    //       if (dbWastePollution[i] === checkboxWastePollution[j].value) {
+    //         this.customer.waste_pollution.push(checkboxWastePollution[j].value)
+    //       }
+    //     }
+    //   }
+    // }
+    // this.customer.waste_pollution_content = dbData.waste_pollution_content
 
     // machine-factor
-    const dbMachineFactor = JSON.parse(dbData.machine_factor)
-    const checkboxMachineFactor =
-      document.getElementsByName('mechanical_factor')
-    if (dbMachineFactor.length > 0) {
-      for (let i = 0; i < dbMachineFactor.length; i++) {
-        for (let j = 0; j < checkboxMachineFactor.length; j++) {
-          if (dbMachineFactor[i] === checkboxMachineFactor[j].value) {
-            this.customer.machine_factor.push(checkboxMachineFactor[j].value)
-          }
-        }
-      }
-    }
+    // const dbMachineFactor = JSON.parse(dbData.machine_factor)
+    // const checkboxMachineFactor =
+    //   document.getElementsByName('mechanical_factor')
+    // if (dbMachineFactor.length > 0) {
+    //   for (let i = 0; i < dbMachineFactor.length; i++) {
+    //     for (let j = 0; j < checkboxMachineFactor.length; j++) {
+    //       if (dbMachineFactor[i] === checkboxMachineFactor[j].value) {
+    //         this.customer.machine_factor.push(checkboxMachineFactor[j].value)
+    //       }
+    //     }
+    //   }
+    // }
 
     // electric-factor
-    const dbElectricFactor = JSON.parse(dbData.electric_factor)
-    const checkboxElectricFactor =
-      document.getElementsByName('electrical_factor')
-    if (dbElectricFactor.length > 0) {
-      for (let i = 0; i < dbElectricFactor.length; i++) {
-        for (let j = 0; j < checkboxElectricFactor.length; j++) {
-          if (dbElectricFactor[i] === checkboxElectricFactor[j].value) {
-            this.customer.electric_factor.push(checkboxElectricFactor[j].value)
-          }
-        }
-      }
-    }
+    // const dbElectricFactor = JSON.parse(dbData.electric_factor)
+    // const checkboxElectricFactor =
+    //   document.getElementsByName('electrical_factor')
+    // if (dbElectricFactor.length > 0) {
+    //   for (let i = 0; i < dbElectricFactor.length; i++) {
+    //     for (let j = 0; j < checkboxElectricFactor.length; j++) {
+    //       if (dbElectricFactor[i] === checkboxElectricFactor[j].value) {
+    //         this.customer.electric_factor.push(checkboxElectricFactor[j].value)
+    //       }
+    //     }
+    //   }
+    // }
 
     // chemical_factor
-    const dbChemicalFactor = JSON.parse(dbData.chemical_factor)
-    const checkboxChemicalFactor = document.getElementsByName('chemical_factor')
-    if (dbChemicalFactor.length > 0) {
-      for (let i = 0; i < dbChemicalFactor.length; i++) {
-        for (let j = 0; j < checkboxChemicalFactor.length; j++) {
-          if (dbChemicalFactor[i] === checkboxChemicalFactor[j].value) {
-            this.customer.chemical_factor.push(checkboxChemicalFactor[j].value)
-          }
-        }
-      }
-    }
+    // const dbChemicalFactor = JSON.parse(dbData.chemical_factor)
+    // const checkboxChemicalFactor = document.getElementsByName('chemical_factor')
+    // if (dbChemicalFactor.length > 0) {
+    //   for (let i = 0; i < dbChemicalFactor.length; i++) {
+    //     for (let j = 0; j < checkboxChemicalFactor.length; j++) {
+    //       if (dbChemicalFactor[i] === checkboxChemicalFactor[j].value) {
+    //         this.customer.chemical_factor.push(checkboxChemicalFactor[j].value)
+    //       }
+    //     }
+    //   }
+    // }
 
     // biological_factor
-    const dbBiologicalFactor = JSON.parse(dbData.biological_factor)
-    const checkboxBiologicalFactor =
-      document.getElementsByName('biological_factor')
-    if (dbBiologicalFactor.length > 0) {
-      for (let i = 0; i < dbBiologicalFactor.length; i++) {
-        for (let j = 0; j < checkboxBiologicalFactor.length; j++) {
-          if (dbBiologicalFactor[i] === checkboxBiologicalFactor[j].value) {
-            this.customer.biological_factor.push(
-              checkboxBiologicalFactor[j].value
-            )
-          }
-        }
-      }
-    }
+    // const dbBiologicalFactor = JSON.parse(dbData.biological_factor)
+    // const checkboxBiologicalFactor =
+    //   document.getElementsByName('biological_factor')
+    // if (dbBiologicalFactor.length > 0) {
+    //   for (let i = 0; i < dbBiologicalFactor.length; i++) {
+    //     for (let j = 0; j < checkboxBiologicalFactor.length; j++) {
+    //       if (dbBiologicalFactor[i] === checkboxBiologicalFactor[j].value) {
+    //         this.customer.biological_factor.push(
+    //           checkboxBiologicalFactor[j].value
+    //         )
+    //       }
+    //     }
+    //   }
+    // }
 
     // work_factor
-    const dbWorkFactor = JSON.parse(dbData.work_factor)
-    const checkboxWorkFactor = document.getElementsByName(
-      'work_characteristic_factor'
-    )
-    if (dbWorkFactor.length > 0) {
-      for (let i = 0; i < dbWorkFactor.length; i++) {
-        for (let j = 0; j < checkboxWorkFactor.length; j++) {
-          if (dbWorkFactor[i] === checkboxWorkFactor[j].value) {
-            this.customer.work_factor.push(checkboxWorkFactor[j].value)
-          }
-        }
-      }
-    }
+    // const dbWorkFactor = JSON.parse(dbData.work_factor)
+    // const checkboxWorkFactor = document.getElementsByName(
+    //   'work_characteristic_factor'
+    // )
+    // if (dbWorkFactor.length > 0) {
+    //   for (let i = 0; i < dbWorkFactor.length; i++) {
+    //     for (let j = 0; j < checkboxWorkFactor.length; j++) {
+    //       if (dbWorkFactor[i] === checkboxWorkFactor[j].value) {
+    //         this.customer.work_factor.push(checkboxWorkFactor[j].value)
+    //       }
+    //     }
+    //   }
+    // }
 
     // work_env
-    const dbWorkEnv = JSON.parse(dbData.work_env)
-    const checkboxWorkEnv = document.getElementsByName(
-      'work_environment_factor'
-    )
-    if (dbWorkEnv.length > 0) {
-      for (let i = 0; i < dbWorkEnv.length; i++) {
-        for (let j = 0; j < checkboxWorkEnv.length; j++) {
-          if (dbWorkEnv[i] === checkboxWorkEnv[j].value) {
-            this.customer.work_env.push(checkboxWorkEnv[j].value)
-          }
-        }
-      }
-    }
+    //   const dbWorkEnv = JSON.parse(dbData.work_env)
+    //   const checkboxWorkEnv = document.getElementsByName(
+    //     'work_environment_factor'
+    //   )
+    //   if (dbWorkEnv.length > 0) {
+    //     for (let i = 0; i < dbWorkEnv.length; i++) {
+    //       for (let j = 0; j < checkboxWorkEnv.length; j++) {
+    //         if (dbWorkEnv[i] === checkboxWorkEnv[j].value) {
+    //           this.customer.work_env.push(checkboxWorkEnv[j].value)
+    //         }
+    //       }
+    //     }
+    //   }
     this.customer.auditor_email = dbData.auditor_email
     this.customer.auditor_name = dbData.auditor_name
     this.customer.img_license = dbData.img_license
@@ -2816,8 +3396,277 @@ export default {
   },
   unmounted() {},
   methods: {
+    getClassifyAudit() {
+      if (this.customer.certification_standard.length > 1) {
+        this.customer.classify_audit = '통합심사'
+      } else {
+        this.customer.classify_audit = '단일심사'
+      }
+    },
+    classifyComplexity() {
+      console.log(this.customer.iaf_code)
+      if (
+        this.customer.iaf_code.includes('05') ||
+        this.customer.iaf_code.includes('12') ||
+        this.customer.iaf_code.includes('28')
+      ) {
+        this.customer.environment_complexity = '높음'
+      } else if (
+        this.customer.iaf_code.includes('03') ||
+        this.customer.iaf_code.includes('04') ||
+        this.customer.iaf_code.includes('07') ||
+        this.customer.iaf_code.includes('15') ||
+        this.customer.iaf_code.includes('16') ||
+        this.customer.iaf_code.includes('20') ||
+        this.customer.iaf_code.includes('22') ||
+        this.customer.iaf_code.includes('24') ||
+        this.customer.iaf_code.includes('31') ||
+        this.customer.iaf_code.includes('39') ||
+        this.customer.iaf_code.includes('17')
+      ) {
+        this.customer.environment_complexity = '보통'
+      } else {
+        this.customer.environment_complexity = '낮음'
+      }
+    },
+    classifyRisk() {
+      console.log(this.customer.iaf_code)
+      if (
+        this.customer.iaf_code.includes('05') ||
+        this.customer.iaf_code.includes('12') ||
+        this.customer.iaf_code.includes('17') ||
+        this.customer.iaf_code.includes('28')
+      ) {
+        this.customer.safety_health_risk = '높음'
+      } else if (
+        this.customer.iaf_code.includes('03') ||
+        this.customer.iaf_code.includes('04') ||
+        this.customer.iaf_code.includes('06') ||
+        this.customer.iaf_code.includes('07') ||
+        this.customer.iaf_code.includes('08') ||
+        this.customer.iaf_code.includes('15') ||
+        this.customer.iaf_code.includes('16') ||
+        this.customer.iaf_code.includes('20') ||
+        this.customer.iaf_code.includes('22') ||
+        this.customer.iaf_code.includes('24') ||
+        this.customer.iaf_code.includes('31') ||
+        this.customer.iaf_code.includes('39')
+      ) {
+        this.customer.safety_health_risk = '보통'
+      } else {
+        this.customer.safety_health_risk = '낮음'
+      }
+    },
+    getBusinessNoMask(val) {
+      const res = this.BizMask(val)
+      console.log(res)
+      this.customer.business_no = res
+      // 서버 전송 값에는 '-' 제거
+      this.model.business_no = this.customer.business_no.replace(/[^0-9]/g, '')
+    },
+    getMobileMask(val) {
+      const res = this.MobileMask(val)
+      this.customer.ceo_phone = res
+      // 서버 전송 값에는 '-' 제거
+      this.model.customer.ceo_phone = this.customer.ceo_phone.replace(
+        /[^0-9]/g,
+        ''
+      )
+    },
+    getContactPhoneMask(val) {
+      const res = this.MobileMask(val)
+      this.customer.contact_phone = res
+      // 서버 전송 값에는 '-' 제거
+      this.model.customer.contact_phone = this.customer.contact_phone.replace(
+        /[^0-9]/g,
+        ''
+      )
+    },
+    getPhoneMask(val) {
+      const res = this.getMask(val)
+      this.customer.phone = res
+      // 서버 전송 값에는 '-' 제거
+      this.model.customer.phone = this.customer.phone.replace(/[^0-9]/g, '')
+    },
+    getFaxMask(val) {
+      const res = this.getMask(val)
+      this.customer.fax = res
+      // 서버 전송 값에는 '-' 제거
+      this.model.customer.fax = this.customer.fax.replace(/[^0-9]/g, '')
+    },
+    getMask(phoneNumber) {
+      if (!phoneNumber) return phoneNumber
+      phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+
+      let res = ''
+      if (phoneNumber.length < 3) {
+        res = phoneNumber
+      } else {
+        if (phoneNumber.substr(0, 2) === '02') {
+          if (phoneNumber.length <= 5) {
+            // 02-123-5678
+            res = phoneNumber.substr(0, 2) + '-' + phoneNumber.substr(2, 3)
+          } else if (phoneNumber.length > 5 && phoneNumber.length <= 9) {
+            // 02-123-5678
+            res =
+              phoneNumber.substr(0, 2) +
+              '-' +
+              phoneNumber.substr(2, 3) +
+              '-' +
+              phoneNumber.substr(5)
+          } else if (phoneNumber.length > 9) {
+            // 02-1234-5678
+            res =
+              phoneNumber.substr(0, 2) +
+              '-' +
+              phoneNumber.substr(2, 4) +
+              '-' +
+              phoneNumber.substr(6)
+          }
+        } else {
+          if (phoneNumber.length < 8) {
+            res = phoneNumber
+          } else if (phoneNumber.length === 8) {
+            res = phoneNumber.substr(0, 4) + '-' + phoneNumber.substr(4)
+          } else if (phoneNumber.length === 9) {
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 3) +
+              '-' +
+              phoneNumber.substr(6)
+          } else if (phoneNumber.length === 10) {
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 3) +
+              '-' +
+              phoneNumber.substr(6)
+          } else if (phoneNumber.length > 10) {
+            // 010-1234-5678
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 4) +
+              '-' +
+              phoneNumber.substr(7)
+          }
+        }
+      }
+      return res
+    }, // getMask
+
+    MobileMask(phoneNumber) {
+      if (!phoneNumber) return phoneNumber
+      phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+
+      let res = ''
+      if (phoneNumber.length < 4) {
+        res = phoneNumber
+      } else {
+        if (phoneNumber.substr(0, 2) === '02') {
+          if (phoneNumber.length <= 5) {
+            // 02-123-5678
+            res = phoneNumber.substr(0, 2) + '-' + phoneNumber.substr(2, 3)
+          } else if (phoneNumber.length > 5 && phoneNumber.length <= 9) {
+            // 02-123-5678
+            res =
+              phoneNumber.substr(0, 2) +
+              '-' +
+              phoneNumber.substr(2, 3) +
+              '-' +
+              phoneNumber.substr(5)
+          } else if (phoneNumber.length > 9) {
+            // 02-1234-5678
+            res =
+              phoneNumber.substr(0, 2) +
+              '-' +
+              phoneNumber.substr(2, 4) +
+              '-' +
+              phoneNumber.substr(6)
+          }
+        } else {
+          if (phoneNumber.length < 8) {
+            res = phoneNumber
+          } else if (phoneNumber.length === 8) {
+            res = phoneNumber.substr(0, 4) + '-' + phoneNumber.substr(4)
+          } else if (phoneNumber.length === 9) {
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 3) +
+              '-' +
+              phoneNumber.substr(6)
+          } else if (phoneNumber.length === 10) {
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 3) +
+              '-' +
+              phoneNumber.substr(6)
+          } else if (phoneNumber.length === 11) {
+            // 010-1234-5678
+            res =
+              phoneNumber.substr(0, 3) +
+              '-' +
+              phoneNumber.substr(3, 4) +
+              '-' +
+              phoneNumber.substr(7)
+          } else if (phoneNumber.length >= 12) {
+            this.$swal('휴대폰 번호를 확인해주세요.')
+          }
+        }
+      }
+      return res
+    },
+    BizMask(bizNo) {
+      if (!bizNo) return bizNo
+      bizNo = bizNo.replace(/[^0-9]/g, '')
+
+      let res = ''
+      if (bizNo.length <= 3) {
+        res = bizNo
+      } else {
+        if (bizNo.length <= 5) {
+          // res = bizNo
+          res = bizNo.substr(0, 3) + '-' + bizNo.substr(3)
+        } else if (bizNo.length <= 10) {
+          res =
+            bizNo.substr(0, 3) +
+            '-' +
+            bizNo.substr(3, 2) +
+            '-' +
+            bizNo.substr(5, 5)
+        } else if (bizNo.length >= 11) {
+          this.$swal('사업자 번호를 확인해주세요.')
+        }
+        // if (bizNo.substr(0, 2) === '02') {
+        //   if (bizNo.length <= 5) {
+        //     // 02-123-5678
+        //     res = bizNo.substr(0, 3) + '-' + bizNo.substr(3, 5)
+        //   } else if (bizNo.length > 5 && bizNo.length <= 10) {
+        //     // 02-123-5678
+        //     res =
+        //       bizNo.substr(0, 3) +
+        //       '-' +
+        //       bizNo.substr(3, 5) +
+        //       '-' +
+        //       bizNo.substr(8)
+        //   } else if (bizNo.length > 9) {
+        //     // 02-1234-5678
+        //     res =
+        //       bizNo.substr(0, 2) +
+        //       '-' +
+        //       bizNo.substr(2, 4) +
+        //       '-' +
+        //       bizNo.substr(6)
+        //   }
+        // }
+      }
+      return res
+    },
     async getCustomer() {
-      // console.log(this.id)
+      console.log(this.id)
 
       this.customer = await this.$get(
         `http://localhost:3000/api/customer/${this.id}`
@@ -2937,16 +3786,16 @@ export default {
               scope_en: this.customer.scope_en,
               activity: JSON.stringify(this.customer.activity),
               process: this.customer.process,
-              shift: this.customer.shift,
-              shift_work_count: this.customer.shift_work_count,
+              // shift: this.customer.shift,
+              // shift_work_count: this.customer.shift_work_count,
               exclusion: this.customer.exclusion,
               exclusion_reason: this.customer.exclusion_reason,
-              transfer_date: JSON.stringify(this.customer.transfer_date),
-              s1_start_date: JSON.stringify(this.customer.s1_start_date),
-              s1_end_date: JSON.stringify(this.customer.s1_end_date),
-              s2_start_date: JSON.stringify(this.customer.s2_start_date),
-              s2_end_date: JSON.stringify(this.customer.s2_end_date),
-              s2_team: this.customer.s2_team,
+              // transfer_date: JSON.stringify(this.customer.transfer_date),
+              // s1_start_date: JSON.stringify(this.customer.s1_start_date),
+              // s1_end_date: JSON.stringify(this.customer.s1_end_date),
+              // s2_start_date: JSON.stringify(this.customer.s2_start_date),
+              // s2_end_date: JSON.stringify(this.customer.s2_end_date),
+              // s2_team: this.customer.s2_team,
               internal_date: JSON.stringify(this.customer.internal_date),
               manual_date: JSON.stringify(this.customer.manual_date),
               management_date: JSON.stringify(this.customer.management_date),
@@ -2955,45 +3804,48 @@ export default {
               construction_license: this.customer.construction_license,
               construction_license_content:
                 this.customer.construction_license_content,
-              hazardous_chemical: this.customer.hazardous_chemical,
-              hazardous_chemical_content:
-                this.customer.hazardous_chemical_content,
-              location: this.customer.location,
+              // hazardous_chemical: this.customer.hazardous_chemical,
+              // hazardous_chemical_content:
+              //   this.customer.hazardous_chemical_content,
+              // location: this.customer.location,
+              environmental_aspect: this.customer.environmental_aspect,
               environmental_permit: this.customer.environmental_permit,
               environmental_permit_content:
                 this.customer.environmental_permit_content,
               environmental_accident: this.customer.environmental_accident,
               environmental_accident_content:
                 this.customer.environmental_accident_content,
+              risk_factor: this.customer.risk_factor,
+              iaf_code: JSON.stringify(this.customer.iaf_code),
               safety_accident: this.customer.safety_accident,
               safety_accident_content: this.customer.safety_accident_content,
               outside_worker: this.customer.outside_worker,
               outside_worker_content: this.customer.outside_worker_content,
-              hazardous_chemical_worker:
-                this.customer.hazardous_chemical_worker,
-              air_pollution: JSON.stringify(this.customer.air_pollution),
-              air_pollution_content: this.customer.air_pollution_content,
-              water_pollution: JSON.stringify(this.customer.water_pollution),
-              water_pollution_content: this.customer.water_pollution_content,
-              soil_pollution: JSON.stringify(this.customer.soil_pollution),
-              soil_pollution_content: this.customer.soil_pollution_content,
-              natural_resource_pollution: JSON.stringify(
-                this.customer.natural_resource_pollution
-              ),
-              natural_resource_pollution_content:
-                this.customer.natural_resource_pollution_content,
-              energy_pollution: JSON.stringify(this.customer.energy_pollution),
-              energy_pollution_content: this.customer.energy_pollution_content,
-              waste_pollution: JSON.stringify(this.customer.waste_pollution),
-              waste_pollution_content: this.customer.waste_pollution_content,
-              machine_factor: JSON.stringify(this.customer.machine_factor),
-              electric_factor: JSON.stringify(this.customer.electric_factor),
-              chemical_factor: JSON.stringify(this.customer.chemical_factor),
-              biological_factor: JSON.stringify(
-                this.customer.biological_factor
-              ),
-              work_factor: JSON.stringify(this.customer.work_factor),
-              work_env: JSON.stringify(this.customer.work_env),
+              // hazardous_chemical_worker:
+              //   this.customer.hazardous_chemical_worker,
+              // air_pollution: JSON.stringify(this.customer.air_pollution),
+              // air_pollution_content: this.customer.air_pollution_content,
+              // water_pollution: JSON.stringify(this.customer.water_pollution),
+              // water_pollution_content: this.customer.water_pollution_content,
+              // soil_pollution: JSON.stringify(this.customer.soil_pollution),
+              // soil_pollution_content: this.customer.soil_pollution_content,
+              // natural_resource_pollution: JSON.stringify(
+              //   this.customer.natural_resource_pollution
+              // ),
+              // natural_resource_pollution_content:
+              //   this.customer.natural_resource_pollution_content,
+              // energy_pollution: JSON.stringify(this.customer.energy_pollution),
+              // energy_pollution_content: this.customer.energy_pollution_content,
+              // waste_pollution: JSON.stringify(this.customer.waste_pollution),
+              // waste_pollution_content: this.customer.waste_pollution_content,
+              // machine_factor: JSON.stringify(this.customer.machine_factor),
+              // electric_factor: JSON.stringify(this.customer.electric_factor),
+              // chemical_factor: JSON.stringify(this.customer.chemical_factor),
+              // biological_factor: JSON.stringify(
+              //   this.customer.biological_factor
+              // ),
+              // work_factor: JSON.stringify(this.customer.work_factor),
+              // work_env: JSON.stringify(this.customer.work_env),
               auditor_name: this.$store.state.user.userInfo.name,
               auditor_email: this.$store.state.user.userInfo.email,
               img_license: this.customer.img_license,
@@ -3008,8 +3860,8 @@ export default {
           if (r.status === 200) {
             this.$swal('인증신청 정보가 저장되었습니다.')
             this.$router.push({
-              path: '/customer/list',
-              query: { customer_id: r.data.insertId }
+              path: '/customer/detail/',
+              query: { customer_id: this.id }
             })
           }
         }

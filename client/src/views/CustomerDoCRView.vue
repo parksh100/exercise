@@ -404,8 +404,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  style="border: 0"
-                  placeholder="22QEOC###"
+                  style="border: 0; background-color: yellow"
                   v-model="cr.audit_no"
                 />
               </div>

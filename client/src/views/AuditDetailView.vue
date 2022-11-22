@@ -12,14 +12,14 @@
         </tr>
       </thead> -->
       <tbody class="text-center">
-        <tr>
+        <!-- <tr>
           <th>고객ID</th>
           <td>
             {{ list.customer_id }}
           </td>
           <th>심사ID</th>
           <td>{{ list.audit_id }}</td>
-        </tr>
+        </tr> -->
         <tr>
           <th>심사번호</th>
           <td>
@@ -40,7 +40,7 @@
         <tr>
           <th>심사팀장</th>
           <td>
-            {{ list.audit_leader }}
+            {{ list.auditor_name }}
           </td>
           <th>심사팀원</th>
           <td>{{ list.audit_auditor }}</td>
@@ -248,3 +248,8 @@ export default {
   }
 }
 </script>
+<style>
+td {
+  text-align: left;
+}
+</style>

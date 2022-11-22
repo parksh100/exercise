@@ -2,7 +2,7 @@
   <div class="container mt-5">
     <h3 class="mb-4 fw-bold text-center">인증심사신청</h3>
     <hr />
-    <div class="row mb-3">
+    <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">심사유형</label>
       <div class="col-sm-9">
         <div class="form-check form-check-inline">
@@ -44,7 +44,7 @@
           >
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">국문상호</label>
@@ -80,7 +80,7 @@
           type="text"
           class="form-control"
           v-model.trim="customer.business_no"
-          placeholder="숫자만 입력"
+          placeholder="번호만 입력"
           @keyup="getBusinessNoMask(customer.business_no)"
         />
       </div>
@@ -102,7 +102,7 @@
           type="text"
           class="form-control"
           v-model.trim="customer.ceo_phone"
-          placeholder="숫자만 입력"
+          placeholder="번호만 입력"
           @keyup="getMobileMask(customer.ceo_phone)"
           limit="11"
         />
@@ -122,7 +122,7 @@
           class="form-control"
           v-model.trim="customer.phone"
           @keyup="getPhoneMask(customer.phone)"
-          placeholder="숫자만 입력"
+          placeholder="번호만 입력"
         />
       </div>
     </div>
@@ -134,7 +134,7 @@
           class="form-control"
           v-model.trim="customer.fax"
           @keyup="getFaxMask(customer.fax)"
-          placeholder="숫자만 입력"
+          placeholder="번호만 입력"
         />
       </div>
     </div>
@@ -256,7 +256,7 @@
         <input
           type="text"
           class="form-control"
-          placeholder="숫자만 입력"
+          placeholder="번호만 입력"
           v-model.trim="customer.contact_phone"
           @keyup="getContactPhoneMask(customer.contact_phone)"
         />
@@ -302,6 +302,7 @@
             id="certification_standard_1"
             value="QMS"
             v-model="customer.certification_standard"
+            @change="getClassifyAudit"
           />
           <label class="form-check-label" for="certification_standard_1"
             >ISO9001</label
@@ -314,6 +315,7 @@
             id="certification_standard_2"
             value="EMS"
             v-model="customer.certification_standard"
+            @change="getClassifyAudit"
           />
           <label class="form-check-label" for="certification_standard_2"
             >ISO14001</label
@@ -326,6 +328,7 @@
             id="certification_standard_3"
             value="OHSMS"
             v-model="customer.certification_standard"
+            @change="getClassifyAudit"
           />
           <label class="form-check-label" for="certification_standard_3"
             >ISO45001</label
@@ -338,12 +341,44 @@
             id="certification_standard_4"
             value="CGMP"
             v-model="customer.certification_standard"
+            @change="getClassifyAudit"
           />
           <label class="form-check-label" for="certification_standard_4"
             >ISO22716</label
           >
         </div>
         <div>{{ customer.certification_standard }}</div>
+      </div>
+    </div>
+    <!-- 계약검토 심사구분 -->
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">심사구분</label>
+      <div class="col-sm-9">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="inlineRadioOptions"
+            id="classify_1"
+            value="단일심사"
+            v-model="customer.classify_audit"
+            disabled
+          />
+          <label class="form-check-label" for="classify_1">단일심사</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="inlineRadioOptions"
+            id="classify_2"
+            value="통합심사"
+            v-model="customer.classify_audit"
+            disabled
+          />
+
+          <label class="form-check-label" for="classify_2">통합심사</label>
+        </div>
       </div>
     </div>
     <div class="row mb-3">
@@ -419,7 +454,6 @@
         </div>
       </div>
     </div>
-
     <!-- 활동 -->
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">인증범위 활동</label>
@@ -486,10 +520,699 @@
         </div>
       </div>
     </div>
+    <!-- 심사코드 -->
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">IAF 코드</label>
+      <div class="col-sm-9">
+        <div>
+          <div class="bg-danger">
+            <label class="form-check-label text-white"
+              >심사원의 심사가능코드</label
+            >
+            <p class="text-white">
+              12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28
+            </p>
+          </div>
+          <div>
+            {{ customer.iaf_code }}
+            <small class="text-primary"
+              >* 인증원의 계약검토를 통해 확정됩니다.</small
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_35"
+              value="01"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_35"
+              >01-Q(농,수산업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_36"
+              value="02"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_36"
+              >02-Q(광업 및 채석업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_1"
+              value="03"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_1"
+              >03-QE(음식료 및 담배)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_2"
+              value="04"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_2"
+              >04-Q(섬유 및 섬유제품)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_3"
+              value="05"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_3"
+              >05Q(가죽 및 가죽제품)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_4"
+              value="06"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_4"
+              >06-QE(목재 및 목재제품)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_5"
+              value="07"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_5"
+              >07-Q(펄프, 종이, 종이제품)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_6"
+              value="08"
+              v-model="customer.iaf_code"
+              disabled
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_6">08(출판업)</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_7"
+              value="09"
+              v-model="customer.iaf_code"
+              disabled
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_7">09(인쇄업)</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_8"
+              value="10"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_8"
+              >10-Q(코크스, 연탄 및 석유정제품 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_9"
+              value="12"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_9"
+              >12-QE(화학물질, 화학제품 및 화학섬유 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_10"
+              value="13"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_10"
+              >13(의료용 물질 및 의약품 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_11"
+              value="14"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_11"
+              >14-QE(고무제품 및 플라스틱제품 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_12"
+              value="15"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_12"
+              >15-QE(비금속 광물제품 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_13"
+              value="16"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_13"
+              >16-QE(콘크리트, 시멘트, 석회 및 플라스터 등 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_14"
+              value="17"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_14"
+              >17-QEO(1차 금속 및 금속가공제품 제조업 중 1차 금속 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_15"
+              value="18"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_15"
+              >18-QEO(기계 및 장비 제조업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_16"
+              value="19"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_16"
+              >19-QEO(전기기기 및 광학기기 제조업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_17"
+              value="20"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_17">20(조선업)</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_18"
+              value="21"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_18"
+              >21(항공기 제조업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_19"
+              value="22"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_19"
+              >22-EO(기타 운송장비 제조업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_20"
+              value="23"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_20"
+              >23-QE(기타 제조업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_40"
+              value="24"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_40">24(재생업)</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_21"
+              value="25"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_21">25(전기공급업)</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_22"
+              value="26"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_22"
+              >26(연료용 가스 공급업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_23"
+              value="27"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_23"
+              >27(수도 및 증기 공급업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_24"
+              value="28"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_24">28-QEO(건설업)</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_25"
+              value="29"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_25"
+              >29-QEO(도소매업, 자동차 및 모터사이클 수리업, 개인 및 가정용품
+              수리업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_26"
+              value="30"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_26"
+              >30-QE(숙박업, 음식점업 및 주점업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_27"
+              value="31"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_27"
+              >31-QE(운송업, 창고업 및 통신업)</label
+            >
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_28"
+              value="32"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_28"
+              >32-QEO(금융업, 보험업, 부동산업 및 임대업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_29"
+              value="33"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_29"
+              >33-QEO(정보기술업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_41"
+              value="34"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_41"
+              >34-QEO(전문, 과학 및 기술서비스업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_30"
+              value="35"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_30"
+              >35-QEO(기타 서비스업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_31"
+              value="36"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_31"
+              >36-QEO(공공 행정)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_32"
+              value="37"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_32"
+              >37-QEO(교육 서비스업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_33"
+              value="38"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+              disabled
+            />
+            <label class="form-check-label" for="code_33"
+              >38(보건업 및 사회복지 서비스업)</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="code_34"
+              value="39"
+              v-model="customer.iaf_code"
+              @change="classifyComplexity(), classifyRisk()"
+            />
+            <label class="form-check-label" for="code_34"
+              >39-Q(기타 사회 서비스업)</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 환경복잡성 -->
+    <div
+      class="row mb-3"
+      v-show="customer.certification_standard.includes('EMS') == true"
+    >
+      <label class="col-sm-3 col-form-label">환경복잡성</label>
+      <div class="col-sm-9">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name=""
+            id="environment_complexity_1"
+            value="높음"
+            v-model="customer.environment_complexity"
+            disabled
+          />
+          <label class="form-check-label" for="environment_complexity_1"
+            >높음</label
+          >
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name=""
+            id="environment_complexity_2"
+            value="보통"
+            v-model="customer.environment_complexity"
+            disabled
+          />
+          <label class="form-check-label" for="environment_complexity_2"
+            >보통</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name=""
+            id="environment_complexity_3"
+            value="낮음"
+            v-model="customer.environment_complexity"
+            disabled
+          />
+          <label class="form-check-label" for="environment_complexity_3"
+            >낮음</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name=""
+            id="environment_complexity_4"
+            value="제한"
+            v-model="customer.environment_complexity"
+            disabled
+          />
+          <label class="form-check-label" for="environment_complexity_4"
+            >제한</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name=""
+            id="environment_complexity_5"
+            value="특별"
+            v-model="customer.environment_complexity"
+            disabled
+          />
+          <label class="form-check-label" for="environment_complexity_5"
+            >특별</label
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- 안전보건위험성 -->
+    <div
+      class="row mb-3"
+      v-show="customer.certification_standard.includes('OHSMS') == true"
+    >
+      <label class="col-sm-3 col-form-label">안전보건위험성</label>
+      <div class="col-sm-9">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name=""
+            id="safety_health_risk_1"
+            value="높음"
+            v-model="customer.safety_health_risk"
+            disabled
+          />
+          <label class="form-check-label" for="safety_health_risk_1"
+            >높음</label
+          >
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name=""
+            id="safety_health_risk_2"
+            value="보통"
+            v-model="customer.safety_health_risk"
+            disabled
+          />
+          <label class="form-check-label" for="safety_health_risk_2"
+            >보통</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name=""
+            id="safety_health_risk_3"
+            value="낮음"
+            v-model="customer.safety_health_risk"
+            disabled
+          />
+          <label class="form-check-label" for="safety_health_risk_3"
+            >낮음</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name=""
+            id="safety_health_risk_4"
+            value="제한"
+            v-model="customer.safety_health_risk"
+            disabled
+          />
+          <label class="form-check-label" for="safety_health_risk_4"
+            >제한</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name=""
+            id="safety_health_risk_5"
+            value="특별"
+            v-model="customer.safety_health_risk"
+            disabled
+          />
+          <label class="form-check-label" for="safety_health_risk_5"
+            >특별</label
+          >
+        </div>
+      </div>
+    </div>
 
     <!-- 공정 -->
     <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">제품(서비스) 공정</label>
+      <label class="col-sm-3 col-form-label">제품(서비스)명 및 공정</label>
       <div class="col-sm-9">
         <input
           type="text"
@@ -500,7 +1223,7 @@
     </div>
 
     <!-- 교대근무 -->
-    <div class="row mb-3">
+    <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">교대근무</label>
       <div class="col-sm-9">
         <div class="form-check form-check-inline">
@@ -526,8 +1249,8 @@
           <label class="form-check-label" for="shift_no">없음</label>
         </div>
       </div>
-    </div>
-    <div class="row mb-3" v-show="customer.shift == 'yes'">
+    </div> -->
+    <!-- <div class="row mb-3" v-show="customer.shift == 'yes'">
       <label class="col-sm-3 col-form-label">교대근무 횟 수 / 인원 수</label>
       <div class="col-sm-9">
         <input
@@ -536,7 +1259,7 @@
           v-model.trim="customer.shift_work_count"
         />
       </div>
-    </div>
+    </div> -->
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">적용제외조항 유무</label>
       <div class="col-sm-9">
@@ -803,17 +1526,17 @@
     </div> -->
     <hr />
 
-    <div
+    <!-- <div
       v-show="
         customer.certification_standard.includes('EMS') === true ||
         customer.certification_standard.includes('OHSMS') === true
       "
-    >
-      <h3 class="mb-5 fw-bold">[ISO14001/ISO45001 신청정보]</h3>
+    > -->
+    <!-- <h3 class="mb-5 fw-bold">ISO14001/ISO45001 신청정보</h3> -->
 
-      <!-- iso14001인증 신청 -->
-      <div v-show="customer.certification_standard.includes('EMS') === true">
-        <div class="row mb-3">
+    <!-- iso14001인증 신청 -->
+    <!-- <div v-show="customer.certification_standard.includes('EMS') === true"> -->
+    <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">사업장 입지조건</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -873,9 +1596,9 @@
               <label class="form-check-label" for="inlineCheckbox5">농촌</label>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div class="row mb-3">
+    <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">생산방법</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -925,8 +1648,8 @@
               <label class="form-check-label" for="inlineCheckbox9">기타</label>
             </div>
           </div>
-        </div>
-        <div class="row mb-3" v-show="customer.production_method == '기타'">
+        </div> -->
+    <!-- <div class="row mb-3" v-show="customer.production_method == '기타'">
           <label class="col-sm-3 col-form-label">생산방법 기타내역</label>
           <div class="col-sm-9">
             <input
@@ -936,101 +1659,155 @@
               v-model.trim="customer.production_method_etc"
             />
           </div>
-        </div>
+        </div> -->
 
-        <!-- 환경허가 신고사항 -->
+    <!-- 환경허가 신고사항 -->
 
-        <!-- <div
-          class="row mb-3"
-          v-show="customer.certification_standard.includes('ISO14001') == true"
-        > -->
-        <div class="row mb-3">
-          <label class="col-sm-3 col-form-label">환경허가 신고사항</label>
-          <div class="col-sm-9">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="inlineRadio1"
-                value="yes"
-                v-model="customer.environmental_permit"
-              />
-              <label class="form-check-label" for="inlineRadio1">예</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="inlineRadio2"
-                value="No"
-                v-model="customer.environmental_permit"
-              />
-              <label class="form-check-label" for="inlineRadio2">아니오</label>
-            </div>
-          </div>
-        </div>
-        <div class="row mb-3" v-show="customer.environmental_permit == 'yes'">
-          <label class="col-sm-3 col-form-label">환경허가 신고내역</label>
-          <div class="col-sm-9">
+    <div
+      class="row mb-3"
+      v-show="customer.certification_standard.includes('EMS') == true"
+    >
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">환경측면 파악여부</label>
+        <div class="col-sm-9">
+          <div class="form-check form-check-inline">
             <input
-              type="text"
-              class="form-control"
-              placeholder="신고내역"
-              v-model.trim="customer.environmental_permit_content"
+              class="form-check-input"
+              type="radio"
+              id="environmentalAspect1"
+              value="yes"
+              v-model="customer.environmental_aspect"
             />
+            <label class="form-check-label" for="environmentalAspect1"
+              >예</label
+            >
           </div>
-        </div>
-
-        <!-- 최근3년 환경사고 -->
-
-        <!-- <div
-          class="row mb-3"
-          v-show="customer.certification_standard.includes('ISO14001') == true"
-        > -->
-        <div class="row mb-3">
-          <label class="col-sm-3 col-form-label">환경사고 유무</label>
-          <div class="col-sm-9">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="inlineRadio3"
-                value="yes"
-                v-model="customer.environmental_accident"
-              />
-              <label class="form-check-label" for="inlineRadio3">예</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                id="inlineRadio4"
-                value="No"
-                v-model="customer.environmental_accident"
-              />
-              <label class="form-check-label" for="inlineRadio4">아니오</label>
-            </div>
-          </div>
-        </div>
-        <div class="row mb-3" v-show="customer.environmental_accident == 'yes'">
-          <label class="col-sm-3 col-form-label">환경사고내용</label>
-          <div class="col-sm-9">
+          <div class="form-check form-check-inline">
             <input
-              type="text"
-              class="form-control"
-              placeholder="환경사고내용"
-              v-model.trim="customer.environmental_accident_content"
+              class="form-check-input"
+              type="radio"
+              id="environmentalAspect2"
+              value="No"
+              v-model="customer.environmental_aspect"
             />
+            <label class="form-check-label" for="environmentalAspect2"
+              >아니오</label
+            >
+          </div>
+          <span>* 주요한 환경측면을 파악하고 있는가?</span>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">환경허가 신고사항 유무</label>
+        <div class="col-sm-9">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="inlineRadio1"
+              value="yes"
+              v-model="customer.environmental_permit"
+            />
+            <label class="form-check-label" for="inlineRadio1">예</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="inlineRadio2"
+              value="No"
+              v-model="customer.environmental_permit"
+            />
+            <label class="form-check-label" for="inlineRadio2">아니오</label>
           </div>
         </div>
       </div>
+      <div class="row mb-3" v-show="customer.environmental_permit == 'yes'">
+        <label class="col-sm-3 col-form-label">환경허가 신고내역</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="신고내역"
+            v-model.trim="customer.environmental_permit_content"
+          />
+        </div>
+      </div>
 
-      <!-- 사업장외부 근무자 -->
+      <!-- 최근3년 환경사고 -->
 
-      <!-- <div
-          class="row mb-3"
-          v-show="customer.certification_standard.includes('ISO45001') == true"
-        >  -->
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">환경사고 유무</label>
+        <div class="col-sm-9">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="inlineRadio3"
+              value="yes"
+              v-model="customer.environmental_accident"
+            />
+            <label class="form-check-label" for="inlineRadio3">예</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="inlineRadio4"
+              value="No"
+              v-model="customer.environmental_accident"
+            />
+            <label class="form-check-label" for="inlineRadio4">아니오</label>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3" v-show="customer.environmental_accident == 'yes'">
+        <label class="col-sm-3 col-form-label">환경사고내용</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="환경사고내용"
+            v-model.trim="customer.environmental_accident_content"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- 사업장외부 근무자 -->
+
+    <div
+      class="row mb-3"
+      v-show="customer.certification_standard.includes('OHSMS') == true"
+    >
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">위험요소 파악여부</label>
+        <div class="col-sm-9">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="riskFactor1"
+              value="yes"
+              v-model="customer.risk_factor"
+            />
+            <label class="form-check-label" for="riskFactor1">예</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="riskFactor2"
+              value="no"
+              v-model="customer.risk_factor"
+            />
+            <label class="form-check-label" for="environmentalAspect2"
+              >아니오</label
+            >
+          </div>
+          <span>* 주요한 위험요소를 파악하고 있는가?</span>
+        </div>
+      </div>
       <div class="row mb-3">
         <label class="col-sm-3 col-form-label">사업장 외부 근무자</label>
         <div class="col-sm-9">
@@ -1067,6 +1844,44 @@
           />
         </div>
       </div>
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">안전보건사고 유무</label>
+        <div class="col-sm-9">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="safety_accident1"
+              value="yes"
+              v-model="customer.safety_accident"
+            />
+            <label class="form-check-label" for="safety_accident1">예</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="safety_accident2"
+              value="No"
+              v-model="customer.safety_accident"
+            />
+            <label class="form-check-label" for="safety_accident2"
+              >아니오</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3" v-show="customer.safety_accident == 'yes'">
+        <label class="col-sm-3 col-form-label">안전보건 사고내역</label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="안전보건 사고내역"
+            v-model.trim="customer.safety_accident_content"
+          />
+        </div>
+      </div>
 
       <!--유해위험물질유형  -->
 
@@ -1077,7 +1892,7 @@
             customer.certification_standard.includes('ISO45001') == true
           "
         > -->
-      <div class="row mb-3">
+      <!-- <div class="row mb-3">
         <label class="col-sm-3 col-form-label">유해/위험물질 유형</label>
         <div class="col-sm-9">
           <div class="form-check form-check-inline">
@@ -1141,8 +1956,8 @@
             >
           </div>
         </div>
-      </div>
-      <div class="row mb-3" v-show="customer.hazardous_chemical == '기타'">
+      </div> -->
+      <!-- <div class="row mb-3" v-show="customer.hazardous_chemical == '기타'">
         <label class="col-sm-3 col-form-label">기타유형</label>
         <div class="col-sm-9">
           <input
@@ -1152,12 +1967,17 @@
             v-model.trim="customer.hazardous_chemical_content"
           />
         </div>
-      </div>
+      </div> -->
 
-      <div>
-        <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 환경측면 및 영향 ===</h5>
+      <!-- <div>
+        <h5 class="mt-3 mb-3">
+          <i
+            class="fa-solid fa-square-caret-right"
+            style="color: blueviolet"
+          ></i>
+          고객에 의해 파악된 환경측면 및 영향
+        </h5>
 
-        <!-- 대기 -->
         <div class="row mb-3">
           <label class="col-sm-3 col-form-label">(대기)환경측면</label>
           <div class="col-sm-9">
@@ -1239,7 +2059,6 @@
           </div>
         </div>
 
-        <!-- 토양 -->
         <div class="row mb-3">
           <label class="col-sm-3 col-form-label">(토양)환경측면</label>
           <div class="col-sm-9">
@@ -1324,7 +2143,6 @@
             />
           </div>
         </div>
-        <!-- 수질 -->
         <div class="row mb-3">
           <label class="col-sm-3 col-form-label">(수질)환경측면</label>
           <div class="col-sm-9">
@@ -1414,7 +2232,6 @@
           </div>
         </div>
 
-        <!--천연자원  -->
         <div class="row mb-3">
           <label class="col-sm-3 col-form-label">(천연자원)환경측면</label>
           <div class="col-sm-9">
@@ -1507,7 +2324,6 @@
           </div>
         </div>
 
-        <!-- 에너지 -->
         <div class="row mb-3">
           <label class="col-sm-3 col-form-label">(에너지)환경측면</label>
           <div class="col-sm-9">
@@ -1597,7 +2413,6 @@
           </div>
         </div>
 
-        <!-- 폐기물 -->
         <div class="row mb-3">
           <label class="col-sm-3 col-form-label">(폐기물)환경측면</label>
           <div class="col-sm-9">
@@ -1686,60 +2501,29 @@
             />
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- 최근3년 안전보건사고 -->
 
-    <div
+    <!-- <div
       class="row mb-3"
       v-show="customer.certification_standard.includes('OHSMS') == true"
-    >
-      <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">안전보건사고 유무</label>
-        <div class="col-sm-9">
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input"
-              type="radio"
-              id="safety_accident1"
-              value="yes"
-              v-model="customer.safety_accident"
-            />
-            <label class="form-check-label" for="safety_accident1">예</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input"
-              type="radio"
-              id="safety_accident2"
-              value="No"
-              v-model="customer.safety_accident"
-            />
-            <label class="form-check-label" for="safety_accident2"
-              >아니오</label
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3" v-show="customer.safety_accident == 'yes'">
-        <label class="col-sm-3 col-form-label">안전보건 사고내역</label>
-        <div class="col-sm-9">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="안전보건 사고내역"
-            v-model.trim="customer.safety_accident_content"
-          />
-        </div>
-      </div>
-      <!-- <div
+    > -->
+
+    <!-- <div
         v-show="customer.certification_standard.includes('ISO45001') === true"
       > -->
-      <div>
-        <h5 class="mt-3 mb-3">=== 고객에 의해 파악된 위험요인 ===</h5>
+    <!-- <div>
+        <h5 class="mt-3 mb-3">
+          <i
+            class="fa-solid fa-square-caret-right"
+            style="color: blueviolet"
+          ></i>
+          고객에 의해 파악된 위험요인
+        </h5> -->
 
-        <!-- 기계적 위험요인 -->
-        <div class="row mb-3">
+    <!-- 기계적 위험요인 -->
+    <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">기계(설비) 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -1816,10 +2600,10 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <!-- 전기적 위험요인 -->
-        <div class="row mb-3">
+    <!-- 전기적 위험요인 -->
+    <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">전기적 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -1860,10 +2644,10 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <!-- 화학(물질적) 위험요인 -->
-        <div class="row mb-3">
+    <!-- 화학(물질적) 위험요인 -->
+    <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">화학(물질)적 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -1976,10 +2760,10 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <!-- 생물학적 위험요인 -->
-        <div class="row mb-3">
+    <!-- 생물학적 위험요인 -->
+    <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">생물학적 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -2044,10 +2828,10 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <!-- 작업특성 위험요인 -->
-        <div class="row mb-3">
+    <!-- 작업특성 위험요인 -->
+    <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">작업특성 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -2168,10 +2952,10 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <!-- 작업환경 위험요인 -->
-        <div class="row mb-3">
+    <!-- 작업환경 위험요인 -->
+    <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">작업환경 요인</label>
           <div class="col-sm-9">
             <div class="form-check form-check-inline">
@@ -2246,9 +3030,9 @@
               >
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </div> -->
+    <!-- </div> -->
+    <!-- </div> -->
 
     <!-- 사업자등록증 첨부 -->
     <div class="row mb-2">
@@ -2342,12 +3126,12 @@ export default {
         shift_work_count: '',
         exclusion: '',
         exclusion_reason: '',
-        transfer_date: '',
-        s1_start_date: '',
-        s1_end_date: '',
-        s2_start_date: '',
-        s2_end_date: '',
-        s2_team: '',
+        // transfer_date: '',
+        // s1_start_date: '',
+        // s1_end_date: '',
+        // s2_start_date: '',
+        // s2_end_date: '',
+        // s2_team: '',
         manual_date: '',
         internal_date: '',
         management_date: '',
@@ -2355,12 +3139,13 @@ export default {
         outsourcing_process: '',
         construction_license: '',
         construction_license_content: '',
-        audit_fee: 0,
-        hazardous_chemical: '',
-        hazardous_chemical_content: '',
-        location: '',
-        production_method: '',
-        production_method_etc: '',
+        iaf_code: [],
+        // audit_fee: 0,
+        // hazardous_chemical: '',
+        // hazardous_chemical_content: '',
+        // location: '',
+        // production_method: '',
+        // production_method_etc: '',
         environmental_permit: '',
         environmental_permit_content: '',
         environmental_accident: '',
@@ -2369,26 +3154,31 @@ export default {
         safety_accident_content: '',
         outside_worker: '',
         outside_worker_content: '',
-        hazardous_chemical_worker: '',
-        hazardous_chemical_worker_content: '',
-        air_pollution: [],
-        air_pollution_content: '',
-        soil_pollution: [],
-        soil_pollution_content: '',
-        water_pollution: [],
-        water_pollution_content: '',
-        natural_resource_pollution: [],
-        natural_resource_pollution_content: '',
-        energy_pollution: [],
-        energy_pollution_content: '',
-        waste_pollution: [],
-        waste_pollution_content: '',
-        machine_factor: [],
-        electric_factor: [],
-        chemical_factor: [],
-        biological_factor: [],
-        work_factor: [],
-        work_env: [],
+        // hazardous_chemical_worker: '',
+        environmental_aspect: '',
+        risk_factor: '',
+        environment_complexity: '',
+        safety_health_risk: '',
+        classify_audit: '',
+        // hazardous_chemical_worker_content: '',
+        // air_pollution: [],
+        // air_pollution_content: '',
+        // soil_pollution: [],
+        // soil_pollution_content: '',
+        // water_pollution: [],
+        // water_pollution_content: '',
+        // natural_resource_pollution: [],
+        // natural_resource_pollution_content: '',
+        // energy_pollution: [],
+        // energy_pollution_content: '',
+        // waste_pollution: [],
+        // waste_pollution_content: '',
+        // machine_factor: [],
+        // electric_factor: [],
+        // chemical_factor: [],
+        // biological_factor: [],
+        // work_factor: [],
+        // work_env: [],
         img_license: '',
         img_license_originalname: '',
         imgExt: '',
@@ -2407,14 +3197,73 @@ export default {
   },
   unmounted() {},
   methods: {
+    getClassifyAudit() {
+      if (this.customer.certification_standard.length > 1) {
+        this.customer.classify_audit = '통합심사'
+      } else {
+        this.customer.classify_audit = '단일심사'
+      }
+    },
+    classifyComplexity() {
+      console.log(this.customer.iaf_code)
+      if (
+        this.customer.iaf_code.includes('05') ||
+        this.customer.iaf_code.includes('12') ||
+        this.customer.iaf_code.includes('28')
+      ) {
+        this.customer.environment_complexity = '높음'
+      } else if (
+        this.customer.iaf_code.includes('03') ||
+        this.customer.iaf_code.includes('04') ||
+        this.customer.iaf_code.includes('07') ||
+        this.customer.iaf_code.includes('15') ||
+        this.customer.iaf_code.includes('16') ||
+        this.customer.iaf_code.includes('20') ||
+        this.customer.iaf_code.includes('22') ||
+        this.customer.iaf_code.includes('24') ||
+        this.customer.iaf_code.includes('31') ||
+        this.customer.iaf_code.includes('39') ||
+        this.customer.iaf_code.includes('17')
+      ) {
+        this.customer.environment_complexity = '보통'
+      } else {
+        this.customer.environment_complexity = '낮음'
+      }
+    },
+    classifyRisk() {
+      console.log(this.customer.iaf_code)
+      if (
+        this.customer.iaf_code.includes('05') ||
+        this.customer.iaf_code.includes('12') ||
+        this.customer.iaf_code.includes('17') ||
+        this.customer.iaf_code.includes('28')
+      ) {
+        this.customer.safety_health_risk = '높음'
+      } else if (
+        this.customer.iaf_code.includes('03') ||
+        this.customer.iaf_code.includes('04') ||
+        this.customer.iaf_code.includes('06') ||
+        this.customer.iaf_code.includes('07') ||
+        this.customer.iaf_code.includes('08') ||
+        this.customer.iaf_code.includes('15') ||
+        this.customer.iaf_code.includes('16') ||
+        this.customer.iaf_code.includes('20') ||
+        this.customer.iaf_code.includes('22') ||
+        this.customer.iaf_code.includes('24') ||
+        this.customer.iaf_code.includes('31') ||
+        this.customer.iaf_code.includes('39')
+      ) {
+        this.customer.safety_health_risk = '보통'
+      } else {
+        this.customer.safety_health_risk = '낮음'
+      }
+    },
     getBusinessNoMask(val) {
       const res = this.BizMask(val)
+      console.log(res)
       this.customer.business_no = res
       // 서버 전송 값에는 '-' 제거
-      this.model.customer.business_no = this.customer.business_no.replace(
-        /[^0-9]/g,
-        ''
-      )
+      this.model.business_no = this.customer.business_no.replace(/[^0-9]/g, '')
     },
     getMobileMask(val) {
       const res = this.MobileMask(val)
@@ -2678,51 +3527,112 @@ export default {
       // if (this.customer.certification_type === '') {
       //   return this.$swal('인증유형을 선택해주세요.')
       // }
-      // if (this.customer.name_ko === '') {
-      //   return this.$swal('국문회사명을 입력하세요.')
-      // }
-      // if (this.customer.name_en === '') {
-      //   return this.$swal('영문회사명을 입력하세요.')
-      // }
-      // if (this.customer.business_no === '') {
-      //   return this.$swal('사업자등록번호를 입력하세요.')
-      // }
-      // if (this.customer.ceo_name === '') {
-      //   return this.$swal('대표자명을 입력하세요.')
-      // }
-      // if (this.customer.email === '') {
-      //   return this.$swal('대표이메일을 입력하세요.')
-      // }
-      // if (this.customer.phone === '') {
-      //   return this.$swal('대표전화번호를 입력하세요.')
-      // }
-      // if (this.customer.address_ko === '') {
-      //   return this.$swal('주소를 입력하세요.')
-      // }
-      // if (this.customer.contact_name === '') {
-      //   return this.$swal('담당자명/직위를 입력하세요.')
-      // }
-      // if (this.customer.contact_phone === '') {
-      //   return this.$swal('담당자 연락처를 입력하세요.')
-      // }
-      // if (this.customer.contact_email === '') {
-      //   return this.$swal('담당자 이메일을 입력하세요.')
-      // }
-      // if (this.customer.organization_scope === '') {
-      //   return this.$swal('조직의 범위를 입력하세요.')
-      // }
-      // if (this.customer.certification_standard === '') {
-      //   return this.$swal('신청 인증표준을 입력하세요.')
-      // }
-      // if (this.customer.design === '') {
-      //   return this.$swal('설계/개발 유무를 입력하세요.')
-      // }
-      // if (this.customer.scope_ko === '') {
-      //   return this.$swal('국문 인증범위를 입력하세요.')
-      // }
+      if (this.customer.name_ko === '') {
+        return this.$swal('국문회사명을 입력하세요.')
+      }
+      if (this.customer.name_en === '') {
+        return this.$swal('영문회사명을 입력하세요.')
+      }
+      if (this.customer.business_no === '') {
+        return this.$swal('사업자등록번호를 입력하세요.')
+      }
+      if (this.customer.ceo_name === '') {
+        return this.$swal('대표자명을 입력하세요.')
+      }
+      if (this.customer.email === '') {
+        return this.$swal('대표이메일을 입력하세요.')
+      }
+      if (this.customer.phone === '') {
+        return this.$swal('대표전화번호를 입력하세요.')
+      }
+      if (this.customer.address_ko === '') {
+        return this.$swal('주소를 입력하세요.')
+      }
+      if (this.customer.contact_name === '') {
+        return this.$swal('담당자명/직위를 입력하세요.')
+      }
+      if (this.customer.contact_phone === '') {
+        return this.$swal('담당자 연락처를 입력하세요.')
+      }
+      if (this.customer.contact_email === '') {
+        return this.$swal('담당자 이메일을 입력하세요.')
+      }
+      if (this.customer.organization_scope === '') {
+        return this.$swal('조직의 범위를 입력하세요.')
+      }
+      if (this.customer.certification_standard === '') {
+        return this.$swal('신청 인증표준을 입력하세요.')
+      }
+      if (this.customer.employee_count === '') {
+        return this.$swal('종업원 수를 입력하세요.')
+      }
+      if (this.customer.design === '') {
+        return this.$swal('설계/개발 유무를 입력하세요.')
+      }
+      if (this.customer.scope_ko === '') {
+        return this.$swal('국문 인증범위를 입력하세요.')
+      }
+      if (this.customer.scope_en === '') {
+        return this.$swal('영문 인증범위를 입력하세요.')
+      }
+      if (this.customer.iaf_code === '') {
+        return this.$swal('IAF Code를 입력하세요.')
+      }
+      if (this.customer.activity === '') {
+        return this.$swal('인증범위 활동을 입력하세요.')
+      }
+      if (this.customer.process === '') {
+        return this.$swal('제품(서비스)명 및 공정을 입력하세요.')
+      }
+      if (this.customer.exclusion === '') {
+        return this.$swal('적용제외조항 유무를 입력하세요.')
+      }
+      if (this.customer.manual_date === '') {
+        return this.$swal('매뉴얼 제개정일을 입력하세요.')
+      }
+      if (this.customer.internal_date === '') {
+        return this.$swal('내부심사일을 입력하세요.')
+      }
+      if (this.customer.management_date === '') {
+        return this.$swal('경영검토일을 입력하세요.')
+      }
+      if (this.customer.manual_date === '') {
+        return this.$swal('매뉴얼 제개정일을 입력하세요.')
+      }
+      if (this.customer.outsourcing === '') {
+        return this.$swal('외주처리유무를 입력하세요.')
+      }
+      if (this.customer.construction_license === '') {
+        return this.$swal('건설면허보유여부를 입력하세요.')
+      }
+      if (this.customer.certification_standard.includes('EMS') === true) {
+        if (this.customer.environmental_aspect === '') {
+          return this.$swal('환경측면 파악여부를 입력하세요.')
+        }
+        if (this.customer.environmental_permit === '') {
+          return this.$swal('환경허가 신고사항 유무를 입력하세요.')
+        }
+        if (this.customer.environmental_accident === '') {
+          return this.$swal('환경사고 유무를 입력하세요.')
+        }
+      }
+      if (this.customer.certification_standard.includes('OHSMS') === true) {
+        if (this.customer.risk_factor === '') {
+          return this.$swal('위험요소 파악여부를 입력하세요.')
+        }
+        if (this.customer.outside_worker === '') {
+          return this.$swal('사업장 외부 근무자 유무를 입력하세요.')
+        }
+        if (this.customer.safety_accident === '') {
+          return this.$swal('안전사고 유무를 입력하세요.')
+        }
+      }
+      if (this.customer.img_license === '') {
+        return this.$swal('사업자등록증을 첨부하세요.')
+      }
 
       this.$swal({
-        title: '인증신청을 생성 하시겠습니까?',
+        title: '고객정보를 저장 하시겠습니까?',
         // text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
@@ -2769,25 +3679,27 @@ export default {
               shift_work_count: this.customer.shift_work_count,
               exclusion: this.customer.exclusion,
               exclusion_reason: this.customer.exclusion_reason,
-              transfer_date: JSON.stringify(this.customer.transfer_date),
-              s1_start_date: JSON.stringify(this.customer.s1_start_date),
-              s1_end_date: JSON.stringify(this.customer.s1_end_date),
-              s2_start_date: JSON.stringify(this.customer.s2_start_date),
-              s2_end_date: JSON.stringify(this.customer.s2_end_date),
-              s2_team: this.customer.s2_team,
+              // production_method: this.customer.production_method,
+              // transfer_date: JSON.stringify(this.customer.transfer_date),
+              // s1_start_date: JSON.stringify(this.customer.s1_start_date),
+              // s1_end_date: JSON.stringify(this.customer.s1_end_date),
+              // s2_start_date: JSON.stringify(this.customer.s2_start_date),
+              // s2_end_date: JSON.stringify(this.customer.s2_end_date),
+              // s2_team: this.customer.s2_team,
               manual_date: JSON.stringify(this.customer.manual_date),
               internal_date: JSON.stringify(this.customer.internal_date),
               management_date: JSON.stringify(this.customer.management_date),
               outsourcing: this.customer.outsourcing,
               outsourcing_process: this.customer.outsourcing_process,
               construction_license: this.customer.construction_license,
-              audit_fee: this.customer.audit_fee,
+              // audit_fee: this.customer.audit_fee,
               construction_license_content:
                 this.customer.construction_license_content,
-              hazardous_chemical: this.customer.hazardous_chemical,
-              hazardous_chemical_content:
-                this.customer.hazardous_chemical_content,
-              location: this.customer.location,
+              // hazardous_chemical: this.customer.hazardous_chemical,
+              // hazardous_chemical_content:
+              // this.customer.hazardous_chemical_content,
+              // location: this.customer.location,
+
               environmental_permit: this.customer.environmental_permit,
               environmental_permit_content:
                 this.customer.environmental_permit_content,
@@ -2798,32 +3710,37 @@ export default {
               safety_accident_content: this.customer.safety_accident_content,
               outside_worker: this.customer.outside_worker,
               outside_worker_content: this.customer.outside_worker_content,
-              hazardous_chemical_worker:
-                this.customer.hazardous_chemical_worker,
-              air_pollution: JSON.stringify(this.customer.air_pollution),
-              air_pollution_content: this.customer.air_pollution_content,
-              soil_pollution_content: this.customer.soil_pollution_content,
-              water_pollution: JSON.stringify(this.customer.water_pollution),
-              water_pollution_content: JSON.stringify(
-                this.customer.water_pollution_content
-              ),
-              natural_resource_pollution: JSON.stringify(
-                this.customer.natural_resource_pollution
-              ),
-              natural_resource_pollution_content:
-                this.customer.natural_resource_pollution_content,
-              energy_pollution: JSON.stringify(this.customer.energy_pollution),
-              energy_pollution_content: this.customer.energy_pollution_content,
-              waste_pollution: JSON.stringify(this.customer.waste_pollution),
-              waste_pollution_content: this.customer.waste_pollution_content,
-              machine_factor: JSON.stringify(this.customer.machine_factor),
-              electric_factor: JSON.stringify(this.customer.electric_factor),
-              chemical_factor: JSON.stringify(this.customer.chemical_factor),
-              biological_factor: JSON.stringify(
-                this.customer.biological_factor
-              ),
-              work_factor: JSON.stringify(this.customer.work_factor),
-              work_env: JSON.stringify(this.customer.work_env),
+              // hazardous_chemical_worker:
+              //   this.customer.hazardous_chemical_worker,
+              // air_pollution: JSON.stringify(this.customer.air_pollution),
+              // air_pollution_content: this.customer.air_pollution_content,
+              // soil_pollution: JSON.stringify(this.customer.soil_pollution),
+              // soil_pollution_content: this.customer.soil_pollution_content,
+              // water_pollution: JSON.stringify(this.customer.water_pollution),
+              // water_pollution_content: JSON.stringify(
+              //   this.customer.water_pollution_content
+              // ),
+              // natural_resource_pollution: JSON.stringify(
+              //   this.customer.natural_resource_pollution
+              // ),
+              // natural_resource_pollution_content:
+              //   this.customer.natural_resource_pollution_content,
+              // energy_pollution: JSON.stringify(this.customer.energy_pollution),
+              // energy_pollution_content: this.customer.energy_pollution_content,
+              // waste_pollution: JSON.stringify(this.customer.waste_pollution),
+              // waste_pollution_content: this.customer.waste_pollution_content,
+              // machine_factor: JSON.stringify(this.customer.machine_factor),
+              // electric_factor: JSON.stringify(this.customer.electric_factor),
+              // chemical_factor: JSON.stringify(this.customer.chemical_factor),
+              // biological_factor: JSON.stringify(
+              //   this.customer.biological_factor
+              // ),
+              // work_factor: JSON.stringify(this.customer.work_factor),
+              // work_env: JSON.stringify(this.customer.work_env),
+              environmental_aspect: this.environmental_aspect,
+              risk_factor: this.risk_factor,
+              classify_audit: this.classify_audit,
+              iaf_code: JSON.stringify(this.customer.iaf_code),
               auditor_name: this.$store.state.user.userInfo.name,
               auditor_email: this.$store.state.user.userInfo.email,
               img_license: this.customer.img_license,
@@ -2837,7 +3754,9 @@ export default {
           console.log(r)
 
           if (r.status === 200) {
-            this.$swal('인증신청 정보가 저장되었습니다.')
+            this.$swal(
+              '고객정보가 저장되었습니다.<br/> 고객리스트 화면에서 심사신청을 진행해주세요'
+            )
             this.$router.push({
               path: '/customer/list',
               query: { customer_id: r.data.insertId }

@@ -31,12 +31,12 @@
           <!-- <th width="4%">ID</th> -->
           <th style="width: 20%">회사명</th>
           <th style="width: 10%">심사번호</th>
-          <th style="width: 25">심사유형</th>
-          <th style="width: 10">심사차수</th>
+          <th style="width: 10%">심사유형</th>
+          <th style="width: 10%">심사차수</th>
           <th style="width: 10%">심사비</th>
           <th style="width: 10%">심사원</th>
           <th style="width: 10%">등록일</th>
-          <th style="width: %">비고</th>
+          <th style="width: 20%">비고</th>
         </tr>
       </thead>
       <tbody class="text-center">

@@ -24,22 +24,22 @@
       </div>
     </div>
     <table
-      class="table table-striped table-bordered"
+      class="table table-bordered"
       style="table-layout: fixed; font-size: 15px"
     >
       <thead>
-        <tr>
+        <tr class="bg-light table-group-divider">
           <!-- <th width="4%">ID</th> -->
           <th style="width: 20%">회사명</th>
-          <th style="width: 7%">인증유형</th>
+          <!-- <th style="width: 7%">인증유형</th> -->
           <th style="width: 20">인증표준</th>
-          <th style="width: 7%">심사원</th>
+          <th style="width: 10%">심사원</th>
           <th style="width: 5%">상태</th>
-          <th style="width: 10%">등록일</th>
-          <th style="width: 31%">비고</th>
+          <th style="width: 10%">신청일</th>
+          <th style="width: 35%">바로가기</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="table-group-divider">
         <tr :key="item.customer_id" v-for="item in list">
           <!-- <td>{{ item.customer_id }}</td> -->
           <td>
@@ -50,7 +50,7 @@
               >{{ item.name_ko }}</a
             >
           </td>
-          <td>{{ item.certification_type }}</td>
+          <!-- <td>{{ item.certification_type }}</td> -->
           <td style="word-break: break-all">
             {{ item.certification_standard }}
           </td>
@@ -74,11 +74,11 @@
             </button> -->
             <button
               class="btn btn-primary btn-sm me-1"
-              @click="goToCert(item.customer_id)"
+              @click="goToApply(item.customer_id)"
             >
               심사신청
             </button>
-            <button
+            <!--<button
               class="btn btn-info btn-sm me-1"
               @click="goToCR(item.customer_id)"
             >
@@ -96,7 +96,7 @@
               "
             >
               {{ item.status_yn === 'Y' ? '사용중지' : '사용' }}
-            </button>
+            </button> -->
           </td>
         </tr>
       </tbody>
@@ -129,6 +129,7 @@ export default {
         { title: '인증상태', key: 'status_yn' },
         { title: '생성일', key: 'created_date' }
       ],
+      id: '',
       list: [],
       searchName: ''
       // selectedItem: {
@@ -142,7 +143,10 @@ export default {
     }
   },
   setup() {},
-  created() {},
+  created() {
+    // this.id = this.$route.query.customer_id
+    // console.log('id', this.id)
+  },
   async mounted() {
     if (this.user.userInfo.email === undefined) {
       alert('로그인이 필요합니다.')
@@ -188,6 +192,13 @@ export default {
     goToCR(id) {
       this.$router.push({
         path: '/customer/cr/list',
+        query: { customer_id: id }
+      })
+    },
+    goToApply(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/customer/cert',
         query: { customer_id: id }
       })
     },

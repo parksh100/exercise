@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <h2 class="mb-5">[ISO인증심사신청 상세페이지]</h2>
+    <h3 class="mb-5 fw-bold text-center">ISO인증 고객정보 상세페이지</h3>
+    <hr />
     <!-- <div class="row mb-3">
       <label class="col-sm-2 col-form-label">ID</label>
       <div class="col-sm-10">{{ customer.customer_id }}</div>
@@ -9,16 +10,14 @@
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
       기본정보
     </h5>
-    <table class="table table-bordered table-sm" style="table-layout: fixed">
-      <!-- <thead>
-        <tr>
-          <th class="col">#</th>
-          <th class="col">First</th>
-          <th class="col">Last</th>
-          <th class="col">Handle</th>
-        </tr>
-      </thead> -->
-      <tbody class="text-center">
+    <table class="table table-bordered table-sm">
+      <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 30%" />
+        <col style="width: 20%" />
+        <col style="width: 30%" />
+      </colgroup>
+      <tbody class="text-center table-group-divider">
         <tr>
           <th>심사유형</th>
           <td>
@@ -97,13 +96,19 @@
       </tbody>
     </table>
 
-    <h5 class="fw-bold mt-3 mb-3">
+    <h5 class="fw-bold mt-5 mb-3">
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
       인증신청정보
     </h5>
 
-    <table class="table table-bordered table-sm" style="table-layout: fixed">
-      <tbody class="text-center">
+    <table class="table table-bordered table-sm">
+      <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 30%" />
+        <col style="width: 20%" />
+        <col style="width: 30%" />
+      </colgroup>
+      <tbody class="text-center table-group-divider">
         <tr>
           <th>신청 인증표준</th>
           <td>
@@ -133,57 +138,37 @@
           <td>{{ customer.homepage }}</td> -->
         </tr>
         <tr>
+          <th>심사코드</th>
+          <td colspan="3" class="text-start">
+            <div class="col-sm-9">
+              <div>{{ customer.iaf_code }}</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
           <th>인증범위 활동</th>
-          <td>{{ customer.activity }}</td>
-          <th>제품(서비스) 공정</th>
-          <td>{{ customer.process }}</td>
+          <td colspan="3">{{ customer.activity }}</td>
+          <!-- <th></th>
+          <td></td> -->
         </tr>
 
         <tr>
-          <th>조직의 범위</th>
-          <td colspan="3">
-            {{ customer.organization_scope }}
-          </td>
-          <!-- <th >대표자 휴대폰번호</th>
-          <td>{{ customer.email }}</td> -->
-        </tr>
-        <tr>
-          <th>교대근무</th>
-          <td>{{ customer.shift }}</td>
-          <th>교대근무 횟 수 / 인원 수</th>
-          <td>{{ customer.shift_work_count }}</td>
+          <th>제품(서비스) 공정</th>
+          <td colspan="3">{{ customer.process }}</td>
+          <!-- <th></th>
+          <td></td> -->
         </tr>
         <tr>
           <th>적용제외조항 유무</th>
           <td>{{ customer.exclusion }}</td>
-          <th>적용제외 조항/근거</th>
+          <th>조항/근거</th>
           <td>{{ customer.exclusion_reason }}</td>
         </tr>
         <tr>
-          <th>전환(방문)심사일</th>
-          <td>{{ customer.transfer_date }}</td>
+          <th>환경측면정의</th>
+          <td>{{ customer.env }}</td>
           <th>심사비{{ customer.audit_fee }}</th>
           <td></td>
-        </tr>
-
-        <tr>
-          <th>1단계 심사시작일</th>
-          <td>{{ customer.s1_start_date }}</td>
-          <th>1단계 심사종료일</th>
-          <td>{{ customer.s1_end_date }}</td>
-        </tr>
-        <tr>
-          <th>2단계 심사시작일</th>
-          <td>{{ customer.s2_start_date }}</td>
-          <th>2단계 심사종료일</th>
-          <td>{{ customer.s2_end_date }}</td>
-        </tr>
-
-        <tr>
-          <th>2단계 심사팀원</th>
-          <td>{{ customer.s2_team }}</td>
-          <th>매뉴얼 제/개정일</th>
-          <td>{{ customer.manual_date }}</td>
         </tr>
 
         <tr>
@@ -209,144 +194,78 @@
       </tbody>
     </table>
 
-    <h5 class="fw-bold mt-3 mb-3">
+    <h5 class="fw-bold mt-5 mb-3">
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-      ISO14001/45001신청정보
+      환경/안전보건 정보
     </h5>
 
-    <table class="table table-bordered table-sm" style="table-layout: fixed">
-      <tbody class="text-center">
+    <table class="table table-bordered table-sm">
+      <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 30%" />
+        <col style="width: 20%" />
+        <col style="width: 30%" />
+      </colgroup>
+      <tbody class="text-center table-group-divider">
         <tr>
-          <th>사업장 입지조건</th>
-          <td>
-            {{ customer.location }}
-          </td>
-          <th>생산방법</th>
-          <td>{{ customer.production_method }}</td>
+          <th>환경측면파악여부</th>
+          <td colspan="3">{{ customer.environmental_aspect }}</td>
+          <!-- <th></th>
+          <td></td> -->
         </tr>
         <tr>
-          <th>환경허가 신고사항</th>
+          <th>환경허가신고사항유무</th>
           <td>{{ customer.environmental_permit }}</td>
-          <th>환경허가 신고내역</th>
+          <th>환경허가신고내역</th>
           <td>{{ customer.environmental_permit_content }}</td>
         </tr>
-
         <tr>
-          <th>환경사고 유무</th>
+          <th>환경사고유무</th>
           <td>{{ customer.environmental_accident }}</td>
-          <th>환경사고내용</th>
+          <th>환경사고내역</th>
+          <td>{{ customer.environmental_accident_content }}</td>
+        </tr>
+        <tr>
+          <th>환경사고유무</th>
+          <td>{{ customer.environmental_accident }}</td>
+          <th>환경허가신고내역</th>
           <td>{{ customer.environmental_accident_content }}</td>
         </tr>
 
         <tr>
-          <th>안전보건사고 유무</th>
-          <td>
-            {{ customer.safety_accident }}
-          </td>
-          <th>안전보건 사고내역</th>
-          <td>{{ customer.safety_accident_content }}</td>
+          <th>위험요인파악여부</th>
+          <td colspan="3">{{ customer.risk_factor }}</td>
+          <!-- <th></th>
+          <td></td> -->
         </tr>
         <tr>
-          <th>사업장 외부 근무자</th>
+          <th>사업장 외부 근무자 유무</th>
           <td>{{ customer.outside_worker }}</td>
-          <th>업무내용</th>
+          <th>외부근무자 업무</th>
           <td>{{ customer.outside_worker_content }}</td>
         </tr>
-      </tbody>
-    </table>
-
-    <h5 class="fw-bold mt-3 mb-3">
-      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-      고객에 의해 파악된 환경측면
-    </h5>
-
-    <table class="table table-bordered table-sm" style="table-layout: fixed">
-      <tbody class="text-center">
         <tr>
-          <th>유해/위험물질 유형</th>
-          <td>{{ customer.hazardous_chemical }}</td>
-          <th>기타유형</th>
-          <td>{{ customer.hazardous_chemical_content }}</td>
-        </tr>
-        <tr>
-          <th>(대기)환경측면</th>
-          <td>{{ customer.air_pollution }}</td>
-          <th>기타유형</th>
-          <td>{{ customer.air_pollution_content }}</td>
-        </tr>
-
-        <tr>
-          <th>(토양)환경측면</th>
-          <td>{{ customer.soil_pollution }}</td>
-          <th>기타유형</th>
-          <td>{{ customer.soil_pollution_content }}</td>
-        </tr>
-        <tr>
-          <th>(수질)환경측면</th>
-          <td>{{ customer.water_pollution }}</td>
-          <th>기타유형</th>
-          <td>{{ customer.water_pollution_content }}</td>
-        </tr>
-
-        <tr>
-          <th>(천연자원)환경측면</th>
-          <td>{{ customer.natural_resource_pollution }}</td>
-          <th>기타유형</th>
-          <td>{{ customer.natural_resource_pollution_content }}</td>
-        </tr>
-
-        <tr>
-          <th>(에너지)환경측면</th>
-          <td>{{ customer.energy_pollution }}</td>
-          <th>기타유형</th>
-          <td>{{ customer.energy_pollution_content }}</td>
-        </tr>
-
-        <tr>
-          <th>(폐기물)환경측면</th>
-          <td>{{ customer.waste_pollution }}</td>
-          <th>기타유형</th>
-          <td>{{ customer.waste_pollution_content }}</td>
+          <th>안전보건사고유무</th>
+          <td>{{ customer.safety_accident }}</td>
+          <th>안전보건사고내역</th>
+          <td>{{ customer.safety_accident_content }}</td>
         </tr>
       </tbody>
     </table>
 
-    <h5 class="fw-bold mt-3 mb-3">
-      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-      고객에 의해 파악된 위험요인
-    </h5>
-
-    <table class="table table-bordered table-sm" style="table-layout: fixed">
-      <tbody class="text-center">
-        <tr>
-          <th>기계(설비) 요인</th>
-          <td>{{ customer.machine_factor }}</td>
-          <th>전기적 요인</th>
-          <td>{{ customer.electric_factor }}</td>
-        </tr>
-        <tr>
-          <th>화학(물질)적 요인</th>
-          <td>{{ customer.chemical_factor }}</td>
-          <th>생물학적 요인</th>
-          <td>{{ customer.biological_factor }}</td>
-        </tr>
-
-        <tr>
-          <th>작업특성 요인</th>
-          <td>{{ customer.work_factor }}</td>
-          <th>작업환경 요인</th>
-          <td>{{ customer.work_env }}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h5 class="fw-bold mt-3 mb-3">
+    <h5 class="fw-bold mt-5 mb-3">
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
       심사원정보
     </h5>
 
-    <table class="table table-bordered table-sm" style="table-layout: fixed">
-      <tbody class="text-center">
+    <table class="table table-bordered table-sm">
+      <colgroup>
+        <col style="width: 20%" />
+        <col style="width: 30%" />
+        <col style="width: 20%" />
+        <col style="width: 30%" />
+      </colgroup>
+      <tbody class="text-center table-group-divider">
         <tr>
           <th>심사원명</th>
           <td>{{ $store.state.user.userInfo.name }}</td>
@@ -497,7 +416,7 @@
 
     <button class="btn btn-secondary me-1" @click="goToList">목록</button>
     <button class="btn btn-primary me-1" @click="goToChange">수정</button>
-    <button class="btn btn-warning me-1" @click="goToCR">계약검토</button>
+    <!-- <button class="btn btn-warning me-1" @click="goToCR">계약검토</button> -->
     <button class="btn btn-success me-1" @click="goToApply">심사신청</button>
   </div>
 </template>
@@ -553,7 +472,7 @@ export default {
     // console.log(this.customer)
     // console.log(this.$route.query.id)
     this.id = this.$route.query.customer_id
-    // console.log(this.id)
+    console.log(this.id)
 
     // this.searchName = this.$route.query.searchName
   },
@@ -566,7 +485,7 @@ export default {
     console.log(this.id)
 
     this.getCustomer()
-    this.crInfo()
+    // this.crInfo()
   },
   unmounted() {},
   methods: {
@@ -693,3 +612,8 @@ export default {
   }
 }
 </script>
+<style>
+td {
+  text-align: left;
+}
+</style>

@@ -2,6 +2,73 @@
   <div class="container mt-5">
     <h3 class="mb-4 fw-bold text-center">인증심사등록</h3>
     <hr />
+    <h5 class="fw-bold">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      기본정보
+    </h5>
+    <table class="table">
+      <thead>
+        <colgroup>
+          <col style="width: 20%" />
+          <col style="width: 30%" />
+          <col style="width: 30%" />
+          <col style="width: 10%" />
+          <col style="width: 10%" />
+        </colgroup>
+        <tr>
+          <th>회사명</th>
+          <th>인증표준</th>
+          <th>인증범위</th>
+          <th>종업원수</th>
+          <th>비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ customer.name_ko }}</td>
+          <td>{{ customer.certification_standard }}</td>
+          <td>{{ customer.scope_ko }}</td>
+          <td>{{ customer.employee_count }}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h5 class="fw-bold mt-5">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      심사정보
+    </h5>
+    <table class="table">
+      <thead>
+        <colgroup>
+          <col style="width: 20%" />
+          <col style="width: 30%" />
+          <col style="width: 10%" />
+          <col style="width: 10%" />
+          <col style="width: 10%" />
+          <col style="width: 10%" />
+          <col style="width: 10%" />
+        </colgroup>
+        <tr>
+          <th>심사번호</th>
+          <th>심사유형</th>
+          <th>차수</th>
+          <th>외부심사원</th>
+          <th>심사시작일</th>
+          <th>심사종료일</th>
+          <th>심사비</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ customer.name_ko }}</td>
+          <td>{{ customer.certification_standard }}</td>
+          <td>{{ customer.scope_ko }}</td>
+          <td>{{ customer.employee_count }}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
 
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">국문상호</label>
@@ -17,6 +84,17 @@
       </div>
     </div>
     <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">심사팀장</label>
+      <div class="col-sm-9">
+        <!-- <input
+          type="text"
+          class="form-control"
+          v-model="applyInfo.audit_leader"
+        /> -->
+        {{ customer.auditor_name }}
+      </div>
+    </div>
+    <div class="row mb-3">
       <label class="col-sm-3 col-form-label">인증범위</label>
       <div class="col-sm-9">
         {{ customer.scope_ko }}
@@ -25,9 +103,7 @@
 
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">종업원 수</label>
-      <div class="col-sm-9">
-        {{ customer.employee_count }}
-      </div>
+      <div class="col-sm-9">{{ customer.employee_count }} 명</div>
     </div>
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">이전심사유형</label>
@@ -184,16 +260,6 @@
       </div>
     </div>
 
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">심사팀장</label>
-      <div class="col-sm-9">
-        <input
-          type="text"
-          class="form-control"
-          v-model="applyInfo.audit_leader"
-        />
-      </div>
-    </div>
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">심사팀원</label>
       <div class="col-sm-9">
@@ -362,10 +428,34 @@ export default {
           this.$swal('2단계 심사종료일을 선택하세요.')
           return
         }
-        if (this.applyInfo.audit_leader === '') {
-          this.$swal('심사팀장을 입력하세요.')
+        // if (this.applyInfo.audit_leader === '') {
+        //   this.$swal('심사팀장을 입력하세요.')
+        //   return
+        // }
+        if (this.applyInfo.audit_auditor === '') {
+          this.$swal('심사팀원을 입력하세요.')
           return
         }
+        if (this.applyInfo.audit_fee === '') {
+          this.$swal('심사비를 입력하세요.')
+          return
+        }
+      } else if (
+        this.applyInfo.audit_type === '갱신' ||
+        this.applyInfo.audit_type === '전환갱신'
+      ) {
+        if (this.applyInfo.audit_s2_start === '') {
+          this.$swal('2단계 심사시작일을 선택하세요.')
+          return
+        }
+        if (this.applyInfo.audit_s2_end === '') {
+          this.$swal('2단계 심사종료일을 선택하세요.')
+          return
+        }
+        // if (this.applyInfo.audit_leader === '') {
+        //   this.$swal('심사팀장을 입력하세요.')
+        //   return
+        // }
         if (this.applyInfo.audit_auditor === '') {
           this.$swal('심사팀원을 입력하세요.')
           return
@@ -387,10 +477,10 @@ export default {
           this.$swal('2단계 심사종료일을 선택하세요.')
           return
         }
-        if (this.applyInfo.audit_leader === '') {
-          this.$swal('심사팀장을 입력하세요.')
-          return
-        }
+        // if (this.applyInfo.audit_leader === '') {
+        //   this.$swal('심사팀장을 입력하세요.')
+        //   return
+        // }
         if (this.applyInfo.audit_auditor === '') {
           this.$swal('심사팀원을 입력하세요.')
           return
@@ -411,7 +501,7 @@ export default {
       } else if (this.applyInfo.audit_type === '갱신') {
         isType = 'R'
       }
-      console.log('isType : ', isType)
+      // console.log('isType : ', isType)
 
       // 차수 1자리
       let isDegree = ''
@@ -422,11 +512,11 @@ export default {
       } else {
         isDegree = '0'
       }
-      console.log('isDegree : ', isDegree)
+      // console.log('isDegree : ', isDegree)
 
       // 년도 2자리
       const year = new Date().getFullYear().toString().substring(2, 4)
-      console.log('년도2자리', year)
+      // console.log('년도2자리', year)
       // this.number.year = year
 
       // 월 2자리
@@ -436,13 +526,13 @@ export default {
       // } else {
       //   month = month
       // }
-      console.log('월2자리', month)
+      // console.log('월2자리', month)
       // console.log('월2자리', month)
 
       // 규격 자리(Q,E,O,C)
-      console.log(this.customer.certification_standard)
+      // console.log(this.customer.certification_standard)
       const customerStandard = JSON.parse(this.customer.certification_standard)
-      console.log('규격', customerStandard)
+      // console.log('규격', customerStandard)
       // 배열을 문자열로 변환
       // const stringStandard = customerStandard.join()
       // console.log('표준문자열', stringStandard)
@@ -456,11 +546,11 @@ export default {
           }
         }
       }
-      console.log('규격코드', scheme)
+      // console.log('규격코드', scheme)
 
       // 일련번호 4자리
       let serialNo = Math.floor(Math.random() * 10000) + 1
-      console.log('일련번호', serialNo.toString().padStart(4, '0'))
+      // console.log('일련번호', serialNo.toString().padStart(4, '0'))
       serialNo = serialNo.toString().padStart(4, '0')
 
       // this.number.serialNo = serialNo
@@ -475,13 +565,15 @@ export default {
       const dbData = await this.$get(
         `http://localhost:3000/api/customer/${this.id}`
       )
-      // console.log(this.customer)
+      console.log(this.customer)
       console.log('db에서 가져온 data : ', dbData)
 
       this.customer.name_ko = dbData.name_ko
       this.customer.certification_standard = dbData.certification_standard
       this.customer.scope_ko = dbData.scope_ko
       this.customer.employee_count = dbData.employee_count
+      this.customer.auditor_email = dbData.auditor_email
+      this.customer.auditor_name = dbData.auditor_name
     },
     execDaumPostcode() {
       // @click을 사용할 때 함수는 이렇게 작성해야 한다.
@@ -561,7 +653,7 @@ export default {
       // console.log(this.customer.certification_standard)
 
       this.$swal({
-        title: '사후/갱신신청을 저장 하시겠습니까?',
+        title: '심사정보를 저장 하시겠습니까?',
         // text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
@@ -595,7 +687,7 @@ export default {
           console.log(r)
 
           if (r.status === 200) {
-            this.$swal('인증신청 정보가 저장되었습니다.')
+            this.$swal('심사정보가 저장되었습니다.')
             this.$router.push({
               path: '/customer/cert/list',
               query: { customer_id: r.data.insertId }
