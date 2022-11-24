@@ -62,6 +62,14 @@ const routes = [
       import(/* webpackChunkName: "customer" */ '../views/CustomerListView.vue')
   },
   {
+    path: '/customer/list/auditor',
+    name: 'CustomerListByAuditor',
+    component: () =>
+      import(
+        /* webpackChunkName: "customer" */ '../views/CustomerListByAuditorView.vue'
+      )
+  },
+  {
     path: '/customer/detail',
     name: 'customerDetail',
     component: () =>

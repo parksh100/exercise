@@ -153,7 +153,7 @@ export default {
       this.$router.push({ path: '/login' })
     }
 
-    this.list = await this.$get('/api/customer')
+    this.list = await this.$get('/api/customer/all')
     // console.log(this.list)
   },
   unmounted() {},
@@ -170,6 +170,7 @@ export default {
     },
 
     goToDetail(id) {
+      console.log('Detail로 넘긴 customer_id', id)
       this.$router.push({
         path: '/customer/detail',
         query: { customer_id: id }

@@ -6,7 +6,7 @@
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
       기본정보
     </h5>
-    <table class="table">
+    <table class="table text-center">
       <thead>
         <colgroup>
           <col style="width: 20%" />
@@ -23,20 +23,30 @@
           <th>비고</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="table-group-divider">
         <tr>
           <td>{{ customer.name_ko }}</td>
           <td>{{ customer.certification_standard }}</td>
           <td>{{ customer.scope_ko }}</td>
-          <td>{{ customer.employee_count }}</td>
+          <td>{{ customer.employee_count }} 명</td>
           <td></td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5">
+            <p class="fst-italic">
+              * 추가로 참고할 정보제안은 인증원에 요청해주세요. 즉시 반영될
+              것입니다.
+            </p>
+          </td>
+        </tr>
+      </tfoot>
     </table>
 
     <h5 class="fw-bold mt-5">
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-      심사정보
+      심사실적
     </h5>
     <table class="table">
       <thead>
@@ -59,18 +69,20 @@
           <th>심사비</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>{{ customer.name_ko }}</td>
-          <td>{{ customer.certification_standard }}</td>
-          <td>{{ customer.scope_ko }}</td>
-          <td>{{ customer.employee_count }}</td>
-          <td></td>
+      <tbody class="table-group-divider">
+        <tr v-for="item in auditInfo" :key="item">
+          <td>{{ item.audit_no }}</td>
+          <td>{{ item.audit_type }}</td>
+          <td>{{ item.audit_degree }}</td>
+          <td>{{ item.audit_auditor }}</td>
+          <td>{{ item.audit_s2_start }}</td>
+          <td>{{ item.audit_s2_end }}</td>
+          <td>{{ item.audit_fee }}</td>
         </tr>
       </tbody>
     </table>
 
-    <div class="row mb-3">
+    <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">국문상호</label>
       <div class="col-sm-9">
         {{ customer.name_ko }}
@@ -86,11 +98,7 @@
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">심사팀장</label>
       <div class="col-sm-9">
-        <!-- <input
-          type="text"
-          class="form-control"
-          v-model="applyInfo.audit_leader"
-        /> -->
+
         {{ customer.auditor_name }}
       </div>
     </div>
@@ -108,14 +116,18 @@
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">이전심사유형</label>
       <div class="col-sm-9"></div>
-    </div>
+    </div> -->
 
     <hr />
 
+    <h5 class="fw-bold mt-5 mb-3">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      심사등록
+    </h5>
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">심사번호</label>
       <div class="col-sm-9">
-        {{ applyInfo.audit_no }}
+        {{ auditInfo.audit_no }}
       </div>
     </div>
     <div class="row mb-3">
@@ -128,7 +140,7 @@
             name=""
             id="initial"
             value="최초"
-            v-model="applyInfo.audit_type"
+            v-model="auditInfo.audit_type"
           />
           <label class="form-check-label" for="initial">최초심사</label>
         </div>
@@ -139,7 +151,7 @@
             name=""
             id="Surveillance"
             value="사후"
-            v-model="applyInfo.audit_type"
+            v-model="auditInfo.audit_type"
           />
           <label class="form-check-label" for="Surveillance">사후심사</label>
         </div>
@@ -150,7 +162,7 @@
             name=""
             id="Renewal"
             value="갱신"
-            v-model="applyInfo.audit_type"
+            v-model="auditInfo.audit_type"
           />
           <label class="form-check-label" for="Renewal">갱신심사</label>
         </div>
@@ -161,7 +173,7 @@
             name=""
             id="transSurveillance"
             value="전환사후"
-            v-model="applyInfo.audit_type"
+            v-model="auditInfo.audit_type"
           />
           <label class="form-check-label" for="transSurveillance"
             >전환사후심사</label
@@ -174,7 +186,7 @@
             name=""
             id="transRenewal"
             value="전환갱신"
-            v-model="applyInfo.audit_type"
+            v-model="auditInfo.audit_type"
           />
           <label class="form-check-label" for="transRenewal"
             >전환갱신심사</label
@@ -187,8 +199,8 @@
     <div
       class="row mb-3"
       v-show="
-        this.applyInfo.audit_type === '사후' ||
-        this.applyInfo.audit_type === '전환사후'
+        this.auditInfo.audit_type === '사후' ||
+        this.auditInfo.audit_type === '전환사후'
       "
     >
       <label class="col-sm-3 col-form-label">심사차수</label>
@@ -200,7 +212,7 @@
             name=""
             id="First"
             value="1차"
-            v-model="applyInfo.audit_degree"
+            v-model="auditInfo.audit_degree"
           />
           <label class="form-check-label" for="First">1차</label>
         </div>
@@ -211,20 +223,20 @@
             name=""
             id="Second"
             value="2차"
-            v-model="applyInfo.audit_degree"
+            v-model="auditInfo.audit_degree"
           />
           <label class="form-check-label" for="Second">2차</label>
         </div>
       </div>
     </div>
-    <div v-show="this.applyInfo.audit_type === '최초'">
+    <div v-show="this.auditInfo.audit_type === '최초'">
       <div class="row mb-3">
         <label class="col-sm-3 col-form-label">1단계 심사시작일</label>
         <div class="col-sm-9">
           <input
             type="date"
             class="form-control"
-            v-model.trim="applyInfo.audit_s1_start"
+            v-model.trim="auditInfo.audit_s1_start"
           />
         </div>
       </div>
@@ -234,7 +246,7 @@
           <input
             type="date"
             class="form-control"
-            v-model.trim="applyInfo.audit_s1_end"
+            v-model.trim="auditInfo.audit_s1_end"
           />
         </div>
       </div>
@@ -245,7 +257,7 @@
         <input
           type="date"
           class="form-control"
-          v-model.trim="applyInfo.audit_s2_start"
+          v-model.trim="auditInfo.audit_s2_start"
         />
       </div>
     </div>
@@ -255,7 +267,7 @@
         <input
           type="date"
           class="form-control"
-          v-model.trim="applyInfo.audit_s2_end"
+          v-model.trim="auditInfo.audit_s2_end"
         />
       </div>
     </div>
@@ -267,7 +279,7 @@
           type="text"
           class="form-control"
           placeholder="2단계 심사팀원 성명 (ex. 홍길동, 김철수) 또는 '단독'"
-          v-model.trim="applyInfo.audit_auditor"
+          v-model.trim="auditInfo.audit_auditor"
         />
       </div>
     </div>
@@ -279,7 +291,7 @@
           type="number"
           class="form-control"
           placeholder="VAT별도(원)"
-          v-model="applyInfo.audit_fee"
+          v-model="auditInfo.audit_fee"
         />
       </div>
     </div>
@@ -319,7 +331,7 @@
       <button
         class="btn btn-danger me-1"
         @click="doSave"
-        v-show="this.applyInfo.audit_no"
+        v-show="this.auditInfo.audit_no"
       >
         저장
       </button>
@@ -357,26 +369,31 @@ export default {
         auditor_name: '',
         auditor_email: ''
       },
-      applyInfo: {
-        audit_id: -1,
-        audit_no: '',
-        audit_type: '',
-        audit_degree: '',
-        audit_s1_start: '',
-        audit_s1_end: '',
-        audit_s2_start: '',
-        audit_s2_end: '',
-        audit_leader: '',
-        audit_auditor: '',
-        audit_fee: '',
-        customer_id: '',
-        created_date: ''
-      }
+      auditInfo: []
+      //   auditInfo: {
+      //     audit_id: -1,
+      //     audit_no: '',
+      //     audit_type: '',
+      //     audit_degree: '',
+      //     audit_s1_start: '',
+      //     audit_s1_end: '',
+      //     audit_s2_start: '',
+      //     audit_s2_end: '',
+      //     audit_leader: '',
+      //     audit_auditor: '',
+      //     audit_fee: '',
+      //     customer_id: '',
+      //     created_date: ''
+      //   }
     }
   },
   created() {
+    // console.log(this.customer)
+    // console.log(this.$route.query.id)
     this.id = this.$route.query.customer_id
-    console.log('List화면에서 넘어온 id : ', this.id)
+    console.log('customerList에서 넘어온 customer_id:', this.id)
+
+    // this.searchName = this.$route.query.searchName
   },
   mounted() {
     console.log(this.user.userInfo.email)
@@ -396,96 +413,97 @@ export default {
     //   this.customer.scope_ko = dbData.scope_ko
     //   this.customer.employee_count = dbData.employee_count
     this.getCustomer()
+    this.getCertListByCustomer()
   },
   unmounted() {},
   methods: {
     giveNumber() {
-      if (this.applyInfo.audit_no) {
+      if (this.auditInfo.audit_no) {
         this.$swal('이미 심사번호가 생성되었습니다.')
         return
       }
 
       // 유효성 검사
-      if (this.applyInfo.audit_type === '') {
+      if (this.auditInfo.audit_type === '') {
         // alert('심사유형을 선택해주세요.')
         this.$swal('심사유형을 선택하세요.')
         return
       }
-      if (this.applyInfo.audit_type === '최초') {
-        if (this.applyInfo.audit_s1_start === '') {
+      if (this.auditInfo.audit_type === '최초') {
+        if (this.auditInfo.audit_s1_start === '') {
           this.$swal('1단계 심사시작일을 선택하세요.')
           return
         }
-        if (this.applyInfo.audit_s1_end === '') {
+        if (this.auditInfo.audit_s1_end === '') {
           this.$swal('1단계 심사종료일을 선택하세요.')
           return
         }
-        if (this.applyInfo.audit_s2_start === '') {
+        if (this.auditInfo.audit_s2_start === '') {
           this.$swal('2단계 심사시작일을 선택하세요.')
           return
         }
-        if (this.applyInfo.audit_s2_end === '') {
+        if (this.auditInfo.audit_s2_end === '') {
           this.$swal('2단계 심사종료일을 선택하세요.')
           return
         }
-        // if (this.applyInfo.audit_leader === '') {
+        // if (this.auditInfo.audit_leader === '') {
         //   this.$swal('심사팀장을 입력하세요.')
         //   return
         // }
-        if (this.applyInfo.audit_auditor === '') {
+        if (this.auditInfo.audit_auditor === '') {
           this.$swal('심사팀원을 입력하세요.')
           return
         }
-        if (this.applyInfo.audit_fee === '') {
+        if (this.auditInfo.audit_fee === '') {
           this.$swal('심사비를 입력하세요.')
           return
         }
       } else if (
-        this.applyInfo.audit_type === '갱신' ||
-        this.applyInfo.audit_type === '전환갱신'
+        this.auditInfo.audit_type === '갱신' ||
+        this.auditInfo.audit_type === '전환갱신'
       ) {
-        if (this.applyInfo.audit_s2_start === '') {
+        if (this.auditInfo.audit_s2_start === '') {
           this.$swal('2단계 심사시작일을 선택하세요.')
           return
         }
-        if (this.applyInfo.audit_s2_end === '') {
+        if (this.auditInfo.audit_s2_end === '') {
           this.$swal('2단계 심사종료일을 선택하세요.')
           return
         }
-        // if (this.applyInfo.audit_leader === '') {
+        // if (this.auditInfo.audit_leader === '') {
         //   this.$swal('심사팀장을 입력하세요.')
         //   return
         // }
-        if (this.applyInfo.audit_auditor === '') {
+        if (this.auditInfo.audit_auditor === '') {
           this.$swal('심사팀원을 입력하세요.')
           return
         }
-        if (this.applyInfo.audit_fee === '') {
+        if (this.auditInfo.audit_fee === '') {
           this.$swal('심사비를 입력하세요.')
           return
         }
       } else {
-        if (this.applyInfo.audit_degree === '') {
+        if (this.auditInfo.audit_degree === '') {
           this.$swal('심사차수를 선택하세요.')
           return
         }
-        if (this.applyInfo.audit_s2_start === '') {
+        if (this.auditInfo.audit_s2_start === '') {
           this.$swal('2단계 심사시작일을 선택하세요.')
           return
         }
-        if (this.applyInfo.audit_s2_end === '') {
+        if (this.auditInfo.audit_s2_end === '') {
           this.$swal('2단계 심사종료일을 선택하세요.')
           return
         }
-        // if (this.applyInfo.audit_leader === '') {
+        // if (this.auditInfo.audit_leader === '') {
         //   this.$swal('심사팀장을 입력하세요.')
         //   return
         // }
-        if (this.applyInfo.audit_auditor === '') {
+        if (this.auditInfo.audit_auditor === '') {
           this.$swal('심사팀원을 입력하세요.')
           return
         }
-        if (this.applyInfo.audit_fee === '') {
+        if (this.auditInfo.audit_fee === '') {
           this.$swal('심사비를 입력하세요.')
           return
         }
@@ -493,21 +511,21 @@ export default {
 
       // 사후/갱신 1자리
       let isType = ''
-      if (this.applyInfo.audit_type === '최초') {
+      if (this.auditInfo.audit_type === '최초') {
         isType = 'I'
       }
-      if (this.applyInfo.audit_type === '사후') {
+      if (this.auditInfo.audit_type === '사후') {
         isType = 'S'
-      } else if (this.applyInfo.audit_type === '갱신') {
+      } else if (this.auditInfo.audit_type === '갱신') {
         isType = 'R'
       }
       // console.log('isType : ', isType)
 
       // 차수 1자리
       let isDegree = ''
-      if (this.applyInfo.audit_degree === '1차') {
+      if (this.auditInfo.audit_degree === '1차') {
         isDegree = '1'
-      } else if (this.applyInfo.audit_degree === '2차') {
+      } else if (this.auditInfo.audit_degree === '2차') {
         isDegree = '2'
       } else {
         isDegree = '0'
@@ -556,14 +574,28 @@ export default {
       // this.number.serialNo = serialNo
 
       // 최종번호
-      this.applyInfo.audit_no =
+      this.auditInfo.audit_no =
         isType + isDegree + year + month + scheme + serialNo
-      console.log('최종번호', this.applyInfo.audit_no)
+      console.log('최종번호', this.auditInfo.audit_no)
+    },
+    async getCertListByCustomer() {
+      console.log(this.id)
+      const dbAuditDataByCustomer = await this.$get(
+        // `/api/customer/cert/list/${this.id}`
+        `http://localhost:3000/api/customer/cert/list/${this.id}`
+      )
+      // const dbAuditDataByCustomer = await this.$post(
+      //   `/api/customer/cert/list/${this.id}`
+      // )
+      // const dbAuditDataByCustomer = await this.$get('/api/customer/cert/list')
+      console.log('DB에서 가져온 CertListByCustomer', dbAuditDataByCustomer)
+      this.auditInfo = dbAuditDataByCustomer
+      console.log('this.auditInfo: ', this.auditInfo)
     },
     async getCustomer() {
-      // console.log(this.id)
+      console.log(this.id)
       const dbData = await this.$get(
-        `http://localhost:3000/api/customer/${this.id}`
+        `http://localhost:3000/api/customer/list/${this.id}`
       )
       console.log(this.customer)
       console.log('db에서 가져온 data : ', dbData)
@@ -634,19 +666,19 @@ export default {
       // console.log(this.customer.img_license)
     },
     async doSave() {
-      // if (this.applyInfo.audit_type === '') {
+      // if (this.auditInfo.audit_type === '') {
       //   return this.$swal('심사유형을 선택하세요.')
       // }
-      // if (this.applyInfo.audit_s1_start === '') {
+      // if (this.auditInfo.audit_s1_start === '') {
       //   return this.$swal('1단계 심사시작일을 선택하세요.')
       // }
-      // if (this.applyInfo.audit_s1_end === '') {
+      // if (this.auditInfo.audit_s1_end === '') {
       //   return this.$swal('1단계 심사종료일을 선택하세요.')
       // }
-      // if (this.applyInfo.audit_s2_start === '') {
+      // if (this.auditInfo.audit_s2_start === '') {
       //   return this.$swal('2단계 심사시작일을 선택하세요.')
       // }
-      // if (this.applyInfo.audit_s2_end === '') {
+      // if (this.auditInfo.audit_s2_end === '') {
       //   return this.$swal('2단계 심사종료일을 선택하세요.')
       // }
 
@@ -666,18 +698,18 @@ export default {
           const loader = this.$loading.show({ canCancel: false })
           // const postID = this.id
           // console.log(postID)
-          const r = await this.$post('/api/cert/surveillance', {
+          const r = await this.$post('/api/cert/audit', {
             param: {
-              audit_no: this.applyInfo.audit_no,
-              audit_type: this.applyInfo.audit_type,
-              audit_degree: this.applyInfo.audit_degree,
-              audit_s1_start: JSON.stringify(this.applyInfo.audit_s1_start),
-              audit_s1_end: JSON.stringify(this.applyInfo.audit_s1_end),
-              audit_s2_start: JSON.stringify(this.applyInfo.audit_s2_start),
-              audit_s2_end: JSON.stringify(this.applyInfo.audit_s2_end),
-              audit_leader: this.applyInfo.audit_leader,
-              audit_auditor: this.applyInfo.audit_auditor,
-              audit_fee: this.applyInfo.audit_fee,
+              audit_no: this.auditInfo.audit_no,
+              audit_type: this.auditInfo.audit_type,
+              audit_degree: this.auditInfo.audit_degree,
+              audit_s1_start: JSON.stringify(this.auditInfo.audit_s1_start),
+              audit_s1_end: JSON.stringify(this.auditInfo.audit_s1_end),
+              audit_s2_start: JSON.stringify(this.auditInfo.audit_s2_start),
+              audit_s2_end: JSON.stringify(this.auditInfo.audit_s2_end),
+              audit_leader: this.user.userInfo.user_name,
+              audit_auditor: this.auditInfo.audit_auditor,
+              audit_fee: this.auditInfo.audit_fee,
               customer_id: this.id
             }
           })
@@ -708,3 +740,8 @@ export default {
   }
 }
 </script>
+<style>
+td {
+  text-align: center;
+}
+</style>

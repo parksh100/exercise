@@ -190,9 +190,19 @@ app.get("/api/auditor/:auditor_id", async (req, res) => {
 });
 
 //customer 전체조회
-app.get("/api/customer", async (req, res) => {
+app.get("/api/customer/all", async (req, res) => {
   const customerList = await mysql.query("customerList");
   res.send(customerList);
+});
+
+//customer by auditor전체조회
+app.get("/api/customer/:auditor_email", async (req, res) => {
+  const { auditor_email } = req.params;
+  const customerListByAuditor = await mysql.query(
+    "customerListByEmail",
+    auditor_email
+  );
+  res.send(customerListByAuditor);
 });
 
 // cr 전체조회
@@ -213,14 +223,26 @@ app.get("/api/customer/cert/list", async (req, res) => {
   res.send(auditList);
 });
 
-//customer detail
-app.get("/api/customer/:customer_id", async (req, res) => {
+//인증심사리스트 by customer_id 조회
+app.get("/api/customer/cert/list/:customer_id", async (req, res) => {
   const { customer_id } = req.params;
+  console.log(customer_id);
+  const auditListByCustomer = await mysql.query(
+    "auditListByCustomer",
+    customer_id
+  );
+  res.send(auditListByCustomer);
+});
+
+//customer detail
+app.get("/api/customer/list/:customer_id", async (req, res) => {
+  const { customer_id } = req.params;
+  console.log(customer_id);
   const customerDetail = await mysql.query("customerDetail", customer_id);
   res.send(customerDetail[0]);
 });
 
-//인증심사 detail
+//인증심사 detail by audit_id
 app.get("/api/customer/cert/:audit_id", async (req, res) => {
   const { audit_id } = req.params;
   const certDetail = await mysql.query("certDetail", audit_id);
@@ -265,9 +287,9 @@ app.post("/api/cr", async (req, res) => {
   res.send(result);
 });
 
-// 사후/갱신 심사신청 생성
-app.post("/api/cert/surveillance", async (req, res) => {
-  const result = await mysql.query("certPostInsert", req.body.param);
+// 심사신청 생성
+app.post("/api/cert/audit", async (req, res) => {
+  const result = await mysql.query("certInsert", req.body.param);
   res.send(result);
 });
 
@@ -313,9 +335,28 @@ app.post("/api/auditor/search", async (req, res) => {
   res.send(result);
 });
 
+// 심사정보 검색 post by auditor_email
+
+app.post("/api/customer/cert/list/auditor", async (req, res) => {
+  const result = await mysql.query("auditListByAuditorEmail", req.body.param);
+  res.send(result);
+});
+
+// 고객List 조회 by auditor_email
+app.post("/api/customer/list/auditor", async (req, res) => {
+  const result = await mysql.query("auditListByAuditorEmail", req.body.param);
+  res.send(result);
+});
+
 // customer 검색 post
 app.post("/api/customer/search", async (req, res) => {
   const result = await mysql.query("customerListByCondition", req.body.param);
+  res.send(result);
+});
+
+// auditList 검색 post by customer_id
+app.post("/api/customer/cert/list/:customer_id", async (req, res) => {
+  const result = await mysql.query("auditListByCustomer", req.body.param);
   res.send(result);
 });
 
@@ -416,7 +457,7 @@ app.post("/login", async (req, res) => {
     if (result[0].user_pw == user.userPw) {
       res.json({
         success: true,
-        message: "로그인 성공",
+        message: `${result[0].user_name}위원님 반갑습니다!`,
         userData: result[0],
       });
     } else {

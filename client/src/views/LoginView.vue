@@ -50,7 +50,8 @@ export default {
     return {
       user: {
         email: '',
-        pw: ''
+        pw: '',
+        name: ''
       }
     }
   },
