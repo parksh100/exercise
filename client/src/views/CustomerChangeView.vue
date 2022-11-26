@@ -3082,7 +3082,7 @@ export default {
 
     // 1. db에서 데이터 가져오기
     const dbData = await this.$get(
-      `http://localhost:3000/api/customer/${this.id}`
+      `http://localhost:3000/api/customer/list/${this.id}`
     )
     console.log('dbData : ', dbData)
     // 2. 가져온 데이터를 customer에 할당

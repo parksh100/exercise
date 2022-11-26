@@ -48,8 +48,8 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                :class="{ active: $route.path == '/customer/list' }"
-                @click="goToMenu('/customer/list')"
+                :class="{ active: $route.path == '/customer/list/auditor' }"
+                @click="goToMenu('/customer/list/auditor')"
                 role="button"
                 >고객리스트</a
               >

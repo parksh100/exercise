@@ -290,6 +290,7 @@ app.post("/api/cr", async (req, res) => {
 // 심사신청 생성
 app.post("/api/cert/audit", async (req, res) => {
   const result = await mysql.query("certInsert", req.body.param);
+  // console.log(result);
   res.send(result);
 });
 
@@ -307,7 +308,7 @@ app.put("/api/auditor/:auditor_id", async (req, res) => {
 app.put("/api/customer/:customer_id", async (req, res) => {
   const { customer_id } = req.params;
   console.log(req.body.param);
-  console.log(customer_id);
+  // console.log(customer_id);
   const result = await mysql.query("customerUpdate", [
     req.body.param,
     customer_id,

@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <h3 class="mb-4 fw-bold text-center">인증심사등록</h3>
+    <h3 class="mb-4 fw-bold text-center">인증심사정보 수정화면</h3>
     <hr />
     <p>넘어온 id: {{ id }}</p>
     <h5 class="fw-bold">
@@ -83,10 +83,7 @@
           <td>{{ item.audit_s2_end }}</td>
           <td>{{ $convertNumberFormat(item.audit_fee, '#,###') }}</td>
           <td>
-            <button
-              class="btn btn-warning btn-sm"
-              @click="goToChange(item.audit_no)"
-            >
+            <button class="btn btn-warning btn-sm" @click="goToChange">
               수정
             </button>
           </td>
@@ -368,6 +365,7 @@ export default {
   data() {
     return {
       id: '',
+      customer_id: '',
       isChecked: false,
       // searchName: '',
       imgSrc: '',
@@ -402,8 +400,10 @@ export default {
   created() {
     // console.log(this.customer)
     // console.log(this.$route.query.id)
-    this.id = this.$route.query.id
-    console.log('customerList에서 넘어온 customer_id:', this.id)
+    this.id = this.$route.query.audit_no
+    this.customer_id = this.$route.query.customer_id
+    console.log('심사실적에서 넘어온 수정 audit_no:', this.id)
+    console.log('심사실적에서 넘어온 수정 customer_id:', this.customer_id)
 
     // this.searchName = this.$route.query.searchName
   },
@@ -740,11 +740,11 @@ export default {
         this.getCertListByCustomer()
       })
     },
-    goToChange(id) {
+    goToChange() {
       console.log(this.id)
       this.$router.push({
         path: '/customer/cert/change',
-        query: { audit_no: id, customer_id: this.id }
+        query: { customer_id: this.id }
       })
     },
     goToList() {

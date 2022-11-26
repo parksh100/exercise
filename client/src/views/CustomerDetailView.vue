@@ -578,7 +578,7 @@ export default {
     },
 
     goToList() {
-      this.$router.push({ path: '/customer/list' })
+      this.$router.push({ path: '/customer/list/auditor' })
     },
     // push selected customer id to change page
     goToChange() {

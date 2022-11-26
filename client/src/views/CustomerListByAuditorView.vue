@@ -72,12 +72,22 @@
             >
               삭제
             </button> -->
+            <!-- <p>{{ item.customer_id }}</p> -->
             <button
               class="btn btn-primary btn-sm me-1"
               @click="goToApply(item.customer_id)"
             >
               심사신청
             </button>
+            <!-- <router-link
+              :to="{
+                name: 'CertCreateView',
+                params: { customer_id: item.customer_id }
+              }"
+              class="btn btn-primary btn-sm me-1"
+              >심사신청</router-link
+            > -->
+
             <!--<button
               class="btn btn-info btn-sm me-1"
               @click="goToCR(item.customer_id)"
@@ -156,7 +166,7 @@ export default {
       this.$router.push({ path: '/login' })
     }
 
-    this.list = await this.$get('/api/customer/all')
+    // this.list = await this.$get('/api/customer/all')
     // console.log('list', this.list)
     // this.listByAuditor = await this.$post('/api/customer/list/auditor', {
     //   param: this.user.userInfo.email
@@ -197,18 +207,18 @@ export default {
       })
     },
 
-    goToCert(id) {
-      // go to /cert/post with customer_id
-      this.$router.push({
-        path: '/customer/cert/list',
-        query: { customer_id: id }
-      })
-      // this.$router.push({
-      //   path: '/cert/post',
-      //   query: { customer_id: id }
-      // })
-      console.log('심사신청으로 넘긴 id :', id)
-    },
+    // goToCert(id) {
+    //   // go to /cert/post with customer_id
+    //   this.$router.push({
+    //     path: '/customer/cert/list',
+    //     query: { customer_id: id }
+    //   })
+    // this.$router.push({
+    //   path: '/cert/post',
+    //   query: { customer_id: id }
+    // })
+    //   console.log('심사신청으로 넘긴 id :', id)
+    // },
 
     goToCR(id) {
       this.$router.push({
@@ -216,20 +226,26 @@ export default {
         query: { customer_id: id }
       })
     },
+    // query방식으로 넘기기
     goToApply(id) {
       console.log(id)
       this.$router.push({
         path: '/customer/cert',
-        query: { customer_id: id }
+        query: { id: id }
       })
     },
+    // params방식으로 넘기기
     // goToApply(id) {
     //   console.log(id)
     //   this.$router.push({
-    //     name: '/customer/cert',
-    //     params: { customer_id: id }
+    //     name: 'CertCreateView',
+    //     params: { id: id }
     //   })
+    //   console.log('심사신청으로 넘긴 id: ', id)
     // },
+
+    // router-link로 넘기기
+
     doExcel() {
       this.$ExcelFromTable(this.headers, this.list, 'customers', {})
     },

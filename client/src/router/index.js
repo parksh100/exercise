@@ -55,12 +55,12 @@ const routes = [
         /* webpackChunkName: "customer" */ '../views/CustomerCreateView.vue'
       )
   },
-  {
-    path: '/customer/list',
-    name: 'customerList',
-    component: () =>
-      import(/* webpackChunkName: "customer" */ '../views/CustomerListView.vue')
-  },
+  // {
+  //   path: '/customer/list',
+  //   name: 'customerList',
+  //   component: () =>
+  //     import(/* webpackChunkName: "customer" */ '../views/CustomerListView.vue')
+  // },
   {
     path: '/customer/list/auditor',
     name: 'CustomerListByAuditor',
@@ -85,12 +85,25 @@ const routes = [
         /* webpackChunkName: "customer" */ '../views/CustomerChangeView.vue'
       )
   },
+  // {
+  //   path: '/customer/cert/',
+  //   name: 'CertCreateView',
+  //   component: CertCreateView,
+  //   props: true
+  // },
   {
     path: '/customer/cert',
     name: 'CertCreateView',
     component: () =>
       import(/* webpackChunkName: "cert" */ '../views/CertCreateView.vue')
   },
+  {
+    path: '/customer/cert/change',
+    name: 'CertChangeView',
+    component: () =>
+      import(/* webpackChunkName: "cert" */ '../views/CertChangeView.vue')
+  },
+
   {
     path: '/customer/cert/list',
     name: 'AuditListView',
