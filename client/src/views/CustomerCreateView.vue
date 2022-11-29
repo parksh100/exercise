@@ -1,20 +1,21 @@
+a
 <template>
   <div class="container mt-5">
     <h3 class="mb-4 fw-bold text-center">인증심사신청</h3>
     <hr />
-    <!-- <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">심사유형</label>
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">고객구분</label>
       <div class="col-sm-9">
         <div class="form-check form-check-inline">
           <input
             class="form-check-input"
             type="radio"
             name=""
-            id="initial"
-            value="최초"
-            v-model="customer.certification_type"
+            id="new"
+            value="신규"
+            v-model="customer.customer_type"
           />
-          <label class="form-check-label" for="initial">최초심사</label>
+          <label class="form-check-label" for="new">신규</label>
         </div>
 
         <div class="form-check form-check-inline">
@@ -22,29 +23,14 @@
             class="form-check-input"
             type="radio"
             name=""
-            id="transSurveillance"
-            value="전환사후"
-            v-model="customer.certification_type"
+            id="transfer"
+            value="전환"
+            v-model="customer.customer_type"
           />
-          <label class="form-check-label" for="transSurveillance"
-            >전환사후심사</label
-          >
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name=""
-            id="transRenewal"
-            value="전환갱신"
-            v-model="customer.certification_type"
-          />
-          <label class="form-check-label" for="transRenewal"
-            >전환갱신심사</label
-          >
+          <label class="form-check-label" for="transfer">전환</label>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">국문상호</label>
@@ -79,9 +65,10 @@
         <input
           type="text"
           class="form-control"
-          v-model.trim="customer.business_no"
+          v-model.trim="business_no"
+          maxlength="12"
           placeholder="번호만 입력"
-          @keyup="getBusinessNoMask(customer.business_no)"
+          @keyup="getBusinessNoMask(business_no)"
         />
       </div>
     </div>
@@ -101,10 +88,9 @@
         <input
           type="text"
           class="form-control"
-          v-model.trim="customer.ceo_phone"
+          v-model.trim="ceo_phone"
           placeholder="번호만 입력"
-          @keyup="getMobileMask(customer.ceo_phone)"
-          limit="11"
+          @keyup="getCeoMobileMask(ceo_phone)"
         />
       </div>
     </div>
@@ -120,9 +106,10 @@
         <input
           type="text"
           class="form-control"
-          v-model.trim="customer.phone"
-          @keyup="getPhoneMask(customer.phone)"
+          v-model.trim="phone"
+          @keyup="getPhoneMask(phone)"
           placeholder="번호만 입력"
+          maxlength="13"
         />
       </div>
     </div>
@@ -132,9 +119,10 @@
         <input
           type="text"
           class="form-control"
-          v-model.trim="customer.fax"
-          @keyup="getFaxMask(customer.fax)"
+          v-model.trim="fax"
+          @keyup="getFaxMask(fax)"
           placeholder="번호만 입력"
+          maxlength="13"
         />
       </div>
     </div>
@@ -257,8 +245,9 @@
           type="text"
           class="form-control"
           placeholder="번호만 입력"
-          v-model.trim="customer.contact_phone"
-          @keyup="getContactPhoneMask(customer.contact_phone)"
+          v-model.trim="contact_phone"
+          @keyup="getContactPhoneMask(contact_phone)"
+          maxlength="13"
         />
       </div>
     </div>
@@ -292,95 +281,7 @@
         />
       </div>
     </div>
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">신청 인증표준</label>
-      <div class="col-sm-9">
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            id="certification_standard_1"
-            value="QMS"
-            v-model="customer.certification_standard"
-            @change="getClassifyAudit"
-          />
-          <label class="form-check-label" for="certification_standard_1"
-            >ISO9001</label
-          >
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            id="certification_standard_2"
-            value="EMS"
-            v-model="customer.certification_standard"
-            @change="getClassifyAudit"
-          />
-          <label class="form-check-label" for="certification_standard_2"
-            >ISO14001</label
-          >
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            id="certification_standard_3"
-            value="OHSMS"
-            v-model="customer.certification_standard"
-            @change="getClassifyAudit"
-          />
-          <label class="form-check-label" for="certification_standard_3"
-            >ISO45001</label
-          >
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            id="certification_standard_4"
-            value="CGMP"
-            v-model="customer.certification_standard"
-            @change="getClassifyAudit"
-          />
-          <label class="form-check-label" for="certification_standard_4"
-            >ISO22716</label
-          >
-        </div>
-        <div>{{ customer.certification_standard }}</div>
-      </div>
-    </div>
-    <!-- 계약검토 심사구분 -->
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">심사구분</label>
-      <div class="col-sm-9">
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="inlineRadioOptions"
-            id="classify_1"
-            value="단일심사"
-            v-model="customer.classify_audit"
-            disabled
-          />
-          <label class="form-check-label" for="classify_1">단일심사</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="inlineRadioOptions"
-            id="classify_2"
-            value="통합심사"
-            v-model="customer.classify_audit"
-            disabled
-          />
 
-          <label class="form-check-label" for="classify_2">통합심사</label>
-        </div>
-      </div>
-    </div>
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">종업원 수</label>
       <div class="col-sm-9">
@@ -443,7 +344,12 @@
       </div>
     </div>
     <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">영문 인증범위</label>
+      <label class="col-sm-3 col-form-label"
+        ><a href="https://translate.google.co.kr/?hl=ko" target="_blank">
+          영문 인증범위</a
+        ></label
+      >
+
       <div class="col-sm-9">
         <div>
           <textarea
@@ -465,6 +371,7 @@
             id="certification_activity_1"
             value="설계개발"
             v-model.trim="customer.activity"
+            name="certification_activity"
           />
           <label class="form-check-label" for="certification_activity_1"
             >설계/개발</label
@@ -477,6 +384,7 @@
             id="certification_activity_2"
             value="제조생산"
             v-model="customer.activity"
+            name="certification_activity"
           />
           <label class="form-check-label" for="certification_activity_2"
             >제조/생산</label
@@ -489,6 +397,7 @@
             id="certification_activity_3"
             value="설치시공"
             v-model="customer.activity"
+            name="certification_activity"
           />
           <label class="form-check-label" for="certification_activity_3"
             >설치/시공</label
@@ -501,6 +410,7 @@
             id="certification_activity_4"
             value="판매"
             v-model="customer.activity"
+            name="certification_activity"
           />
           <label class="form-check-label" for="certification_activity_4"
             >판매</label
@@ -513,6 +423,7 @@
             id="certification_activity_5"
             value="서비스"
             v-model="customer.activity"
+            name="certification_activity"
           />
           <label class="form-check-label" for="certification_activity_5"
             >서비스</label
@@ -3065,9 +2976,43 @@
         <li>파일 확장자 : pdf, 이미지 파일만 가능</li>
       </ul>
     </div>
+    <!-- 이전인증서 첨부 -->
+    <div v-show="customer.customer_type === '전환'">
+      <div class="row mb-2">
+        <label class="col-sm-3 col-form-label">이전인증서 첨부</label>
+        <div class="col-sm-9">
+          <input
+            type="file"
+            class="form-control"
+            accept="application/pdf, image/*"
+            accept-charset="utf-8"
+            @change="uploadFile($event.target.files)"
+          />
+          <input
+            type="text"
+            class="form-control mt-2"
+            v-model="customer.file_transCertification_originalname"
+            v-if="customer.file_transCertification_originalname"
+          />
+        </div>
+        <!-- <img
+        :src="imgSrc"
+        alt=""
+        style="width: 100px; height: auto"
+      /> -->
+      </div>
 
-    <button class="btn btn-secondary me-1" @click="goToList">목록</button>
-    <button class="btn btn-primary" @click="doSave">저장</button>
+      <div class="alert alert-secondary mb-5" role="alert">
+        <ul>
+          <li>최대 1개 가능</li>
+          <li>파일 확장자 : pdf, 이미지 파일만 가능</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-end">
+      <button class="btn btn-secondary me-1" @click="goToList">목록</button>
+      <button class="btn btn-primary" @click="doSave">저장</button>
+    </div>
   </div>
 </template>
 
@@ -3090,10 +3035,16 @@ export default {
       id: '',
       // searchName: '',
       imgSrc: '',
+      fileCert: '',
       imgExt: '',
+      ceo_phone: '',
+      business_no: '',
+      phone: '',
+      fax: '',
+      contact_phone: '',
       customer: {
         // id: -1,
-        certification_type: '',
+        customer_type: '',
         name_ko: '',
         name_en: '',
         business_no: '',
@@ -3182,6 +3133,9 @@ export default {
         img_license: '',
         img_license_originalname: '',
         imgExt: '',
+        file_transCertification: '',
+        file_transCertification_originalname: '',
+        file_transCertification_ext: '',
         auditor_name: '',
         auditor_email: ''
       }
@@ -3260,45 +3214,163 @@ export default {
     },
     getBusinessNoMask(val) {
       const res = this.BizMask(val)
-      console.log(res)
-      this.customer.business_no = res
+      // console.log(res)
+      this.business_no = res
       // 서버 전송 값에는 '-' 제거
-      this.model.business_no = this.customer.business_no.replace(/[^0-9]/g, '')
+      this.customer.business_no = this.business_no.replace(/[^0-9]/g, '')
+      // this.model.business_no = this.customer.business_no.replace(/-/g, '')
     },
-    getMobileMask(val) {
-      const res = this.MobileMask(val)
-      this.customer.ceo_phone = res
-      // 서버 전송 값에는 '-' 제거
-      this.model.customer.ceo_phone = this.customer.ceo_phone.replace(
-        /[^0-9]/g,
-        ''
-      )
+    BizMask(bizNo) {
+      if (!bizNo) return bizNo
+      bizNo = bizNo.replace(/[^0-9]/g, '')
+      // bizNo = bizNo.replace(/-/g, '')
+      let res = ''
+      if (bizNo.length <= 3) {
+        res = bizNo
+      } else {
+        if (bizNo.length <= 5) {
+          // res = bizNo
+          res = bizNo.substr(0, 3) + '-' + bizNo.substr(3)
+        } else if (bizNo.length <= 10) {
+          res =
+            bizNo.substr(0, 3) +
+            '-' +
+            bizNo.substr(3, 2) +
+            '-' +
+            bizNo.substr(5, 5)
+        } else if (bizNo.length >= 11) {
+          this.$swal('사업자 번호를 확인해주세요.')
+        }
+      }
+      return res
     },
+    // phoneFomatter(value) {
+    //   if (!value) {
+    //     return ''
+    //   }
+    //   value = value.replace(/[^0-9]/g, '')
+
+    //   const result = []
+    //   let restNumber = ''
+
+    //   // 지역번호와 나머지 번호로 나누기
+    //   if (value.startsWith('02')) {
+    //     result.push(value.substring(0, 2))
+    //     restNumber = value.substring(2)
+    //   } else if (value.startsWith('1')) {
+    //     // 지역번호가 없는 경우
+    //     // 1xxx-yyyy
+    //     restNumber = value
+    //   } else {
+    //     // 나머지 3자리 지역번호
+    //     // 0xxx-yyyy-zzzz
+    //     result.push(value.substring(0, 3))
+    //     restNumber = value.substring(3)
+    //   }
+
+    //   if (restNumber.length === 7) {
+    //     // 7자리만 남았을 때는 xxxx-yyyy
+    //     result.push(restNumber.substring(0, 3))
+    //     result.push(restNumber.substring(3))
+    //   } else {
+    //     result.push(restNumber.substring(0, 4))
+    //     result.push(restNumber.substring(4))
+    //   }
+
+    //   return result.filter((val) => val).join('-')
+    // },
+
     getContactPhoneMask(val) {
       const res = this.MobileMask(val)
-      this.customer.contact_phone = res
+      this.contact_phone = res
       // 서버 전송 값에는 '-' 제거
-      this.model.customer.contact_phone = this.customer.contact_phone.replace(
-        /[^0-9]/g,
-        ''
-      )
+      this.customer.contact_phone = this.contact_phone
     },
+    getCeoMobileMask(val) {
+      const res = this.MobileMask(val)
+      this.ceo_phone = res
+      // 서버 전송 값에는 '-' 제거
+      this.customer.ceo_phone = this.ceo_phone
+    },
+    MobileMask(phoneNumber) {
+      if (!phoneNumber) return phoneNumber
+      phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+      let res = ''
+      if (phoneNumber.length < 4) {
+        res = phoneNumber
+      } else {
+        // if (phoneNumber.substr(0, 2) === '02') {
+        //   if (phoneNumber.length <= 5) {
+        //     // 02-123-5678
+        //     res = phoneNumber.substr(0, 2) + '-' + phoneNumber.substr(2, 3)
+        //   } else if (phoneNumber.length > 5 && phoneNumber.length <= 9) {
+        //     // 02-123-5678
+        //     res =
+        //       phoneNumber.substr(0, 2) +
+        //       '-' +
+        //       phoneNumber.substr(2, 3) +
+        //       '-' +
+        //       phoneNumber.substr(5)
+        //   } else if (phoneNumber.length > 9) {
+        //     // 02-1234-5678
+        //     res =
+        //       phoneNumber.substr(0, 2) +
+        //       '-' +
+        //       phoneNumber.substr(2, 4) +
+        //       '-' +
+        //       phoneNumber.substr(6)
+        //   }
+        // } else {
+        if (phoneNumber.length < 8) {
+          // res = phoneNumber
+          res = phoneNumber.substr(0, 3) + '-' + phoneNumber.substr(3, 4)
+        } else if (phoneNumber.length < 12) {
+          //   res = phoneNumber.substr(0, 4) + '-' + phoneNumber.substr(4)
+          // } else if (phoneNumber.length === 9) {
+          res =
+            phoneNumber.substr(0, 3) +
+            '-' +
+            phoneNumber.substr(3, 4) +
+            '-' +
+            phoneNumber.substr(7)
+          // } else if (phoneNumber.length === 10) {
+          //   res =
+          //     phoneNumber.substr(0, 3) +
+          //     '-' +
+          //     phoneNumber.substr(3, 3) +
+          //     '-' +
+          //     phoneNumber.substr(6)
+          // } else if (phoneNumber.length === 11) {
+          //   // 010-1234-5678
+          //   res =
+          //     phoneNumber.substr(0, 3) +
+          //     '-' +
+          //     phoneNumber.substr(3, 4) +
+          //     '-' +
+          //     phoneNumber.substr(7)
+        } else {
+          this.$swal('휴대폰 번호를 확인해주세요.')
+        }
+      }
+      // }
+      return res
+    },
+
     getPhoneMask(val) {
       const res = this.getMask(val)
-      this.customer.phone = res
+      this.phone = res
       // 서버 전송 값에는 '-' 제거
-      this.model.customer.phone = this.customer.phone.replace(/[^0-9]/g, '')
+      this.customer.phone = this.phone
     },
     getFaxMask(val) {
       const res = this.getMask(val)
-      this.customer.fax = res
+      this.fax = res
       // 서버 전송 값에는 '-' 제거
-      this.model.customer.fax = this.customer.fax.replace(/[^0-9]/g, '')
+      this.customer.fax = this.fax
     },
     getMask(phoneNumber) {
       if (!phoneNumber) return phoneNumber
       phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
-
       let res = ''
       if (phoneNumber.length < 3) {
         res = phoneNumber
@@ -3357,115 +3429,6 @@ export default {
       return res
     }, // getMask
 
-    MobileMask(phoneNumber) {
-      if (!phoneNumber) return phoneNumber
-      phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
-
-      let res = ''
-      if (phoneNumber.length < 4) {
-        res = phoneNumber
-      } else {
-        if (phoneNumber.substr(0, 2) === '02') {
-          if (phoneNumber.length <= 5) {
-            // 02-123-5678
-            res = phoneNumber.substr(0, 2) + '-' + phoneNumber.substr(2, 3)
-          } else if (phoneNumber.length > 5 && phoneNumber.length <= 9) {
-            // 02-123-5678
-            res =
-              phoneNumber.substr(0, 2) +
-              '-' +
-              phoneNumber.substr(2, 3) +
-              '-' +
-              phoneNumber.substr(5)
-          } else if (phoneNumber.length > 9) {
-            // 02-1234-5678
-            res =
-              phoneNumber.substr(0, 2) +
-              '-' +
-              phoneNumber.substr(2, 4) +
-              '-' +
-              phoneNumber.substr(6)
-          }
-        } else {
-          if (phoneNumber.length < 8) {
-            res = phoneNumber
-          } else if (phoneNumber.length === 8) {
-            res = phoneNumber.substr(0, 4) + '-' + phoneNumber.substr(4)
-          } else if (phoneNumber.length === 9) {
-            res =
-              phoneNumber.substr(0, 3) +
-              '-' +
-              phoneNumber.substr(3, 3) +
-              '-' +
-              phoneNumber.substr(6)
-          } else if (phoneNumber.length === 10) {
-            res =
-              phoneNumber.substr(0, 3) +
-              '-' +
-              phoneNumber.substr(3, 3) +
-              '-' +
-              phoneNumber.substr(6)
-          } else if (phoneNumber.length === 11) {
-            // 010-1234-5678
-            res =
-              phoneNumber.substr(0, 3) +
-              '-' +
-              phoneNumber.substr(3, 4) +
-              '-' +
-              phoneNumber.substr(7)
-          } else if (phoneNumber.length >= 12) {
-            this.$swal('휴대폰 번호를 확인해주세요.')
-          }
-        }
-      }
-      return res
-    },
-    BizMask(bizNo) {
-      if (!bizNo) return bizNo
-      bizNo = bizNo.replace(/[^0-9]/g, '')
-
-      let res = ''
-      if (bizNo.length <= 3) {
-        res = bizNo
-      } else {
-        if (bizNo.length <= 5) {
-          // res = bizNo
-          res = bizNo.substr(0, 3) + '-' + bizNo.substr(3)
-        } else if (bizNo.length <= 10) {
-          res =
-            bizNo.substr(0, 3) +
-            '-' +
-            bizNo.substr(3, 2) +
-            '-' +
-            bizNo.substr(5, 5)
-        } else if (bizNo.length >= 11) {
-          this.$swal('사업자 번호를 확인해주세요.')
-        }
-        // if (bizNo.substr(0, 2) === '02') {
-        //   if (bizNo.length <= 5) {
-        //     // 02-123-5678
-        //     res = bizNo.substr(0, 3) + '-' + bizNo.substr(3, 5)
-        //   } else if (bizNo.length > 5 && bizNo.length <= 10) {
-        //     // 02-123-5678
-        //     res =
-        //       bizNo.substr(0, 3) +
-        //       '-' +
-        //       bizNo.substr(3, 5) +
-        //       '-' +
-        //       bizNo.substr(8)
-        //   } else if (bizNo.length > 9) {
-        //     // 02-1234-5678
-        //     res =
-        //       bizNo.substr(0, 2) +
-        //       '-' +
-        //       bizNo.substr(2, 4) +
-        //       '-' +
-        //       bizNo.substr(6)
-        //   }
-        // }
-      }
-      return res
-    },
     execDaumPostcode() {
       // @click을 사용할 때 함수는 이렇게 작성해야 한다.
       new window.daum.Postcode({
@@ -3512,6 +3475,17 @@ export default {
         }
       }).open()
     },
+    async uploadCert(files) {
+      const r = await this.$upload('/api/upload/file', files[0])
+      console.log(r)
+      this.fileCert = `http://localhost:3000/static/uploads/${r.filename}`
+      this.customer.file_transCertification = r.filename
+      this.customer.file_transCertification_originalname = r.originalname
+      this.file_transCertification_ext = r.mimetype
+      console.log(this.customer.file_transCertification)
+      console.log(this.customer.file_transCertification_originalname)
+      console.log(this.file_transCertification_ext)
+    },
     async uploadFile(files) {
       const r = await this.$upload('/api/upload/file', files[0])
       console.log(r)
@@ -3524,112 +3498,115 @@ export default {
       console.log(this.imgExt)
     },
     async doSave() {
-      // if (this.customer.certification_type === '') {
-      //   return this.$swal('인증유형을 선택해주세요.')
+      // if (this.customer.customer_type === '') {
+      //   return this.$swal('고객구분을 선택해주세요.')
       // }
-      if (this.customer.name_ko === '') {
-        return this.$swal('국문회사명을 입력하세요.')
-      }
-      if (this.customer.name_en === '') {
-        return this.$swal('영문회사명을 입력하세요.')
-      }
-      if (this.customer.business_no === '') {
-        return this.$swal('사업자등록번호를 입력하세요.')
-      }
-      if (this.customer.ceo_name === '') {
-        return this.$swal('대표자명을 입력하세요.')
-      }
-      if (this.customer.email === '') {
-        return this.$swal('대표이메일을 입력하세요.')
-      }
-      if (this.customer.phone === '') {
-        return this.$swal('대표전화번호를 입력하세요.')
-      }
-      if (this.customer.address_ko === '') {
-        return this.$swal('주소를 입력하세요.')
-      }
-      if (this.customer.contact_name === '') {
-        return this.$swal('담당자명/직위를 입력하세요.')
-      }
-      if (this.customer.contact_phone === '') {
-        return this.$swal('담당자 연락처를 입력하세요.')
-      }
-      if (this.customer.contact_email === '') {
-        return this.$swal('담당자 이메일을 입력하세요.')
-      }
-      if (this.customer.organization_scope === '') {
-        return this.$swal('조직의 범위를 입력하세요.')
-      }
-      if (this.customer.certification_standard === '') {
-        return this.$swal('신청 인증표준을 입력하세요.')
-      }
-      if (this.customer.employee_count === '') {
-        return this.$swal('종업원 수를 입력하세요.')
-      }
-      if (this.customer.design === '') {
-        return this.$swal('설계/개발 유무를 입력하세요.')
-      }
-      if (this.customer.scope_ko === '') {
-        return this.$swal('국문 인증범위를 입력하세요.')
-      }
-      if (this.customer.scope_en === '') {
-        return this.$swal('영문 인증범위를 입력하세요.')
-      }
-      if (this.customer.iaf_code === '') {
-        return this.$swal('IAF Code를 입력하세요.')
-      }
-      if (this.customer.activity === '') {
-        return this.$swal('인증범위 활동을 입력하세요.')
-      }
-      if (this.customer.process === '') {
-        return this.$swal('제품(서비스)명 및 공정을 입력하세요.')
-      }
-      if (this.customer.exclusion === '') {
-        return this.$swal('적용제외조항 유무를 입력하세요.')
-      }
-      if (this.customer.manual_date === '') {
-        return this.$swal('매뉴얼 제개정일을 입력하세요.')
-      }
-      if (this.customer.internal_date === '') {
-        return this.$swal('내부심사일을 입력하세요.')
-      }
-      if (this.customer.management_date === '') {
-        return this.$swal('경영검토일을 입력하세요.')
-      }
-      if (this.customer.manual_date === '') {
-        return this.$swal('매뉴얼 제개정일을 입력하세요.')
-      }
-      if (this.customer.outsourcing === '') {
-        return this.$swal('외주처리유무를 입력하세요.')
-      }
-      if (this.customer.construction_license === '') {
-        return this.$swal('건설면허보유여부를 입력하세요.')
-      }
-      if (this.customer.certification_standard.includes('EMS') === true) {
-        if (this.customer.environmental_aspect === '') {
-          return this.$swal('환경측면 파악여부를 입력하세요.')
-        }
-        if (this.customer.environmental_permit === '') {
-          return this.$swal('환경허가 신고사항 유무를 입력하세요.')
-        }
-        if (this.customer.environmental_accident === '') {
-          return this.$swal('환경사고 유무를 입력하세요.')
-        }
-      }
-      if (this.customer.certification_standard.includes('OHSMS') === true) {
-        if (this.customer.risk_factor === '') {
-          return this.$swal('위험요소 파악여부를 입력하세요.')
-        }
-        if (this.customer.outside_worker === '') {
-          return this.$swal('사업장 외부 근무자 유무를 입력하세요.')
-        }
-        if (this.customer.safety_accident === '') {
-          return this.$swal('안전사고 유무를 입력하세요.')
-        }
-      }
-      if (this.customer.img_license === '') {
-        return this.$swal('사업자등록증을 첨부하세요.')
-      }
+      // if (this.customer.name_ko === '') {
+      //   return this.$swal('국문회사명을 입력하세요.')
+      // }
+      // if (this.customer.name_en === '') {
+      //   return this.$swal('영문회사명을 입력하세요.')
+      // }
+      // if (this.customer.business_no === '') {
+      //   return this.$swal('사업자등록번호를 입력하세요.')
+      // }
+      // if (this.customer.ceo_name === '') {
+      //   return this.$swal('대표자명을 입력하세요.')
+      // }
+      // if (this.customer.email === '') {
+      //   return this.$swal('대표이메일을 입력하세요.')
+      // }
+      // if (this.customer.phone === '') {
+      //   return this.$swal('대표전화번호를 입력하세요.')
+      // }
+      // if (this.customer.address_ko === '') {
+      //   return this.$swal('주소를 입력하세요.')
+      // }
+      // if (this.customer.contact_name === '') {
+      //   return this.$swal('담당자명/직위를 입력하세요.')
+      // }
+      // if (this.customer.contact_phone === '') {
+      //   return this.$swal('담당자 연락처를 입력하세요.')
+      // }
+      // if (this.customer.contact_email === '') {
+      //   return this.$swal('담당자 이메일을 입력하세요.')
+      // }
+      // if (this.customer.organization_scope === '') {
+      //   return this.$swal('조직의 범위를 입력하세요.')
+      // }
+      // if (this.customer.certification_standard === '') {
+      //   return this.$swal('신청 인증표준을 입력하세요.')
+      // }
+      // if (this.customer.employee_count === '') {
+      //   return this.$swal('종업원 수를 입력하세요.')
+      // }
+      // if (this.customer.design === '') {
+      //   return this.$swal('설계/개발 유무를 입력하세요.')
+      // }
+      // if (this.customer.scope_ko === '') {
+      //   return this.$swal('국문 인증범위를 입력하세요.')
+      // }
+      // if (this.customer.scope_en === '') {
+      //   return this.$swal('영문 인증범위를 입력하세요.')
+      // }
+      // if (this.customer.iaf_code === '') {
+      //   return this.$swal('IAF Code를 입력하세요.')
+      // }
+      // if (this.customer.activity === '') {
+      //   return this.$swal('인증범위 활동을 입력하세요.')
+      // }
+      // if (this.customer.process === '') {
+      //   return this.$swal('제품(서비스)명 및 공정을 입력하세요.')
+      // }
+      // if (this.customer.exclusion === '') {
+      //   return this.$swal('적용제외조항 유무를 입력하세요.')
+      // }
+      // if (this.customer.manual_date === '') {
+      //   return this.$swal('매뉴얼 제개정일을 입력하세요.')
+      // }
+      // if (this.customer.internal_date === '') {
+      //   return this.$swal('내부심사일을 입력하세요.')
+      // }
+      // if (this.customer.management_date === '') {
+      //   return this.$swal('경영검토일을 입력하세요.')
+      // }
+      // if (this.customer.manual_date === '') {
+      //   return this.$swal('매뉴얼 제개정일을 입력하세요.')
+      // }
+      // if (this.customer.outsourcing === '') {
+      //   return this.$swal('외주처리유무를 입력하세요.')
+      // }
+      // if (this.customer.construction_license === '') {
+      //   return this.$swal('건설면허보유여부를 입력하세요.')
+      // }
+      // if (this.customer.certification_standard.includes('EMS') === true) {
+      //   if (this.customer.environmental_aspect === '') {
+      //     return this.$swal('환경측면 파악여부를 입력하세요.')
+      //   }
+      //   if (this.customer.environmental_permit === '') {
+      //     return this.$swal('환경허가 신고사항 유무를 입력하세요.')
+      //   }
+      //   if (this.customer.environmental_accident === '') {
+      //     return this.$swal('환경사고 유무를 입력하세요.')
+      //   }
+      // }
+      // if (this.customer.certification_standard.includes('OHSMS') === true) {
+      //   if (this.customer.risk_factor === '') {
+      //     return this.$swal('위험요소 파악여부를 입력하세요.')
+      //   }
+      //   if (this.customer.outside_worker === '') {
+      //     return this.$swal('사업장 외부 근무자 유무를 입력하세요.')
+      //   }
+      //   if (this.customer.safety_accident === '') {
+      //     return this.$swal('안전사고 유무를 입력하세요.')
+      //   }
+      // }
+      // if (this.customer.img_license === '') {
+      //   return this.$swal('사업자등록증을 첨부하세요.')
+      // }
+      // if (this.customer.file_transCertification === '') {
+      //   return this.$swal('이전인증서를 첨부하세요.')
+      // }
 
       this.$swal({
         title: '고객정보를 저장 하시겠습니까?',
@@ -3646,7 +3623,7 @@ export default {
 
           const r = await this.$post('/api/customer', {
             param: {
-              certification_type: this.customer.certification_type,
+              customer_type: this.customer.customer_type,
               certification_standard: JSON.stringify(
                 this.customer.certification_standard
               ),
@@ -3745,7 +3722,12 @@ export default {
               auditor_email: this.$store.state.user.userInfo.email,
               img_license: this.customer.img_license,
               img_license_originalname: this.customer.img_license_originalname,
-              imgExt: this.customer.imgExt
+              imgExt: this.customer.imgExt,
+              file_transCertification: this.customer.file_transCertification,
+              file_transCertification_originalname:
+                this.customer.file_transCertification_originalname,
+              file_transCertification_ext:
+                this.customer.file_transCertification_ext
             }
           })
 
@@ -3758,7 +3740,7 @@ export default {
               '고객정보가 저장되었습니다.<br/> 고객리스트 화면에서 심사신청을 진행해주세요'
             )
             this.$router.push({
-              path: '/customer/list',
+              path: '/customer/list/auditor',
               query: { customer_id: r.data.insertId }
             })
           }

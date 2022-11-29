@@ -471,8 +471,8 @@ export default {
   created() {
     // console.log(this.customer)
     // console.log(this.$route.query.id)
-    this.id = this.$route.query.customer_id
-    console.log('customerList에서 넘어온 customer_id:', this.id)
+    this.id = this.$route.query.id
+    console.log('customerList에서 넘어온 cid:', this.id)
 
     // this.searchName = this.$route.query.searchName
   },

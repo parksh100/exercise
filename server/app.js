@@ -226,7 +226,7 @@ app.get("/api/customer/cert/list", async (req, res) => {
 //인증심사리스트 by customer_id 조회
 app.get("/api/customer/cert/list/:customer_id", async (req, res) => {
   const { customer_id } = req.params;
-  console.log(customer_id);
+  // console.log(customer_id);
   const auditListByCustomer = await mysql.query(
     "auditListByCustomer",
     customer_id
@@ -234,12 +234,38 @@ app.get("/api/customer/cert/list/:customer_id", async (req, res) => {
   res.send(auditListByCustomer);
 });
 
-//customer detail
-app.get("/api/customer/list/:customer_id", async (req, res) => {
-  const { customer_id } = req.params;
-  console.log(customer_id);
-  const customerDetail = await mysql.query("customerDetail", customer_id);
+//인증심사리스트 by business_no 조회
+app.get("/api/customer/cert/list/cid/:business_no", async (req, res) => {
+  const { business_no } = req.params;
+  // console.log(business_no);
+  const auditListByBizNo = await mysql.query("auditListByBizNo", business_no);
+  res.send(auditListByBizNo);
+});
+
+//customer detail by customer_id 조회
+// app.get("/api/customer/list/:customer_id", async (req, res) => {
+//   const { customer_id } = req.params;
+//   console.log(customer_id);
+//   const customerDetail = await mysql.query("customerDetail", customer_id);
+//   res.send(customerDetail[0]);
+// });
+
+//customer detail by business_no 조회
+app.get("/api/customer/list/:business_no", async (req, res) => {
+  const { business_no } = req.params;
+  // console.log(business_no);
+  const customerDetail = await mysql.query(
+    "customerDetailByBizNo",
+    business_no
+  );
   res.send(customerDetail[0]);
+});
+
+//인증심사 detail by audit_no 조회
+app.get("/api/customer/audit/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  const AuditDetail = await mysql.query("auditListByAuditNo", audit_no);
+  res.send(AuditDetail[0]);
 });
 
 //인증심사 detail by audit_id
@@ -316,6 +342,15 @@ app.put("/api/customer/:customer_id", async (req, res) => {
   res.send(result);
 });
 
+// 심사정보 수정
+app.put("/api/customer/cert/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  console.log(req.body.param);
+  // console.log(customer_id);
+  const result = await mysql.query("auditUpdate", [req.body.param, audit_no]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
+  res.send(result);
+});
+
 // auditor 삭제
 app.delete("/api/auditor/:auditor_id", async (req, res) => {
   const { auditor_id } = req.params;
@@ -358,6 +393,12 @@ app.post("/api/customer/search", async (req, res) => {
 // auditList 검색 post by customer_id
 app.post("/api/customer/cert/list/:customer_id", async (req, res) => {
   const result = await mysql.query("auditListByCustomer", req.body.param);
+  res.send(result);
+});
+
+// auditList 검색 post by audit_no
+app.post("/api/customer/cert/list/audit_no/:audit_no", async (req, res) => {
+  const result = await mysql.query("auditListByAuditNo", req.body.param);
   res.send(result);
 });
 

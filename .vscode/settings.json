@@ -3,6 +3,8 @@
     "Axios",
     "exceljs",
     "filestream",
+    "Fomatter",
+    "Hypen",
     "Logined",
     "officedocument",
     "openxmlformats",

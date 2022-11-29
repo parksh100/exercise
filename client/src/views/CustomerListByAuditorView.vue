@@ -32,19 +32,27 @@
           <!-- <th width="4%">ID</th> -->
           <th style="width: 20%">회사명</th>
           <!-- <th style="width: 7%">인증유형</th> -->
-          <th style="width: 20">인증표준</th>
+          <th style="width: 7%">구분</th>
+          <th style="width: 7%">인원수</th>
+          <th style="width: 26%">인증범위</th>
           <th style="width: 10%">심사원</th>
           <th style="width: 5%">상태</th>
           <th style="width: 10%">신청일</th>
-          <th style="width: 35%">바로가기</th>
+          <th style="width: 10%">바로가기</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
         <tr :key="item.customer_id" v-for="item in listByAuditor">
           <!-- <td>{{ item.customer_id }}</td> -->
           <td>
-            <a
+            <!-- <a
               @click="goToDetail(item.customer_id)"
+              style="text-decoration: underline"
+              role="button"
+              >{{ item.name_ko }}</a
+            > -->
+            <a
+              @click="goToDetail(item.business_no)"
               style="text-decoration: underline"
               role="button"
               >{{ item.name_ko }}</a
@@ -52,8 +60,10 @@
           </td>
           <!-- <td>{{ item.certification_type }}</td> -->
           <td style="word-break: break-all">
-            {{ item.certification_standard }}
+            {{ item.customer_type }}
           </td>
+          <td>{{ item.employee_count }}</td>
+          <td>{{ item.scope_ko }}</td>
           <td>{{ item.auditor_name }}</td>
           <td>{{ item.status_yn }}</td>
           <td>
@@ -75,7 +85,7 @@
             <!-- <p>{{ item.customer_id }}</p> -->
             <button
               class="btn btn-primary btn-sm me-1"
-              @click="goToApply(item.customer_id)"
+              @click="goToApply(item.business_no)"
             >
               심사신청
             </button>
@@ -128,14 +138,26 @@ export default {
   data() {
     return {
       headers: [
-        { title: 'ID', key: 'customer_id' },
-        { title: '회사명', key: 'name_ko' },
-        { title: '인증유형', key: 'certification_type' },
-        { title: '인증표준', key: 'certification_standard' },
+        { title: '고객구분', key: 'customer_type' },
+        { title: '국문상호', key: 'name_ko' },
+        { title: '영문상호', key: 'name_en' },
+        { title: '사업자등록번호', key: 'business_no' },
         { title: '대표자명', key: 'ceo_name' },
+        { title: '대표자휴대번호', key: 'ceo_phone' },
+        { title: '대표전화번호', key: 'phone' },
+        { title: '대표팩스번호', key: 'fax' },
+        { title: '국문주소', key: 'address_ko' },
+        { title: '상세주소', key: 'address_detail' },
+        { title: '담당자명/직위', key: 'contact_name' },
+        { title: '담당자이메일', key: 'contact_email' },
+        { title: '조직의범위', key: 'organization_scope' },
+        { title: '설계개발유무', key: 'design' },
         { title: '종업원수', key: 'employee_count' },
         { title: '인증범위', key: 'scope_ko' },
-        { title: '담당자명', key: 'contact_name' },
+        { title: '인증범위활동', key: 'activity' },
+        { title: 'IAF코드', key: 'iaf_code' },
+        { title: '적용제외유무', key: 'exclusion' },
+        { title: '건설면허보유여부', key: 'construction_license' },
         { title: '심사원명', key: 'auditor_name' },
         { title: '인증상태', key: 'status_yn' },
         { title: '생성일', key: 'created_date' }
@@ -179,6 +201,7 @@ export default {
     )
     console.log('listByAuditor', this.listByAuditor)
     this.getList()
+    console.log('list', this.list)
   },
   unmounted() {},
   methods: {
@@ -199,11 +222,12 @@ export default {
     },
 
     goToDetail(id) {
-      console.log('Detail로 넘긴 customer_id', id)
+      // console.log('Detail로 넘긴 customer_id', id)
+      console.log('Detail로 넘긴 cid', id.replace(/[^0-9]/g, ''))
 
       this.$router.push({
         path: '/customer/detail',
-        query: { customer_id: id }
+        query: { id: id.replace(/[^0-9]/g, '') }
       })
     },
 
@@ -247,7 +271,7 @@ export default {
     // router-link로 넘기기
 
     doExcel() {
-      this.$ExcelFromTable(this.headers, this.list, 'customers', {})
+      this.$ExcelFromTable(this.headers, this.listByAuditor, 'customers', {})
     },
     doDelete(id) {
       this.$swal({

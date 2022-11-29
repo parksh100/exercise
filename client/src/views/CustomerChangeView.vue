@@ -2,50 +2,6 @@
   <div class="container mt-5">
     <h3 class="mb-4 fw-bold text-center">인증심사신청_수정화면</h3>
     <hr />
-    <!-- <hr style="width: 50%" /> -->
-    <!-- <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">심사유형</label>
-      <div class="col-sm-9">
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name=""
-            id="initial"
-            value="최초"
-            v-model="customer.certification_type"
-          />
-          <label class="form-check-label" for="initial">최초심사</label>
-        </div>
-
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="inlineRadioOptions"
-            id="transSurveillance"
-            value="전환사후"
-            v-model="customer.certification_type"
-          />
-          <label class="form-check-label" for="transSurveillance"
-            >전환사후심사</label
-          >
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="inlineRadioOptions"
-            id="transRenewal"
-            value="전환갱신"
-            v-model="customer.certification_type"
-          />
-          <label class="form-check-label" for="transRenewal"
-            >전환갱신심사</label
-          >
-        </div>
-      </div>
-    </div> -->
 
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">국문상호</label>
@@ -60,11 +16,6 @@
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">영문상호</label>
       <div class="col-sm-9">
-        <!-- <input
-          type="text"
-          class="form-control"
-          v-model.trim="customer.business_no"
-        /> -->
         <input
           type="text"
           class="form-control"
@@ -123,19 +74,6 @@
       </div>
     </div>
 
-    <!-- 국문주소 -->
-    <!-- <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">국문 주소</label>
-      <div class="col-sm-9">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="customer.address_ko"
-        />
-      </div>
-    </div> -->
-    <!-- end 국문주소 -->
-
     <!--start daum api  -->
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">우편번호</label>
@@ -166,15 +104,6 @@
         />
       </div>
     </div>
-    <!-- <label class="col-sm-3 col-form-label">지번주소</label>
-      <div class="col-sm-9">
-        <input
-          type="text"
-          class="form-control"
-          id="jibunAddress"
-          v-model.trim="customer.address_jibun"
-        />
-      </div> -->
 
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">상세주소</label>
@@ -275,7 +204,7 @@
         />
       </div>
     </div>
-    <div class="row mb-3">
+    <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">신청 인증표준</label>
       <div class="col-sm-9">
         <div class="form-check form-check-inline">
@@ -331,7 +260,7 @@
           >
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">종업원 수</label>
       <div class="col-sm-9">
@@ -2972,6 +2901,11 @@ export default {
       // searchName: '',
       imgSrc: '',
       imgExt: '',
+      ceo_phone: '',
+      business_no: '',
+      phone: '',
+      fax: '',
+      contact_phone: '',
       customer: {
         // id: -1,
         certification_type: '',
@@ -3089,9 +3023,9 @@ export default {
     // console.log('dbCertficationType : ', dbData.certification_type)
     // this.customer.certification_type = dbData.certification_type
     // console.log('dbname_ko : ',  dbData.name_ko)
-    this.customer.certification_type = dbData.certification_type
+    this.customer.customer_type = dbData.customer_type
+    // this.customer.certification_type = dbData.certification_type
     this.customer.name_ko = dbData.name_ko
-
     this.customer.name_en = dbData.name_en
     this.customer.business_no = dbData.business_no
     this.customer.ceo_name = dbData.ceo_name
@@ -3114,19 +3048,19 @@ export default {
     // certification_standard
     // console.log('certification_standard : ', dbData.certification_standard)
     // console.log(JSON.parse(dbData.certification_standard))
-    const dbCertificationStandard = JSON.parse(dbData.certification_standard)
+    // const dbCertificationStandard = JSON.parse(dbData.certification_standard)
     // console.log('dbCertificationStandard : ', dbCertificationStandard)
-    const checkbox = document.getElementsByName('certification_standard')
+    // const checkbox = document.getElementsByName('certification_standard')
     // console.log('checkbox : ', checkbox)
-    for (let i = 0; i < dbCertificationStandard.length; i++) {
-      // console.log('dbCertificationStandard[i] : ', dbCertificationStandard[i])
-      for (let j = 0; j < checkbox.length; j++) {
-        // console.log(checkbox[j].value)
-        if (dbCertificationStandard[i] === checkbox[j].value) {
-          this.customer.certification_standard.push(checkbox[j].value)
-        }
-      }
-    }
+    // for (let i = 0; i < dbCertificationStandard.length; i++) {
+    //   console.log('dbCertificationStandard[i] : ', dbCertificationStandard[i])
+    //   for (let j = 0; j < checkbox.length; j++) {
+    //     console.log(checkbox[j].value)
+    //     if (dbCertificationStandard[i] === checkbox[j].value) {
+    //       this.customer.certification_standard.push(checkbox[j].value)
+    //     }
+    //   }
+    // }
     this.customer.employee_count = dbData.employee_count
     this.customer.design = dbData.design
     this.customer.development_count = dbData.development_count
@@ -3150,7 +3084,7 @@ export default {
     // iaf_code
     // const dbIAFCode = JSON.stringify(dbData.iaf_code)
     const dbIAFCode = JSON.parse(dbData.iaf_code)
-    console.log('dbIAFCode : ', dbIAFCode)
+    // console.log('dbIAFCode : ', dbIAFCode)
     // console.log(dbIAFCode.length)
     const checkboxIAFCode = document.getElementsByName('iaf_code')
     // console.log('checkboxIAFCode : ', checkboxIAFCode)

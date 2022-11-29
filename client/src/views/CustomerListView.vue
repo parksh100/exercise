@@ -170,7 +170,7 @@ export default {
     },
 
     goToDetail(id) {
-      console.log('Detail로 넘긴 customer_id', id)
+      console.log('Detail로 넘긴 cid', id.replace(/[^0-9]/g, ''))
       this.$router.push({
         path: '/customer/detail',
         query: { customer_id: id }

@@ -2,7 +2,7 @@
   <div class="container mt-5">
     <h3 class="mb-4 fw-bold text-center">인증심사등록</h3>
     <hr />
-    <p>넘어온 id: {{ id }}</p>
+    <p style="font-size: small">{{ id }}</p>
     <h5 class="fw-bold">
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
       기본정보
@@ -19,7 +19,7 @@
         </colgroup>
         <tr>
           <th>회사명</th>
-          <th>인증표준</th>
+          <th>고객구분</th>
           <th>인증범위</th>
           <th>종업원수</th>
           <th>비고</th>
@@ -28,7 +28,7 @@
       <tbody class="table-group-divider">
         <tr>
           <td>{{ customer.name_ko }}</td>
-          <td>{{ customer.certification_standard }}</td>
+          <td>{{ customer.customer_type }}</td>
           <td>{{ customer.scope_ko }}</td>
           <td>{{ customer.employee_count }} 명</td>
           <td></td>
@@ -53,8 +53,9 @@
     <table class="table">
       <thead>
         <colgroup>
+          <col style="width: 10%" />
           <col style="width: 20%" />
-          <col style="width: 20%" />
+          <col style="width: 10%" />
           <col style="width: 10%" />
           <col style="width: 10%" />
           <col style="width: 10%" />
@@ -64,6 +65,7 @@
         </colgroup>
         <tr>
           <th>심사번호</th>
+          <th>심사표준</th>
           <th>심사유형</th>
           <th>차수</th>
           <th>외부심사원</th>
@@ -76,11 +78,12 @@
       <tbody class="table-group-divider">
         <tr v-for="item in dbAuditInfo" :key="item">
           <td>{{ item.audit_no }}</td>
+          <td>{{ item.audit_standard }}</td>
           <td>{{ item.audit_type }}</td>
           <td>{{ item.audit_degree }}</td>
           <td>{{ item.audit_auditor }}</td>
-          <td>{{ item.audit_s2_start }}</td>
-          <td>{{ item.audit_s2_end }}</td>
+          <td>{{ item.audit_s2_start.substring(0, 10) }}</td>
+          <td>{{ item.audit_s2_end.substring(0, 10) }}</td>
           <td>{{ $convertNumberFormat(item.audit_fee, '#,###') }}</td>
           <td>
             <button
@@ -140,6 +143,95 @@
       <label class="col-sm-3 col-form-label">심사번호</label>
       <div class="col-sm-9">
         {{ addAuditInfo.audit_no }}
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">신청 인증표준</label>
+      <div class="col-sm-9">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="certification_standard_1"
+            value="QMS"
+            v-model="addAuditInfo.audit_standard"
+            @change="getClassifyAudit()"
+          />
+          <label class="form-check-label" for="certification_standard_1"
+            >ISO9001</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="certification_standard_2"
+            value="EMS"
+            v-model="addAuditInfo.audit_standard"
+            @change="getClassifyAudit()"
+          />
+          <label class="form-check-label" for="certification_standard_2"
+            >ISO14001</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="certification_standard_3"
+            value="OHSMS"
+            v-model="addAuditInfo.audit_standard"
+            @change="getClassifyAudit()"
+          />
+          <label class="form-check-label" for="certification_standard_3"
+            >ISO45001</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="certification_standard_4"
+            value="CGMP"
+            v-model="addAuditInfo.audit_standard"
+            @change="getClassifyAudit()"
+          />
+          <label class="form-check-label" for="certification_standard_4"
+            >ISO22716</label
+          >
+        </div>
+        <div>{{ addAuditInfo.audit_standard }}</div>
+      </div>
+    </div>
+    <!-- 계약검토 심사구분 -->
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">심사구분</label>
+      <div class="col-sm-9">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="inlineRadioOptions"
+            id="classify_1"
+            value="단일심사"
+            v-model="addAuditInfo.audit_classify"
+            disabled
+          />
+          <label class="form-check-label" for="classify_1">단일심사</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="inlineRadioOptions"
+            id="classify_2"
+            value="통합심사"
+            v-model="addAuditInfo.audit_classify"
+            disabled
+          />
+
+          <label class="form-check-label" for="classify_2">통합심사</label>
+        </div>
       </div>
     </div>
     <div class="row mb-3">
@@ -204,6 +296,16 @@
             >전환갱신심사</label
           >
         </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">심사M/D</label>
+      <div class="col-sm-9 d-flex justify-content-between">
+        <p>{{ addAuditInfo.audit_md }}</p>
+        <button class="btn btn-primary btn-sm" @click="calculateMD">
+          MD계산
+        </button>
       </div>
     </div>
 
@@ -368,6 +470,7 @@ export default {
   data() {
     return {
       id: '',
+      customer_id: '',
       isChecked: false,
       // searchName: '',
       imgSrc: '',
@@ -379,23 +482,28 @@ export default {
         scope_ko: '',
         employee_count: '',
         auditor_name: '',
-        auditor_email: ''
+        auditor_email: '',
+        customer_id: ''
       },
       dbAuditInfo: [],
       addAuditInfo: {
         audit_id: -1,
+        audit_standard: [],
+        audit_classify: '',
         audit_no: '',
+        business_no: '',
         audit_type: '',
         audit_degree: '',
-        audit_s1_start: '',
-        audit_s1_end: '',
+        audit_s1_start: null,
+        audit_s1_end: null,
         audit_s2_start: '',
         audit_s2_end: '',
         audit_leader: '',
         audit_auditor: '',
         audit_fee: '',
         customer_id: '',
-        created_date: ''
+        created_date: '',
+        audit_md: null
       }
     }
   },
@@ -403,7 +511,7 @@ export default {
     // console.log(this.customer)
     // console.log(this.$route.query.id)
     this.id = this.$route.query.id
-    console.log('customerList에서 넘어온 customer_id:', this.id)
+    console.log('customerList에서 넘어온 cid:', this.id)
 
     // this.searchName = this.$route.query.searchName
   },
@@ -414,38 +522,54 @@ export default {
       this.$router.push({ path: '/login' })
     }
 
-    // 1. db에서 데이터 가져오기
-    //   const dbData = await this.$get(
-    //     `http://localhost:3000/api/customer/${this.id}`
-    //   )
-    //   console.log('db에서 가져온 data : ', dbData)
-
-    //   this.customer.name_ko = dbData.name_ko
-    //   this.customer.certification_standard = dbData.certification_standard
-    //   this.customer.scope_ko = dbData.scope_ko
-    //   this.customer.employee_count = dbData.employee_count
     this.getCustomer()
-    this.getCertListByCustomer()
+    this.getCertListByBizNo()
   },
   unmounted() {},
   methods: {
+    calculateMD() {
+      // let md = 0
+      console.log(JSON.parse(this.customer.employee_count))
+      console.log(JSON.parse(this.customer.employee_count) <= 5)
+      console.log(this.addAuditInfo.audit_standard)
+      if (JSON.parse(this.customer.employee_count) <= 5) {
+        if (this.addAuditInfo.audit.standard.length === 1) {
+          if (this.addAuditInfo.audit_standard === 'QMS') {
+            if (this.addAuditInfo.audit_type === '최초') {
+              this.addAuditInfo.audit_md = 1
+            }
+          }
+        }
+      }
+    },
+    getClassifyAudit() {
+      if (this.addAuditInfo.audit_standard.length > 1) {
+        this.addAuditInfo.audit_classify = '통합심사'
+      } else {
+        this.addAuditInfo.audit_classify = '단일심사'
+      }
+    },
     giveNumber() {
       if (this.addAuditInfo.audit_no) {
         this.$swal('이미 심사번호가 생성되었습니다.')
         return
       }
+      if (this.addAuditInfo.audit_standard.length === 0) {
+        this.$swal('인증표준을 선택하세요.')
+        return
+      }
 
-      // 유효성 검사
       if (this.addAuditInfo.audit_type === '') {
         // alert('심사유형을 선택해주세요.')
         this.$swal('심사유형을 선택하세요.')
         return
       }
       if (this.addAuditInfo.audit_type === '최초') {
-        if (this.auditInfo.audit_s1_start === '') {
+        if (this.addAuditInfo.audit_s1_start === '') {
           this.$swal('1단계 심사시작일을 선택하세요.')
           return
         }
+
         if (this.addAuditInfo.audit_s1_end === '') {
           this.$swal('1단계 심사종료일을 선택하세요.')
           return
@@ -561,7 +685,7 @@ export default {
 
       // 규격 자리(Q,E,O,C)
       // console.log(this.customer.certification_standard)
-      const customerStandard = JSON.parse(this.customer.certification_standard)
+      const customerStandard = this.addAuditInfo.audit_standard
       // console.log('규격', customerStandard)
       // 배열을 문자열로 변환
       // const stringStandard = customerStandard.join()
@@ -590,18 +714,18 @@ export default {
         isType + isDegree + year + month + scheme + serialNo
       console.log('최종번호', this.addAuditInfo.audit_no)
     },
-    async getCertListByCustomer() {
-      console.log(this.id)
-      const dbAuditDataByCustomer = await this.$get(
+    async getCertListByBizNo() {
+      // console.log(this.id)
+      const dbAuditDataByBizNo = await this.$get(
         // `/api/customer/cert/list/${this.id}`
-        `http://localhost:3000/api/customer/cert/list/${this.id}`
+        `http://localhost:3000/api/customer/cert/list/cid/${this.id}`
       )
       // const dbAuditDataByCustomer = await this.$post(
       //   `/api/customer/cert/list/${this.id}`
       // )
       // const dbAuditDataByCustomer = await this.$get('/api/customer/cert/list')
-      console.log('DB에서 가져온 CertListByCustomer', dbAuditDataByCustomer)
-      this.dbAuditInfo = dbAuditDataByCustomer
+      console.log('DB에서 가져온 CertListByBizNo', dbAuditDataByBizNo)
+      this.dbAuditInfo = dbAuditDataByBizNo
     },
     async getCustomer() {
       console.log(this.id)
@@ -612,11 +736,13 @@ export default {
       console.log('db에서 가져온 data : ', dbData)
 
       this.customer.name_ko = dbData.name_ko
-      this.customer.certification_standard = dbData.certification_standard
+      this.customer.customer_type = dbData.customer_type
       this.customer.scope_ko = dbData.scope_ko
       this.customer.employee_count = dbData.employee_count
       this.customer.auditor_email = dbData.auditor_email
       this.customer.auditor_name = dbData.auditor_name
+      this.customer.business_no = dbData.business_no
+      this.customer.customer_id = dbData.customer_id
     },
     execDaumPostcode() {
       // @click을 사용할 때 함수는 이렇게 작성해야 한다.
@@ -711,17 +837,20 @@ export default {
           // console.log(postID)
           const r = await this.$post('/api/cert/audit', {
             param: {
+              audit_standard: JSON.stringify(this.addAuditInfo.audit_standard),
               audit_no: this.addAuditInfo.audit_no,
+              business_no: this.customer.business_no,
+              audit_classify: this.addAuditInfo.audit_classify,
               audit_type: this.addAuditInfo.audit_type,
               audit_degree: this.addAuditInfo.audit_degree,
               audit_s1_start: JSON.stringify(this.addAuditInfo.audit_s1_start),
               audit_s1_end: JSON.stringify(this.addAuditInfo.audit_s1_end),
               audit_s2_start: JSON.stringify(this.addAuditInfo.audit_s2_start),
               audit_s2_end: JSON.stringify(this.addAuditInfo.audit_s2_end),
-              audit_leader: this.user.userInfo.user_name,
+              audit_leader: this.customer.auditor_name,
               audit_auditor: this.addAuditInfo.audit_auditor,
               audit_fee: this.addAuditInfo.audit_fee,
-              customer_id: this.id
+              customer_id: this.customer.customer_id
             }
           })
 
@@ -731,20 +860,39 @@ export default {
 
           if (r.status === 200) {
             this.$swal('심사정보가 저장되었습니다.')
-            // this.$router.push({
-            //   path: '/customer/cert',
-            //   query: { customer_id: this.id }
-            // })
+            this.$router.push({
+              path: '/customer/cert'
+              //   query: { customer_id: this.id }
+            })
           }
         }
-        this.getCertListByCustomer()
+        this.addAuditInfo = {
+          audit_id: -1,
+          audit_standard: [],
+          audit_classify: '',
+          audit_no: '',
+          business_no: '',
+          audit_type: '',
+          audit_degree: '',
+          audit_s1_start: '',
+          audit_s1_end: '',
+          audit_s2_start: '',
+          audit_s2_end: '',
+          audit_leader: '',
+          audit_auditor: '',
+          audit_fee: '',
+          customer_id: '',
+          created_date: '',
+          audit_md: null
+        }
+        this.getCertListByBizNo()
       })
     },
     goToChange(id) {
       console.log(this.id)
       this.$router.push({
         path: '/customer/cert/change',
-        query: { audit_no: id, customer_id: this.id }
+        query: { audit_no: id }
       })
     },
     goToList() {
