@@ -1,7 +1,11 @@
 <template>
   <div class="container mt-5">
-    <h2 class="mb-4 fw-bold text-center">인증심사 계약검토보고서</h2>
+    <h2 class="mb-4 fw-bold text-center">인증심사 계약검토</h2>
     <hr />
+    <h5 class="fw-bold">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      계약검토대상
+    </h5>
     <table class="table table-bordered" style="table-layout: fixed">
       <!-- <thead>
         <tr>
@@ -11,47 +15,41 @@
           <th class="col">Handle</th>
         </tr>
       </thead> -->
-      <tbody class="text-center">
+      <tbody class="text-center table-group-divider">
         <tr>
           <th>심사번호</th>
           <td>
             {{ cr.audit_no }}
           </td>
           <th>국문상호</th>
-          <td>{{ customer.name_ko }}</td>
+          <td>{{ cr.name_ko }}</td>
         </tr>
 
         <tr>
           <th>심사팀장</th>
           <td>
-            {{ customer.auditor_name }}
+            {{ cr.auditor_name }}
           </td>
           <th>심사팀원</th>
-          <td>{{ customer.s2_team }}</td>
+          <td>{{ cr.audit_auditor }}</td>
         </tr>
 
         <tr>
           <th>심사유형</th>
-          <td>{{ customer.certification_type }}</td>
+          <td>{{ cr.audit_type }}</td>
           <th>대표자명</th>
-          <td>{{ customer.ceo_name }}</td>
+          <td>{{ cr.ceo_name }}</td>
         </tr>
         <tr>
           <th>종업원 수</th>
-          <td>{{ customer.employee_count }}</td>
-          <th>회사규모</th>
-          <td>{{ cr.organization_scale }}</td>
-        </tr>
-        <tr>
+          <td>{{ cr.employee_count }}</td>
           <th>인증표준</th>
-          <td>{{ customer.certification_standard }}</td>
-          <th>사업장</th>
-          <td>{{ cr.type_workspace }}</td>
+          <td>{{ cr.audit_standard }}</td>
         </tr>
         <tr>
           <th>국문인증범위</th>
           <td colspan="3">
-            {{ customer.scope_ko }}
+            {{ cr.scope_ko }}
           </td>
           <!-- <th>대표자 휴대폰번호</th>
           <td>{{ customer.email }}</td> -->
@@ -59,97 +57,188 @@
         <tr>
           <th>영문인증범위</th>
           <td colspan="3">
-            {{ customer.scope_en }}
+            {{ cr.scope_en }}
           </td>
           <!-- <th>대표자 휴대폰번호</th>
           <td>{{ customer.email }}</td> -->
         </tr>
         <tr>
           <th>환경복잡성</th>
-          <td>{{ cr.env_complexity }}</td>
+          <td>{{ cr.audit_env_complexity }}</td>
           <th>안전보건위험성</th>
-          <td>{{ cr.sh_risk }}</td>
+          <td>{{ cr.audit_ohs_risk }}</td>
         </tr>
 
         <tr>
           <th>심사코드</th>
-          <td>{{ cr.iafcode }}</td>
-          <th>심사가능여부</th>
-          <td>{{ cr.possibility_audit }}</td>
+          <td>{{ cr.iaf_code }}</td>
+          <th></th>
+          <td></td>
         </tr>
 
         <tr>
           <th>내부심사여부</th>
           <td>
-            {{ cr.internal_audit }}
+            {{ cr.audit_internal_date }}
           </td>
           <th>경영검토여부</th>
-          <td>{{ cr.management_review }}</td>
+          <td>{{ cr.audit_management_date }}</td>
         </tr>
 
-        <tr>
-          <th>1단계 MD</th>
-          <td>
-            {{ cr.s1_md }}
-          </td>
-          <th>2단계 MD</th>
-          <td>{{ cr.s2_md }}</td>
-        </tr>
-
+        <tr></tr>
         <tr>
           <th>1단계심사 시작일</th>
           <td>
-            {{ customer.s1_start_date }}
+            {{ cr.audit_s1_start }}
           </td>
           <th>2단계심사 시작일</th>
-          <td>{{ customer.s1_end_date }}</td>
+          <td>{{ cr.audit_s2_start }}</td>
         </tr>
 
         <tr>
           <th>1단계심사 종료일</th>
           <td>
-            {{ customer.s2_start_date }}
+            {{ cr.audit_s1_end }}
           </td>
           <th>2단계심사 종료일</th>
-          <td>{{ customer.s2_end_date }}</td>
+          <td>{{ cr.audit_s2_end }}</td>
         </tr>
 
         <tr>
+          <th>심사비</th>
+          <td>{{ $convertNumberFormat(cr.audit_fee, '#,###') }}원</td>
+          <th>심사구분</th>
+          <td>{{ cr.audit_classify }}</td>
+        </tr>
+
+        <tr class="bg-light">
+          <th>MD</th>
+          <td>
+            <input type="number" class="form-control" v-model="addCR.cr_md" />
+          </td>
           <th>MD적합성</th>
           <td>
-            {{ cr.md_adequity }}
+            <div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name=""
+                  id="auditPossibility1"
+                  value="적합"
+                  v-model="addCR.cr_md_conformity"
+                />
+                <label class="form-check-label" for="auditPossibility1"
+                  >적합</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name=""
+                  id="auditPossibility2"
+                  value="부적합"
+                  v-model="addCR.cr_md_conformity"
+                />
+
+                <label class="form-check-label" for="auditPossibility2"
+                  >부적합</label
+                >
+              </div>
+            </div>
           </td>
+        </tr>
+
+        <tr class="bg-light">
           <th>기술전문가 필요성</th>
-          <td>{{ cr.need_tech_expert }}</td>
-        </tr>
-        <tr>
-          <th>심사비</th>
           <td>
-            {{ cr.audit_fee }}
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="expert1"
+                id="expert1"
+                value="필요"
+                v-model="addCR.cr_expert"
+              />
+              <label class="form-check-label" for="expert1">필요</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="expert2"
+                id="expert2"
+                value="불필요"
+                v-model="addCR.cr_expert"
+              />
+
+              <label class="form-check-label" for="expert2">불필요</label>
+            </div>
           </td>
-          <th>심사구분</th>
-          <td>{{ cr.class_audit }}</td>
+          <th>심사가능여부</th>
+          <td>
+            <div class="">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="inlineRadioOptions"
+                  id="inlineRadio1"
+                  value="적합"
+                  v-model="addCR.cr_possibility"
+                />
+                <label class="form-check-label" for="inlineRadio1">적합</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="inlineRadioOptions"
+                  id="inlineRadio2"
+                  value="부적합"
+                  v-model="addCR.cr_possibility"
+                />
+
+                <label class="form-check-label" for="inlineRadio2"
+                  >부적합</label
+                >
+              </div>
+            </div>
+          </td>
         </tr>
-        <tr>
+        <tr class="bg-light">
           <th>계약자 및 검토자 의견</th>
           <td>
-            {{ cr.opinion }}
+            <textarea
+              class="form-control"
+              rows="2"
+              v-model="addCR.cr_opinion"
+            ></textarea>
           </td>
           <th>계약변경</th>
-          <td>{{ cr.change }}</td>
+          <td>
+            <textarea
+              class="form-control"
+              rows="2"
+              v-model="addCR.cr_change"
+            ></textarea>
+          </td>
         </tr>
       </tbody>
     </table>
-    <div class="d-flex text-center">
-      <p class="col">작성자 :</p>
-      <p class="col">검토자 :</p>
-      <p class="col">승인자 :</p>
+    <div class="d-flex text-center mt-5">
+      <p class="col">작성자 : 이상영</p>
+      <p class="col">검토자 : 박수빈</p>
+      <p class="col">승인자 : 박성훈</p>
       <span></span>
     </div>
 
     <!-- 버튼 -->
     <div class="d-flex justify-content-center mt-5">
       <button class="btn btn-secondary me-1" @click="goToCRList">목록</button>
+      <button class="btn btn-secondary me-1" @click="doSave">저장</button>
       <button class="btn btn-primary" @click="printApplication">
         인쇄하기
       </button>
@@ -179,49 +268,21 @@ export default {
       imgSrc: '',
       imgExt: '',
       customer: {},
-      cr: {
-        customer_id: -1,
-        audit_no: '',
-        certification_type: '',
-        name_ko: '',
-        name_en: '',
-        ceo_name: '',
-        organization_scale: '',
-        certification_standard: [],
-        employee_count: '',
-        scope_ko: '',
-        scope_en: '',
-        env_complexity: '',
-        sh_risk: '',
-        iafcode: [],
-        cr_result: '',
-        class_audit: '',
-        possibility_audit: '',
-        type_workspace: '',
-        s1_md: null,
-        s2_md: null,
-        md_adequity: '',
-        need_tech_expert: '',
-        opinion: '',
-        change: '',
-        s1_start_date: '',
-        s1_end_date: '',
-        s2_start_date: '',
-        s2_end_date: '',
-        s2_team: '',
-        manual_date: '',
-        internal_audit: '',
-        management_review: '',
-        leader_auditor: '',
-        auditors: '',
-        audit_fee: '',
-        auditor_name: '',
-        auditor_email: ''
+      cr: {},
+      addCR: {
+        customer_id: '',
+        cr_possibility: '적합',
+        cr_md: 0,
+        cr_md_conformity: '적합',
+        cr_expert: '불필요',
+        cr_opinion: '',
+        cr_change: ''
       }
     }
   },
   created() {
-    this.id = this.$route.query.customer_id
+    this.id = this.$route.query.id
+    console.log(this.id)
   },
   mounted() {
     // console.log(this.user.userInfo.email)
@@ -231,24 +292,96 @@ export default {
     }
     console.log(this.id)
 
-    this.getCustomer()
-    this.crInfo()
+    this.getCR()
   },
   unmounted() {},
   methods: {
-    async getCustomer() {
+    classifyComplexity() {
+      console.log(this.customer.iaf_code)
+      if (
+        this.cr.iaf_code.includes('05') ||
+        this.cr.iaf_code.includes('12') ||
+        this.cr.iaf_code.includes('28')
+      ) {
+        this.cr.environment_complexity = '높음'
+      } else if (
+        this.cr.iaf_code.includes('03') ||
+        this.cr.iaf_code.includes('04') ||
+        this.cr.iaf_code.includes('07') ||
+        this.cr.iaf_code.includes('15') ||
+        this.cr.iaf_code.includes('16') ||
+        this.cr.iaf_code.includes('20') ||
+        this.cr.iaf_code.includes('22') ||
+        this.cr.iaf_code.includes('24') ||
+        this.cr.iaf_code.includes('31') ||
+        this.cr.iaf_code.includes('39') ||
+        this.cr.iaf_code.includes('17')
+      ) {
+        this.cr.environment_complexity = '보통'
+      } else {
+        this.cr.environment_complexity = '낮음'
+      }
+    },
+    classifyRisk() {
+      console.log(this.cr.iaf_code)
+      if (
+        this.cr.iaf_code.includes('05') ||
+        this.cr.iaf_code.includes('12') ||
+        this.cr.iaf_code.includes('17') ||
+        this.cr.iaf_code.includes('28')
+      ) {
+        this.cr.safety_health_risk = '높음'
+      } else if (
+        this.cr.iaf_code.includes('03') ||
+        this.cr.iaf_code.includes('04') ||
+        this.cr.iaf_code.includes('06') ||
+        this.cr.iaf_code.includes('07') ||
+        this.cr.iaf_code.includes('08') ||
+        this.cr.iaf_code.includes('15') ||
+        this.cr.iaf_code.includes('16') ||
+        this.cr.iaf_code.includes('20') ||
+        this.cr.iaf_code.includes('22') ||
+        this.cr.iaf_code.includes('24') ||
+        this.cr.iaf_code.includes('31') ||
+        this.cr.iaf_code.includes('39')
+      ) {
+        this.cr.safety_health_risk = '보통'
+      } else {
+        this.cr.safety_health_risk = '낮음'
+      }
+    },
+    async getCR() {
       // console.log(this.id)
-      this.customer = await this.$get(
-        `http://localhost:3000/api/customer/${this.id}`
+      const loader = this.$loading.show({ canCancel: false })
+      this.cr = await this.$get(`/api/customer/cert/list/detail/${this.id}`)
+      console.log(this.cr)
+      loader.hide()
+      console.log(this.cr.iaf_code)
+      this.cr.audit_internal_date = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.cr.audit_internal_date)
       )
-      console.log(this.customer)
+      this.cr.audit_management_date = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.cr.audit_management_date)
+      )
+      this.cr.audit_s1_start = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.cr.audit_s1_start)
+      )
+      this.cr.audit_s1_end = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.cr.audit_s1_end)
+      )
+      this.cr.audit_s2_start = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.cr.audit_s2_start)
+      )
+      this.cr.audit_s2_end = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.cr.audit_s2_end)
+      )
     },
     async crInfo() {
       // console.log(this.id)
       this.cr = await this.$get(
         `http://localhost:3000/api/customer/cr/${this.id}`
       )
-      console.log(this.cr)
+      this.cr.iaf_code = JSON.parse(this.cr.iaf_code)
     },
     async uploadFile(files) {
       const r = await this.$upload('/api/upload/file', files[0])
@@ -281,20 +414,14 @@ export default {
 
           const r = await this.$post('/api/cr', {
             param: {
-              customer_id: this.customer.id,
-              audit_no: this.cr.audit_no,
-              env_complexity: this.cr.env_complexity,
-              iafcode: JSON.stringify(this.cr.iafcode),
-              cr_result: this.cr.cr_result,
-              class_audit: this.cr.class_audit,
-              possibility_audit: this.cr.possibility_audit,
-              type_workspace: this.cr.type_workspace,
-              s1_md: this.cr.s1_md,
-              s2_md: this.cr.s2_md,
-              md_adequity: this.cr.md_adequity,
-              need_tech_expert: this.cr.need_tech_expert,
-              opinion: this.cr.opinion,
-              change: this.cr.change
+              customer_id: this.cr.customer_id,
+              audit_no: this.id,
+              cr_possibility: this.addCR.cr_possibility,
+              cr_md: this.addCR.cr_md,
+              cr_md_conformity: this.addCR.cr_md_conformity,
+              cr_expert: this.addCR.cr_expert,
+              cr_opinion: this.addCR.cr_opinion,
+              cr_change: this.addCR.cr_change
             }
           })
 
@@ -305,8 +432,8 @@ export default {
           if (r.status === 200) {
             this.$swal('계약검토 정보가 저장되었습니다.')
             this.$router.push({
-              path: '/customer/list'
-              // query: { customer_id: r.data.insertId }
+              path: '/customer/cert/detail',
+              query: { audit_no: this.id }
             })
           }
         }
@@ -316,7 +443,10 @@ export default {
       this.$router.push({ path: '/customer/list' })
     },
     goToCRList() {
-      this.$router.push({ path: '/customer/cr/list' })
+      this.$router.push({
+        path: '/customer/cert/detail',
+        query: { audit_no: this.id }
+      })
     },
     printApplication() {
       window.print()

@@ -1,87 +1,166 @@
 <template>
   <div class="container mt-5">
-    <h2 class="mb-4 fw-bold text-center">심사정보 상세보기</h2>
+    <h2 class="mb-4 fw-bold text-center">심사정보 및 현황</h2>
     <hr />
+    <h5 class="fw-bold">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      현재진행상태
+    </h5>
+    <div class="bg-light">
+      <ul
+        class="d-flex justify-content-around p-2 border"
+        style="list-style-type: none"
+      >
+        <li class="p-1">심사계획</li>
+        <li class="p-1">인증심사</li>
+        <li class="p-1">심사보고서접수</li>
+        <li class="p-1">심사보고서승인</li>
+        <li class="p-1">심사비정산대기</li>
+        <li class="p-1">심사비지급</li>
+      </ul>
+    </div>
+    <h5 class="fw-bold">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      심사정보
+    </h5>
     <table class="table table-bordered" style="table-layout: fixed">
-      <!-- <thead>
+      <tbody class="text-center table-group-divider">
         <tr>
-          <th class="col">#</th>
-          <th class="col">First</th>
-          <th class="col">Last</th>
-          <th class="col">Handle</th>
-        </tr>
-      </thead> -->
-      <tbody class="text-center">
-        <!-- <tr>
-          <th>고객ID</th>
-          <td>
-            {{ list.customer_id }}
-          </td>
-          <th>심사ID</th>
-          <td>{{ list.audit_id }}</td>
-        </tr> -->
-        <tr>
-          <th>심사번호</th>
+          <th class="bg-light">심사번호</th>
           <td>
             {{ list.audit_no }}
           </td>
-          <th>국문상호</th>
+          <th class="bg-light">국문상호</th>
           <td>{{ list.name_ko }}</td>
         </tr>
 
         <tr>
-          <th>심사유형</th>
+          <th class="bg-light">심사유형</th>
           <td>
             {{ list.audit_type }}
           </td>
-          <th>심사차수</th>
+          <th class="bg-light">심사차수</th>
           <td>{{ list.audit_degree }}</td>
         </tr>
         <tr>
-          <th>심사팀장</th>
+          <th class="bg-light">심사팀장</th>
           <td>
             {{ list.auditor_name }}
           </td>
-          <th>심사팀원</th>
+          <th class="bg-light">심사팀원</th>
           <td>{{ list.audit_auditor }}</td>
         </tr>
 
         <tr>
-          <th>종업원 수</th>
+          <th class="bg-light">종업원 수</th>
           <td>{{ list.employee_count }}</td>
-          <th>심사비</th>
+          <th class="bg-light">심사비</th>
           <td>{{ $convertNumberFormat(list.audit_fee, '#,###') }}원</td>
         </tr>
 
         <tr>
-          <th>인증표준</th>
-          <td colspan="3">{{ list.certification_standard }}</td>
+          <th class="bg-light">인증표준</th>
+          <td colspan="3">{{ list.audit_standard }}</td>
         </tr>
 
         <tr>
-          <th>국문인증범위</th>
+          <th class="bg-light">국문인증범위</th>
           <td colspan="3">{{ list.scope_ko }}</td>
           <!-- <th>대표자 휴대폰번호</th>
           <td>{{ customer.email }}</td> -->
         </tr>
 
         <tr>
-          <th>1단계심사 시작일</th>
+          <th class="bg-light">1단계심사 시작일</th>
           <td>
             {{ list.audit_s1_start }}
           </td>
-          <th>2단계심사 시작일</th>
+          <th class="bg-light">2단계심사 시작일</th>
           <td>{{ list.audit_s2_start }}</td>
         </tr>
 
         <tr>
-          <th>1단계심사 종료일</th>
+          <th class="bg-light">1단계심사 종료일</th>
           <td>
             {{ list.audit_s1_end }}
           </td>
-          <th>2단계심사 종료일</th>
+          <th class="bg-light">2단계심사 종료일</th>
           <td>{{ list.audit_s2_end }}</td>
         </tr>
+      </tbody>
+    </table>
+    <h5 class="fw-bold">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      진행상태정보
+    </h5>
+    <table class="table table-bordered" style="table-layout: fixed">
+      <tbody class="text-center table-group-divider">
+        <tr class="bg-light">
+          <th>상태</th>
+          <th>일자</th>
+          <th>상태</th>
+          <th>일자</th>
+        </tr>
+
+        <tr>
+          <th class="bg-light">심사등록</th>
+          <td style="text-align: center">
+            {{ list.audit_created_date }}
+          </td>
+          <th class="bg-light">계약검토</th>
+          <td style="text-align: center">{{ dBcrInfo.cr_created_date }}</td>
+        </tr>
+        <tr>
+          <th class="bg-light">전환심사</th>
+          <td style="text-align: center"></td>
+          <th class="bg-light"></th>
+          <td style="text-align: center"></td>
+        </tr>
+
+        <tr>
+          <th class="bg-light">심사보고서접수</th>
+          <td></td>
+          <th class="bg-light">심사보고서승인</th>
+          <td style="text-align: center"></td>
+        </tr>
+
+        <tr>
+          <th class="bg-light">심사비입금</th>
+          <td style="text-align: center"></td>
+          <th class="bg-light">세금계산서발행</th>
+          <td style="text-align: center"></td>
+        </tr>
+
+        <tr>
+          <th class="bg-light">심사비지급</th>
+          <td></td>
+          <th class="bg-light">심사비지급</th>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h5 class="fw-bold">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      심사진행
+    </h5>
+    <table class="table" style="table-layout: fixed">
+      <tbody class="text-center table-group-divider">
+        <ul class="d-flex p-2 border" style="list-style-type: none">
+          <li class="p-1" role="button" @click="goToCR">
+            <span class="p-2 bg-secondary rounded text-white">계약검토</span>
+          </li>
+          <li class="p-1" role="button">
+            <span class="p-2 bg-secondary rounded text-white" @click="goToPlan"
+              >심사계획서발행</span
+            >
+          </li>
+          <li class="p-1" role="button">
+            <span class="p-2 bg-secondary rounded text-white"
+              >심사보고서작성</span
+            >
+          </li>
+        </ul>
       </tbody>
     </table>
     <!-- <div class="d-flex text-center">
@@ -104,7 +183,10 @@
 </template>
 
 <script>
+import Formatter from '@/mixins/formatter'
 export default {
+  name: 'AuditDetail',
+  mixins: [Formatter],
   computed: {
     user() {
       const data = this.$store.state.user
@@ -125,14 +207,15 @@ export default {
       imgSrc: '',
       imgExt: '',
       customer: {},
-      list: {}
+      list: {},
+      dBcrInfo: {}
     }
   },
   created() {
     // this.id = this.$route.query.customer_id
     // console.log('넘어온 id : ', this.id)
-    this.id = this.$route.query.audit_id
-    console.log('넘어온 audit_id :', this.id)
+    this.id = this.$route.query.audit_no
+    console.log('넘어온 audit_no :', this.id)
   },
   async mounted() {
     // console.log(this.user.userInfo.email)
@@ -144,18 +227,38 @@ export default {
     // this.list = await this.$get('/api/customer/cert/list')
     // this.list = await this.$get('/api/customer')
     // this.customer = await this.$get('/api/customer')
-    console.log(this.list)
-    console.log(this.id)
+    // console.log(this.list)
+    // console.log(this.id)
 
     this.getList()
+    this.crInfo()
   },
   unmounted() {},
   methods: {
     async getList() {
-      // const loader = this.$loading.show({ canCancel: false })
-      this.list = await this.$get(`/api/customer/cert/${this.id}`)
+      const loader = this.$loading.show({ canCancel: false })
+      this.list = await this.$get(`/api/customer/cert/list/detail/${this.id}`)
       console.log(this.list)
-      // loader.hide()
+      console.log(this.list.audit_created_date)
+      const dbDate = this.list.audit_created_date
+      console.log(dbDate)
+      this.list.audit_created_date = Intl.DateTimeFormat('fr-CA').format(
+        new Date(dbDate)
+      )
+      this.list.audit_s1_start = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.list.audit_s1_start)
+      )
+      this.list.audit_s1_end = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.list.audit_s1_end)
+      )
+      this.list.audit_s2_start = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.list.audit_s2_start)
+      )
+      this.list.audit_s2_end = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.list.audit_s2_end)
+      )
+
+      loader.hide()
     },
     async getCustomer() {
       // console.log(this.id)
@@ -166,10 +269,14 @@ export default {
     },
     async crInfo() {
       // console.log(this.id)
-      this.cr = await this.$get(
-        `http://localhost:3000/api/customer/cr/${this.id}`
+      const cr = await this.$get(
+        `http://localhost:3000/api/customer/cr/detail/${this.id}`
       )
-      console.log(this.cr)
+      this.dBcrInfo = cr
+      console.log(this.dBcrInfo)
+      this.dBcrInfo.cr_created_date = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.dBcrInfo.cr_created_date)
+      )
     },
     async uploadFile(files) {
       const r = await this.$upload('/api/upload/file', files[0])
@@ -240,7 +347,22 @@ export default {
       this.$router.push({ path: '/customer/cr/list' })
     },
     goToAuditList() {
-      this.$router.push({ path: '/customer/cert/list' })
+      this.$router.push({
+        path: '/customer/cert',
+        query: { id: this.list.business_no }
+      })
+    },
+    goToCR() {
+      this.$router.push({
+        path: '/customer/cr/detail/',
+        query: { id: this.list.audit_no }
+      })
+    },
+    goToPlan() {
+      this.$router.push({
+        path: '/report/audit/plan/',
+        query: { id: this.list.audit_no }
+      })
     },
     printApplication() {
       window.print()

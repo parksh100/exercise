@@ -7,12 +7,12 @@
           type="search"
           class="form-control"
           v-model.trim="searchName"
-          @keyup.enter="getList"
+          @keyup.enter="getSearch"
           placeholder="Name"
         />
       </div>
       <div class="col-12">
-        <button class="btn btn-outline-primary me-1" @click="getList">
+        <button class="btn btn-outline-primary me-1" @click="getSearch">
           조회
         </button>
         <button class="btn btn-outline-success me-1" @click="goToList">
@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        <tr :key="item.customer_id" v-for="item in listByAuditor">
+        <tr :key="item.customer_id" v-for="item in listByAuditor.data">
           <!-- <td>{{ item.customer_id }}</td> -->
           <td>
             <!-- <a
@@ -67,7 +67,7 @@
           <td>{{ item.auditor_name }}</td>
           <td>{{ item.status_yn }}</td>
           <td>
-            {{ item.created_date.substring(0, 10) }}
+            {{ item.customer_created_date.substring(0, 10) }}
           </td>
           <td>
             <!-- <button
@@ -165,6 +165,7 @@ export default {
       id: '',
       list: [],
       listByAuditor: [],
+      listByEmailAndSearchName: [],
       auditor_email: '',
       searchName: ''
       // selectedItem: {
@@ -195,31 +196,51 @@ export default {
     // })
     // console.log('listByAuditor', this.listByAuditor)
     console.log('userEmail', this.user.userInfo.email)
+    console.log('searchName', this.searchName)
 
-    this.listByAuditor = await this.$get(
-      `/api/customer/${this.user.userInfo.email}`
-    )
-    console.log('listByAuditor', this.listByAuditor)
-    this.getList()
-    console.log('list', this.list)
+    this.listByAuditor = await this.$post('/api/customer/auditor/search', {
+      param: [this.searchName, this.user.userInfo.email]
+    })
+    console.log('list', this.listByAuditor)
+    this.getSearch()
   },
   unmounted() {},
   methods: {
-    async getList() {
+    async getSearch() {
       const loader = this.$loading.show({ canCancel: false })
       console.log(this.user.userInfo.email)
-      this.listByAuditor = await this.$get(
-        `/api/customer/${this.user.userInfo.email}`
-      )
-      console.log(this.listByAuditor)
-      // this.list = (
-      //   await this.$post('/api/customer/search', {
-      //     param: `%${this.searchName.toLowerCase()}%`
-      //   })
-      // ).data
-      // console.log(this.list)
+      const searchName = `%${this.searchName.toLowerCase()}%`
+      console.log(searchName)
+
+      this.listByAuditor = await this.$post('/api/customer/auditor/search', {
+        param: [searchName, this.user.userInfo.email]
+      })
+
+      console.log('listByAuditor', this.listByAuditor)
+
       loader.hide()
     },
+
+    // async getList() {
+    //   const loader = this.$loading.show({ canCancel: false })
+    //   console.log(this.user.userInfo.email)
+
+    //   this.listByAuditor = await this.$get(
+    //     `/api/customer/${this.user.userInfo.email}`,
+    //     {
+    //       param: `%${this.searchName.toLowerCase()}%`
+    //     }
+    //   )
+
+    //   console.log(this.listByAuditor)
+    //   // this.list = (
+    //   //   await this.$post('/api/customer/search', {
+    //   //     param: `%${this.searchName.toLowerCase()}%`
+    //   //   })
+    //   // ).data
+    //   // console.log(this.list)
+    //   loader.hide()
+    // },
 
     goToDetail(id) {
       // console.log('Detail로 넘긴 customer_id', id)

@@ -1270,36 +1270,6 @@ a
         />
       </div>
     </div> -->
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">매뉴얼 제/개정일</label>
-      <div class="col-sm-9">
-        <input
-          type="date"
-          class="form-control"
-          v-model.trim="customer.manual_date"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">내부심사일</label>
-      <div class="col-sm-9">
-        <input
-          type="date"
-          class="form-control"
-          v-model.trim="customer.internal_date"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">경영검토일</label>
-      <div class="col-sm-9">
-        <input
-          type="date"
-          class="form-control"
-          v-model.trim="customer.management_date"
-        />
-      </div>
-    </div>
 
     <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">사업장외 활동</label>
@@ -3083,9 +3053,7 @@ export default {
         // s2_start_date: '',
         // s2_end_date: '',
         // s2_team: '',
-        manual_date: '',
-        internal_date: '',
-        management_date: '',
+
         outsourcing: '',
         outsourcing_process: '',
         construction_license: '',

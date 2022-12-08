@@ -57,7 +57,7 @@
           <td>{{ item.auditor_name }}</td>
           <td>{{ item.status_yn }}</td>
           <td>
-            {{ item.created_date.substr(0, 10) }}
+            {{ item.created_date }}
           </td>
           <td>
             <!-- <button

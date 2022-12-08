@@ -329,18 +329,16 @@ export default {
       // const dbAuditDataByCustomer = await this.$get('/api/customer/cert/list')
       console.log('DB에서 가져온 AuditListByAuditNo', dbAuditListByAuditNo)
       this.dbAuditDataByAuditNo = dbAuditListByAuditNo
-      this.dbAuditDataByAuditNo.audit_s1_start = JSON.parse(
+      this.dbAuditDataByAuditNo.audit_s1_start =
         dbAuditListByAuditNo.audit_s1_start
-      )
-      this.dbAuditDataByAuditNo.audit_s1_end = JSON.parse(
-        dbAuditListByAuditNo.audit_s1_end
-      )
-      this.dbAuditDataByAuditNo.audit_s2_start = JSON.parse(
+
+      this.dbAuditDataByAuditNo.audit_s1_end = dbAuditListByAuditNo.audit_s1_end
+
+      this.dbAuditDataByAuditNo.audit_s2_start =
         dbAuditListByAuditNo.audit_s2_start
-      )
-      this.dbAuditDataByAuditNo.audit_s2_end = JSON.parse(
-        dbAuditListByAuditNo.audit_s2_end
-      )
+
+      this.dbAuditDataByAuditNo.audit_s2_end = dbAuditListByAuditNo.audit_s2_end
+
       this.dbAuditDataByAuditNo.audit_fee = dbAuditListByAuditNo.audit_fee
     },
 
@@ -386,7 +384,7 @@ export default {
             this.$swal('심사정보가 저장되었습니다.')
             this.$router.push({
               path: '/customer/cert/',
-              query: { id: this.dbAuditDataByAuditNo.audit_no }
+              query: { id: this.dbAuditDataByAuditNo.business_no }
             })
           }
         }

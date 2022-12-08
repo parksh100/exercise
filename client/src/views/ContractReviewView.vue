@@ -1,5 +1,11 @@
 <template>
   <div class="container mt-5">
+    <h2 class="mb-4 fw-bold text-center">계약검토입력</h2>
+    <hr />
+    <h5 class="fw-bold">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      현재진행상태
+    </h5>
     <h2 class="mb-4 text-center fw-bold">계약검토입력</h2>
     <hr />
     <!-- <div class="row mb-3">

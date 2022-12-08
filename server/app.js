@@ -20,6 +20,7 @@ const mime = require("mime"); // 파일다운로드 기능
 const cookieParser = require("cookie-parser");
 const cron = require("node-cron"); // 작업스케줄러
 const { strictEqual } = require("assert");
+const { customerListByEmailAndSearchName } = require("./mysql/sql");
 
 // static----------------------------------------------------------------------------------------------------
 // app.use(express.static("public")); // 서버에서 이미지를 다운받아야 할때 사용. static("열어줄 폴더")
@@ -197,6 +198,7 @@ app.get("/api/customer/all", async (req, res) => {
 
 //customer by auditor전체조회
 app.get("/api/customer/:auditor_email", async (req, res) => {
+  console.log(req.params);
   const { auditor_email } = req.params;
   const customerListByAuditor = await mysql.query(
     "customerListByEmail",
@@ -232,6 +234,14 @@ app.get("/api/customer/cert/list/:customer_id", async (req, res) => {
     customer_id
   );
   res.send(auditListByCustomer);
+});
+
+//auditListDetail by audit_no 조회
+app.get("/api/customer/cert/list/detail/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  // console.log(customer_id);
+  const auditListDetail = await mysql.query("auditListDetail", audit_no);
+  res.send(auditListDetail[0]);
 });
 
 //인증심사리스트 by business_no 조회
@@ -280,6 +290,13 @@ app.get("/api/customer/cr/:customer_id", async (req, res) => {
   const { customer_id } = req.params;
   const crDetail = await mysql.query("crDetail", customer_id);
   res.send(crDetail[0]);
+});
+
+//cr detail by audit_no
+app.get("/api/customer/cr/detail/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  const crDetailByAuditNo = await mysql.query("crSelectedList", audit_no);
+  res.send(crDetailByAuditNo[0]);
 });
 
 //active customer
@@ -401,13 +418,43 @@ app.post("/api/customer/cert/list/audit_no/:audit_no", async (req, res) => {
   const result = await mysql.query("auditListByAuditNo", req.body.param);
   res.send(result);
 });
+// auditListDetail 검색 post by audit_no
+// app.post("/api/customer/cert/list/detail/:audit_no", async (req, res) => {
+//   const result = await mysql.query("auditListDetail", req.body.param);
+//   res.send(result);
+// });
 
 // 심사정보 auditList 검색 post
 app.post("/api/customer/cert/list/search", async (req, res) => {
   const result = await mysql.query("auditListByCondition", req.body.param);
-  console.log(result);
+  // console.log(result);
   res.send(result);
 });
+
+// 심사정보 auditList 검색 post by auditor_email and searchName
+app.post("/api/customer/auditor/search", async (req, res) => {
+  // console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("customerListByEmailAndSearchName", [
+    req.body.param[1],
+    req.body.param[0],
+  ]);
+  // console.log(result);
+  res.send(result);
+});
+
+//테스트용
+// app.get("/api/customer/search", async (req, res) => {
+//   console.log(req.body.param);
+//   // const { auditor_email } = req.params;
+//   const customerListByEmailAndSearchName = await mysql.query(
+//     "customerListByEmailAndSearchName",
+//     [req.body.param, searchName]
+//   );
+//   res.send(customerListByEmailAndSearchName);
+// });
 
 // checkbox 저장 테스트
 app.post("/api/checkbox", async (req, res) => {

@@ -164,6 +164,12 @@ const routes = [
     name: 'ContractView',
     component: () =>
       import(/* webpackChunkName: "report" */ '../views/ContractView.vue')
+  },
+  {
+    path: '/report/audit/plan',
+    name: 'AuditPlanView',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/AuditPlanView.vue')
   }
 ]
 
