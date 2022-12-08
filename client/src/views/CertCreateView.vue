@@ -536,15 +536,15 @@
       </div>
     </div>
     <hr />
-    <!-- <div class="row mb-3">
-      <label class="col-sm-3 col-form-label">심사M/D</label>
+    <div class="row mb-3">
+      <label class="col-sm-3 col-form-label">필요 심사M/D</label>
       <div class="col-sm-9 d-flex justify-content-between">
-        <p>{{ addAuditInfo.audit_md }}</p>
+        <p>{{ addAuditInfo.audit_md }} M/D</p>
         <button class="btn btn-primary btn-sm" @click="calculateMD">
           MD계산
         </button>
       </div>
-    </div> -->
+    </div>
 
     <div v-show="this.addAuditInfo.audit_type === '최초'">
       <div class="row mb-3">
@@ -798,17 +798,180 @@ export default {
       }
     },
     calculateMD() {
-      // let md = 0
-      console.log(JSON.parse(this.customer.employee_count))
-      console.log(JSON.parse(this.customer.employee_count) <= 5)
+      // FIXME: 1) 표준이 qms이거나 cms인 경우와 ems이거나 ohsms인경우
+      // FIXME: 2) 최초, 사후, 갱신인 경우
+      // FIXME: 3) 인원이 5인이하, 10인이하, 20인이하.
       console.log(this.addAuditInfo.audit_standard)
-      if (JSON.parse(this.customer.employee_count) <= 5) {
-        if (this.addAuditInfo.audit.standard.length === 1) {
-          if (this.addAuditInfo.audit_standard === 'QMS') {
-            if (this.addAuditInfo.audit_type === '최초') {
-              this.addAuditInfo.audit_md = 1
-            }
+      console.log(this.addAuditInfo.audit_standard[0])
+      console.log(this.addAuditInfo.audit_standard.length)
+      const NoOfStandard = this.addAuditInfo.audit_standard.length
+      let NoOfEmployee = this.customer.employee_count
+      if (NoOfStandard === 1 && this.addAuditInfo.audit_standard[0] === 'QMS') {
+        if (this.addAuditInfo.audit_type === '최초') {
+          if (NoOfEmployee <= 5) {
+            this.addAuditInfo.audit_md = 1.5
+          } else if (NoOfEmployee <= 10) {
+            this.addAuditInfo.audit_md = 2
+          } else if (NoOfEmployee <= 15) {
+            this.addAuditInfo.audit_md = 2.5
+          } else if (NoOfEmployee <= 25) {
+            this.addAuditInfo.audit_md = 3
+          } else if (NoOfEmployee <= 45) {
+            this.addAuditInfo.audit_md = 4
+          } else if (NoOfEmployee <= 65) {
+            this.addAuditInfo.audit_md = 5
+          } else if (NoOfEmployee <= 85) {
+            this.addAuditInfo.audit_md = 6
+          } else if (NoOfEmployee <= 125) {
+            this.addAuditInfo.audit_md = 7
+          } else if (NoOfEmployee <= 175) {
+            this.addAuditInfo.audit_md = 8
+          } else if (NoOfEmployee <= 275) {
+            this.addAuditInfo.audit_md = 9
+          } else if (NoOfEmployee <= 425) {
+            this.addAuditInfo.audit_md = 10
+          } else if (NoOfEmployee <= 625) {
+            this.addAuditInfo.audit_md = 11
+          } else if (NoOfEmployee <= 875) {
+            this.addAuditInfo.audit_md = 12
+          } else if (NoOfEmployee <= 1175) {
+            this.addAuditInfo.audit_md = 13
+          } else if (NoOfEmployee <= 1550) {
+            this.addAuditInfo.audit_md = 14
+          } else if (NoOfEmployee <= 2025) {
+            this.addAuditInfo.audit_md = 15
+          } else if (NoOfEmployee <= 2675) {
+            this.addAuditInfo.audit_md = 16
+          } else if (NoOfEmployee <= 3450) {
+            this.addAuditInfo.audit_md = 17
+          } else if (NoOfEmployee <= 4350) {
+            this.addAuditInfo.audit_md = 18
+          } else if (NoOfEmployee <= 5450) {
+            this.addAuditInfo.audit_md = 19
+          } else if (NoOfEmployee <= 6800) {
+            this.addAuditInfo.audit_md = 20
+          } else if (NoOfEmployee <= 8500) {
+            this.addAuditInfo.audit_md = 21
+          } else if (NoOfEmployee <= 10700) {
+            this.addAuditInfo.audit_md = 22
+          } else {
+            this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
           }
+        } else if (this.addAuditInfo.audit_type === '사후') {
+          if (this.customer.employee_count <= 20) {
+            NoOfEmployee = 1
+          } else if (this.customer.employee_count <= 45) {
+            NoOfEmployee = 1.5
+          } else if (this.customer.employee_count <= 85) {
+            NoOfEmployee = 2
+          } else if (this.customer.employee_count <= 125) {
+            NoOfEmployee = 2.5
+          } else if (this.customer.employee_count <= 275) {
+            NoOfEmployee = 3
+          } else if (this.customer.employee_count <= 425) {
+            NoOfEmployee = 3.5
+          } else if (this.customer.employee_count <= 875) {
+            NoOfEmployee = 4
+          } else if (this.customer.employee_count <= 1175) {
+            NoOfEmployee = 4.5
+          } else if (this.customer.employee_count <= 2025) {
+            NoOfEmployee = 5
+          } else if (this.customer.employee_count <= 2675) {
+            NoOfEmployee = 5.5
+          } else if (this.customer.employee_count <= 4350) {
+            NoOfEmployee = 6
+          } else if (this.customer.employee_count <= 5450) {
+            NoOfEmployee = 6.5
+          } else if (this.customer.employee_count <= 8500) {
+            NoOfEmployee = 7
+          } else if (this.customer.employee_count <= 10700) {
+            NoOfEmployee = 7.5
+          } else {
+            this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+          }
+        } else if (this.addAuditInfo.audit_type === '갱신') {
+          if (this.customer.employee_count <= 10) {
+            NoOfEmployee = 1.5
+          } else if (this.customer.employee_count <= 25) {
+            NoOfEmployee = 2
+          } else if (this.customer.employee_count <= 45) {
+            NoOfEmployee = 3
+          } else if (this.customer.employee_count <= 65) {
+            NoOfEmployee = 3.5
+          } else if (this.customer.employee_count <= 85) {
+            NoOfEmployee = 4
+          } else if (this.customer.employee_count <= 125) {
+            NoOfEmployee = 5
+          } else if (this.customer.employee_count <= 175) {
+            NoOfEmployee = 5.5
+          } else if (this.customer.employee_count <= 275) {
+            NoOfEmployee = 6
+          } else if (this.customer.employee_count <= 425) {
+            NoOfEmployee = 7
+          } else if (this.customer.employee_count <= 625) {
+            NoOfEmployee = 7.5
+          } else if (this.customer.employee_count <= 875) {
+            NoOfEmployee = 8
+          } else if (this.customer.employee_count <= 1175) {
+            NoOfEmployee = 9
+          } else if (this.customer.employee_count <= 1550) {
+            NoOfEmployee = 9.5
+          } else if (this.customer.employee_count <= 2025) {
+            NoOfEmployee = 10
+          } else if (this.customer.employee_count <= 2675) {
+            NoOfEmployee = 11
+          } else if (this.customer.employee_count <= 3450) {
+            NoOfEmployee = 11.5
+          } else if (this.customer.employee_count <= 4350) {
+            NoOfEmployee = 12
+          } else if (this.customer.employee_count <= 5450) {
+            NoOfEmployee = 13
+          } else if (this.customer.employee_count <= 6800) {
+            NoOfEmployee = 13.5
+          } else if (this.customer.employee_count <= 8500) {
+            NoOfEmployee = 14
+          } else if (this.customer.employee_count <= 10700) {
+            NoOfEmployee = 15
+          } else {
+            this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+          }
+        }
+      } else if (
+        this.addAuditInfo.audit_standard === 'EMS' ||
+        this.addAuditInfo.audit_standard === 'OHSMS'
+      ) {
+        if (this.addAuditInfo.audit_type === '최초') {
+          if (this.customer.employee_count <= 5) {
+            NoOfEmployee = 2
+          } else if (this.customer.employee_count <= 10) {
+            NoOfEmployee = 3
+          } else if (this.customer.employee_count <= 20) {
+            NoOfEmployee = 4
+          } else {
+            NoOfEmployee = 5
+          }
+        } else if (this.addAuditInfo.audit_type === '사후') {
+          if (this.customer.employee_count <= 5) {
+            NoOfEmployee = 2
+          } else if (this.customer.employee_count <= 10) {
+            NoOfEmployee = 3
+          } else if (this.customer.employee_count <= 20) {
+            NoOfEmployee = 4
+          } else {
+            NoOfEmployee = 5
+          }
+        } else if (this.addAuditInfo.audit_type === '갱신') {
+          if (this.customer.employee_count <= 5) {
+            NoOfEmployee = 2
+          } else if (this.customer.employee_count <= 10) {
+            NoOfEmployee = 3
+          } else if (this.customer.employee_count <= 20) {
+            NoOfEmployee = 4
+          } else {
+            NoOfEmployee = 5
+          }
+        } else {
+          NoOfEmployee = 0
         }
       }
     },

@@ -11,126 +11,19 @@
     </div>
 
     <h5 class="fw-bold mb-5">
-      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      <!-- <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i> -->
       I. 인증고객정보
     </h5>
     <!-- table -->
-    <div>심사일자:</div>
-    <table class="table text-center table-bordered">
-      <thead>
-        <tr>
-          <th style="width: 40%" colspan="4">시간</th>
-          <th style="width: 25%" colspan="3">심사원별심사대상</th>
-        </tr>
-        <tr>
-          <th style="width: 20%" colspan="2">시작시간</th>
-          <th style="width: 20%" colspan="2">종료시간</th>
-          <th style="width: 25%">팀장</th>
-          <th style="width: 25%">팀원</th>
-          <th style="width: 10%">기능</th>
-        </tr>
-      </thead>
+    <table class="table text-center">
       <tbody>
-        <tr v-for="row in rows" :key="row">
-          <td style="width: 10%">
-            <select
-              class="form-select"
-              style="width: 100%; border: 0"
-              name=""
-              id=""
-              v-model="row.start_h"
-            >
-              <option value="09">09</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
-              <option value="17">17</option>
-              <option value="18">18</option>
-            </select>
-          </td>
-          <td style="width: 10%">
-            <select
-              class="form-select"
-              style="width: 100%; border: 0"
-              name=""
-              id=""
-              v-model="row.start_m"
-            >
-              <option value="00">00</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="40">40</option>
-              <option value="50">50</option>
-            </select>
-          </td>
-          <td style="width: 10%">
-            <select
-              class="form-select"
-              style="width: 100%; border: 0"
-              name=""
-              id=""
-              v-model="row.end_h"
-            >
-              <option value="09">09</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
-              <option value="17">17</option>
-              <option value="18">18</option>
-            </select>
-          </td>
-          <td style="width: 10%">
-            <select
-              class="form-select"
-              style="width: 100%; border: 0"
-              name=""
-              id=""
-              v-model="row.end_m"
-            >
-              <option value="00">00</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="40">40</option>
-              <option value="50">50</option>
-            </select>
-          </td>
-          <td style="width: 25%">
-            <input
-              type="text"
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%"
-              v-model="row.leader"
-            />
-          </td>
-          <td style="width: 25%">
-            <input
-              type="text"
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%"
-              v-model="row.auditor"
-            />
-          </td>
-          <td class="d-flex" style="width: 100%">
-            <button class="btn btn-primary" @click="addRow">
-              <i class="fa-regular fa-plus"></i></button
-            ><button class="btn btn-primary ms-1" @click="removeRow">
-              <i class="fa-solid fa-x"></i>
-            </button>
-          </td>
+        <tr>
+          <th style="width: 10%">고객명</th>
+          <td style="width: 10%">(주)비티씨씨큐</td>
+          <td style="width: 10%"></td>
+          <td style="width: 10%"></td>
+          <td style="width: 25%"></td>
+          <td style="width: 25%"></td>
         </tr>
       </tbody>
     </table>
