@@ -76,30 +76,30 @@
           <td></td>
         </tr>
 
-        <tr>
+        <!-- <tr>
           <th>내부심사여부</th>
           <td>
             {{ cr.audit_internal_date }}
           </td>
           <th>경영검토여부</th>
           <td>{{ cr.audit_management_date }}</td>
-        </tr>
+        </tr> -->
 
         <tr></tr>
-        <tr>
+        <tr v-show="cr.audit_type === '최초'">
           <th>1단계심사 시작일</th>
           <td>
             {{ cr.audit_s1_start }}
           </td>
-          <th>2단계심사 시작일</th>
-          <td>{{ cr.audit_s2_start }}</td>
-        </tr>
-
-        <tr>
           <th>1단계심사 종료일</th>
           <td>
             {{ cr.audit_s1_end }}
           </td>
+        </tr>
+
+        <tr>
+          <th>2단계심사 시작일</th>
+          <td>{{ cr.audit_s2_start }}</td>
           <th>2단계심사 종료일</th>
           <td>{{ cr.audit_s2_end }}</td>
         </tr>
@@ -114,11 +114,12 @@
         <tr class="bg-light">
           <th>MD</th>
           <td>
-            <input type="number" class="form-control" v-model="addCR.cr_md" />
+            {{ cr.audit_md }}
           </td>
           <th>MD적합성</th>
           <td>
-            <div>
+            {{ addCR.cr_md_conformity }}
+            <!-- <div>
               <div class="form-check form-check-inline">
                 <input
                   class="form-check-input"
@@ -146,14 +147,15 @@
                   >부적합</label
                 >
               </div>
-            </div>
+            </div> -->
           </td>
         </tr>
 
         <tr class="bg-light">
           <th>기술전문가 필요성</th>
           <td>
-            <div class="form-check form-check-inline">
+            {{ addCR.cr_expert }}
+            <!-- <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="radio"
@@ -175,11 +177,12 @@
               />
 
               <label class="form-check-label" for="expert2">불필요</label>
-            </div>
+            </div> -->
           </td>
           <th>심사가능여부</th>
           <td>
-            <div class="">
+            {{ addCR.cr_possibility }}
+            <!-- <div class="">
               <div class="form-check form-check-inline">
                 <input
                   class="form-check-input"
@@ -205,25 +208,27 @@
                   >부적합</label
                 >
               </div>
-            </div>
+            </div> -->
           </td>
         </tr>
         <tr class="bg-light">
           <th>계약자 및 검토자 의견</th>
           <td>
-            <textarea
+            {{ addCR.cr_opinion }}
+            <!-- <textarea
               class="form-control"
               rows="2"
               v-model="addCR.cr_opinion"
-            ></textarea>
+            ></textarea> -->
           </td>
           <th>계약변경</th>
           <td>
-            <textarea
+            {{ addCR.cr_change }}
+            <!-- <textarea
               class="form-control"
               rows="2"
               v-model="addCR.cr_change"
-            ></textarea>
+            ></textarea> -->
           </td>
         </tr>
       </tbody>
@@ -275,8 +280,8 @@ export default {
         cr_md: 0,
         cr_md_conformity: '적합',
         cr_expert: '불필요',
-        cr_opinion: '',
-        cr_change: ''
+        cr_opinion: '해당없음',
+        cr_change: '해당없음'
       }
     }
   },

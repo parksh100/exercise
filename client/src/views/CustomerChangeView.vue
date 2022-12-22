@@ -267,8 +267,9 @@
         <input
           type="number"
           class="form-control"
-          v-model.trim="customer.employee_count"
+          v-model="customer.employee_count"
         />
+        <p>{{ customer.employee_count }}</p>
       </div>
     </div>
 
@@ -2930,7 +2931,7 @@ export default {
         homepage: '',
         organization_scope: '',
         certification_standard: [],
-        employee_count: '',
+        employee_count: null,
         design: '',
         development_count: '',
         scope_ko: '',
@@ -3013,323 +3014,326 @@ export default {
     }
 
     // this.getCustomer()
-
-    // 1. db에서 데이터 가져오기
-    const dbData = await this.$get(
-      `http://localhost:3000/api/customer/list/${this.id}`
-    )
-    console.log('dbData : ', dbData)
-    // 2. 가져온 데이터를 customer에 할당
-    // console.log('dbCertficationType : ', dbData.certification_type)
-    // this.customer.certification_type = dbData.certification_type
-    // console.log('dbname_ko : ',  dbData.name_ko)
-    this.customer.customer_type = dbData.customer_type
-    // this.customer.certification_type = dbData.certification_type
-    this.customer.name_ko = dbData.name_ko
-    this.customer.name_en = dbData.name_en
-    this.customer.business_no = dbData.business_no
-    this.customer.ceo_name = dbData.ceo_name
-    this.customer.ceo_phone = dbData.ceo_phone
-    this.customer.email = dbData.email
-    this.customer.phone = dbData.phone
-    this.customer.fax = dbData.fax
-    this.customer.postcode = dbData.postcode
-    this.customer.address_ko = dbData.address_ko
-    this.customer.address_detail = dbData.address_detail
-    this.customer.address_reference = dbData.address_reference
-    this.customer.address_en = dbData.address_en
-    this.customer.address_en_detail = dbData.address_en_detail
-    this.customer.contact_name = dbData.contact_name
-    this.customer.contact_phone = dbData.contact_phone
-    this.customer.contact_email = dbData.contact_email
-    this.customer.homepage = dbData.homepage
-    this.customer.organization_scope = dbData.organization_scope
-
-    // certification_standard
-    // console.log('certification_standard : ', dbData.certification_standard)
-    // console.log(JSON.parse(dbData.certification_standard))
-    // const dbCertificationStandard = JSON.parse(dbData.certification_standard)
-    // console.log('dbCertificationStandard : ', dbCertificationStandard)
-    // const checkbox = document.getElementsByName('certification_standard')
-    // console.log('checkbox : ', checkbox)
-    // for (let i = 0; i < dbCertificationStandard.length; i++) {
-    //   console.log('dbCertificationStandard[i] : ', dbCertificationStandard[i])
-    //   for (let j = 0; j < checkbox.length; j++) {
-    //     console.log(checkbox[j].value)
-    //     if (dbCertificationStandard[i] === checkbox[j].value) {
-    //       this.customer.certification_standard.push(checkbox[j].value)
-    //     }
-    //   }
-    // }
-    this.customer.employee_count = dbData.employee_count
-    this.customer.design = dbData.design
-    this.customer.development_count = dbData.development_count
-    this.customer.scope_ko = dbData.scope_ko
-    this.customer.scope_en = dbData.scope_en
-
-    // activity
-    const dbActivity = JSON.parse(dbData.activity)
-    // console.log('dbActivity : ', dbActivity)
-    const checkboxActivity = document.getElementsByName(
-      'certification_activity'
-    )
-    for (let i = 0; i < dbActivity.length; i++) {
-      for (let j = 0; j < checkboxActivity.length; j++) {
-        if (dbActivity[i] === checkboxActivity[j].value) {
-          this.customer.activity.push(checkboxActivity[j].value)
-        }
-      }
-    }
-
-    // iaf_code
-    // const dbIAFCode = JSON.stringify(dbData.iaf_code)
-    const dbIAFCode = JSON.parse(dbData.iaf_code)
-    // console.log('dbIAFCode : ', dbIAFCode)
-    // console.log(dbIAFCode.length)
-    const checkboxIAFCode = document.getElementsByName('iaf_code')
-    // console.log('checkboxIAFCode : ', checkboxIAFCode)
-    if (dbIAFCode.length > 0) {
-      for (let i = 0; i < dbIAFCode.length; i++) {
-        for (let j = 0; j < checkboxIAFCode.length; j++) {
-          if (dbIAFCode[i] === checkboxIAFCode[j].value) {
-            this.customer.iaf_code.push(checkboxIAFCode[j].value)
-          }
-        }
-      }
-    }
-
-    this.customer.process = dbData.process
-    this.customer.shift = dbData.shift
-    this.customer.shift_work_count = dbData.shift_work_count
-    this.customer.exclusion = dbData.exclusion
-    this.customer.exclusion_reason = dbData.exclusion_reason
-
-    this.customer.manual_date = JSON.parse(dbData.manual_date)
-    this.customer.internal_date = JSON.parse(dbData.internal_date)
-    this.customer.management_date = JSON.parse(dbData.management_date)
-    this.customer.outsourcing = dbData.outsourcing
-    this.customer.outsourcing_process = dbData.outsourcing_process
-    this.customer.construction_license = dbData.construction_license
-    this.customer.construction_license_content =
-      dbData.construction_license_content
-    // this.customer.audit_fee = dbData.audit_fee
-    // this.customer.location = dbData.location
-    // this.customer.production_method = dbData.production_method
-    // this.customer.production_method_etc = dbData.production_method_etc
-    this.customer.environmental_aspect = dbData.environmental_aspect
-    this.customer.environmental_permit = dbData.environmental_permit
-    this.customer.environmental_permit_content =
-      dbData.environmental_permit_content
-    this.customer.environmental_accident = dbData.environmental_accident
-    this.customer.environmental_accident_content =
-      dbData.environmental_accident_content
-    this.customer.risk_factor = dbData.risk_factor
-    this.customer.safety_accident = dbData.safety_accident
-    this.customer.safety_accident_content = dbData.safety_accident_content
-    this.customer.outside_worker = dbData.outside_worker
-    this.customer.outside_worker_content = dbData.outside_worker_content
-
-    // this.customer.hazardous_chemical = dbData.hazardous_chemical
-    // this.customer.hazardous_chemical_content = dbData.hazardous_chemical_content
-
-    // air_pollution
-    // const dbAirPollution = JSON.parse(dbData.air_pollution)
-    // const checkboxAirPollution = document.getElementsByName('air_aspect')
-    // if (dbAirPollution.length > 0) {
-    //   for (let i = 0; i < dbAirPollution.length; i++) {
-    //     for (let j = 0; j < checkboxAirPollution.length; j++) {
-    //       if (dbAirPollution[i] === checkboxAirPollution[j].value) {
-    //         this.customer.air_pollution.push(checkboxAirPollution[j].value)
-    //       }
-    //     }
-    //   }
-    // }
-    // this.customer.air_pollution_content = dbData.air_pollution_content
-
-    // soil_pollution
-    // const dbSoilPollution = JSON.parse(dbData.soil_pollution)
-    // const checkboxSoilPollution = document.getElementsByName('soil_aspect')
-    // if (dbSoilPollution.length > 0) {
-    //   for (let i = 0; i < dbSoilPollution.length; i++) {
-    //     for (let j = 0; j < checkboxSoilPollution.length; j++) {
-    //       if (dbSoilPollution[i] === checkboxSoilPollution[j].value) {
-    //         this.customer.soil_pollution.push(checkboxSoilPollution[j].value)
-    //       }
-    //     }
-    //   }
-    // }
-
-    // this.customer.soil_pollution_content = dbData.soil_pollution_content
-
-    // water_pollution
-    // console.log('water_pollution : ', dbData.water_pollution)
-    // console.log(JSON.parse(dbData.water_pollution))
-    // const dbWaterPollution = JSON.parse(dbData.water_pollution)
-    // console.log('dbWaterPollution : ', dbWaterPollution)
-    // const checkboxWaterPollution = document.getElementsByName('water_aspect')
-    // console.log('checkboxWaterPollution : ', checkboxWaterPollution)
-    // if (dbWaterPollution !== null) {
-    //   for (let i = 0; i < dbWaterPollution.length; i++) {
-    //     for (let j = 0; j < checkboxWaterPollution.length; j++) {
-    //       if (dbWaterPollution[i] === checkboxWaterPollution[j].value) {
-    //         this.customer.water_pollution.push(checkboxWaterPollution[j].value)
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   this.customer.water_pollution = []
-    // }
-
-    // nature_resource_pollution
-    // console.log(dbData.natural_resource_pollution)
-
-    // const dbNatureResourcePollution = JSON.parse(
-    //   dbData.natural_resource_pollution
-    // )
-    // const checkboxNatureResourcePollution =
-    //   document.getElementsByName('natural_aspect')
-    // if (dbNatureResourcePollution.length > 0) {
-    //   for (let i = 0; i < dbNatureResourcePollution.length; i++) {
-    //     for (let j = 0; j < checkboxNatureResourcePollution.length; j++) {
-    //       if (
-    //         dbNatureResourcePollution[i] ===
-    //         checkboxNatureResourcePollution[j].value
-    //       ) {
-    //         this.customer.natural_resource_pollution.push(
-    //           checkboxNatureResourcePollution[j].value
-    //         )
-    //       }
-    //     }
-    //   }
-    // }
-
-    // this.customer.natural_resource_pollution_content =
-    //   dbData.natural_resource_pollution_content
-
-    // energy_pollution
-    // const dbEnergyPollution = JSON.parse(dbData.energy_pollution)
-    // const checkboxEnergyPollution = document.getElementsByName('energy_aspect')
-    // if (dbEnergyPollution.length > 0) {
-    //   for (let i = 0; i < dbEnergyPollution.length; i++) {
-    //     for (let j = 0; j < checkboxEnergyPollution.length; j++) {
-    //       if (dbEnergyPollution[i] === checkboxEnergyPollution[j].value) {
-    //         this.customer.energy_pollution.push(
-    //           checkboxEnergyPollution[j].value
-    //         )
-    //       }
-    //     }
-    //   }
-    // }
-    // this.customer.energy_pollution_content = dbData.energy_pollution_content
-
-    // waste_pollution
-    // const dbWastePollution = JSON.parse(dbData.waste_pollution)
-    // const checkboxWastePollution = document.getElementsByName('waste_aspect')
-    // if (dbWastePollution.length > 0) {
-    //   for (let i = 0; i < dbWastePollution.length; i++) {
-    //     for (let j = 0; j < checkboxWastePollution.length; j++) {
-    //       if (dbWastePollution[i] === checkboxWastePollution[j].value) {
-    //         this.customer.waste_pollution.push(checkboxWastePollution[j].value)
-    //       }
-    //     }
-    //   }
-    // }
-    // this.customer.waste_pollution_content = dbData.waste_pollution_content
-
-    // machine-factor
-    // const dbMachineFactor = JSON.parse(dbData.machine_factor)
-    // const checkboxMachineFactor =
-    //   document.getElementsByName('mechanical_factor')
-    // if (dbMachineFactor.length > 0) {
-    //   for (let i = 0; i < dbMachineFactor.length; i++) {
-    //     for (let j = 0; j < checkboxMachineFactor.length; j++) {
-    //       if (dbMachineFactor[i] === checkboxMachineFactor[j].value) {
-    //         this.customer.machine_factor.push(checkboxMachineFactor[j].value)
-    //       }
-    //     }
-    //   }
-    // }
-
-    // electric-factor
-    // const dbElectricFactor = JSON.parse(dbData.electric_factor)
-    // const checkboxElectricFactor =
-    //   document.getElementsByName('electrical_factor')
-    // if (dbElectricFactor.length > 0) {
-    //   for (let i = 0; i < dbElectricFactor.length; i++) {
-    //     for (let j = 0; j < checkboxElectricFactor.length; j++) {
-    //       if (dbElectricFactor[i] === checkboxElectricFactor[j].value) {
-    //         this.customer.electric_factor.push(checkboxElectricFactor[j].value)
-    //       }
-    //     }
-    //   }
-    // }
-
-    // chemical_factor
-    // const dbChemicalFactor = JSON.parse(dbData.chemical_factor)
-    // const checkboxChemicalFactor = document.getElementsByName('chemical_factor')
-    // if (dbChemicalFactor.length > 0) {
-    //   for (let i = 0; i < dbChemicalFactor.length; i++) {
-    //     for (let j = 0; j < checkboxChemicalFactor.length; j++) {
-    //       if (dbChemicalFactor[i] === checkboxChemicalFactor[j].value) {
-    //         this.customer.chemical_factor.push(checkboxChemicalFactor[j].value)
-    //       }
-    //     }
-    //   }
-    // }
-
-    // biological_factor
-    // const dbBiologicalFactor = JSON.parse(dbData.biological_factor)
-    // const checkboxBiologicalFactor =
-    //   document.getElementsByName('biological_factor')
-    // if (dbBiologicalFactor.length > 0) {
-    //   for (let i = 0; i < dbBiologicalFactor.length; i++) {
-    //     for (let j = 0; j < checkboxBiologicalFactor.length; j++) {
-    //       if (dbBiologicalFactor[i] === checkboxBiologicalFactor[j].value) {
-    //         this.customer.biological_factor.push(
-    //           checkboxBiologicalFactor[j].value
-    //         )
-    //       }
-    //     }
-    //   }
-    // }
-
-    // work_factor
-    // const dbWorkFactor = JSON.parse(dbData.work_factor)
-    // const checkboxWorkFactor = document.getElementsByName(
-    //   'work_characteristic_factor'
-    // )
-    // if (dbWorkFactor.length > 0) {
-    //   for (let i = 0; i < dbWorkFactor.length; i++) {
-    //     for (let j = 0; j < checkboxWorkFactor.length; j++) {
-    //       if (dbWorkFactor[i] === checkboxWorkFactor[j].value) {
-    //         this.customer.work_factor.push(checkboxWorkFactor[j].value)
-    //       }
-    //     }
-    //   }
-    // }
-
-    // work_env
-    //   const dbWorkEnv = JSON.parse(dbData.work_env)
-    //   const checkboxWorkEnv = document.getElementsByName(
-    //     'work_environment_factor'
-    //   )
-    //   if (dbWorkEnv.length > 0) {
-    //     for (let i = 0; i < dbWorkEnv.length; i++) {
-    //       for (let j = 0; j < checkboxWorkEnv.length; j++) {
-    //         if (dbWorkEnv[i] === checkboxWorkEnv[j].value) {
-    //           this.customer.work_env.push(checkboxWorkEnv[j].value)
-    //         }
-    //       }
-    //     }
-    //   }
-    this.customer.auditor_email = dbData.auditor_email
-    this.customer.auditor_name = dbData.auditor_name
-    this.customer.img_license = dbData.img_license
-    console.log('db오리지널 네임: ', dbData.img_license_originalname)
-    this.customer.img_license_originalname = dbData.img_license_originalname
+    this.getDbData()
   },
   unmounted() {},
   methods: {
+    async getDbData() {
+      // 1. db에서 데이터 가져오기
+      const dbData = await this.$get(
+        `http://localhost:3000/api/customer/list/${this.id}`
+      )
+      console.log('dbData : ', dbData)
+      // 2. 가져온 데이터를 customer에 할당
+      // console.log('dbCertficationType : ', dbData.certification_type)
+      // this.customer.certification_type = dbData.certification_type
+      // console.log('dbname_ko : ',  dbData.name_ko)
+      this.customer.customer_type = dbData.customer_type
+      // this.customer.certification_type = dbData.certification_type
+      this.customer.name_ko = dbData.name_ko
+      this.customer.name_en = dbData.name_en
+      this.customer.business_no = dbData.business_no
+      this.customer.ceo_name = dbData.ceo_name
+      this.customer.ceo_phone = dbData.ceo_phone
+      this.customer.email = dbData.email
+      this.customer.phone = dbData.phone
+      this.customer.fax = dbData.fax
+      this.customer.postcode = dbData.postcode
+      this.customer.address_ko = dbData.address_ko
+      this.customer.address_detail = dbData.address_detail
+      this.customer.address_reference = dbData.address_reference
+      this.customer.address_en = dbData.address_en
+      this.customer.address_en_detail = dbData.address_en_detail
+      this.customer.contact_name = dbData.contact_name
+      this.customer.contact_phone = dbData.contact_phone
+      this.customer.contact_email = dbData.contact_email
+      this.customer.homepage = dbData.homepage
+      this.customer.organization_scope = dbData.organization_scope
+
+      // certification_standard
+      // console.log('certification_standard : ', dbData.certification_standard)
+      // console.log(JSON.parse(dbData.certification_standard))
+      // const dbCertificationStandard = JSON.parse(dbData.certification_standard)
+      // console.log('dbCertificationStandard : ', dbCertificationStandard)
+      // const checkbox = document.getElementsByName('certification_standard')
+      // console.log('checkbox : ', checkbox)
+      // for (let i = 0; i < dbCertificationStandard.length; i++) {
+      //   console.log('dbCertificationStandard[i] : ', dbCertificationStandard[i])
+      //   for (let j = 0; j < checkbox.length; j++) {
+      //     console.log(checkbox[j].value)
+      //     if (dbCertificationStandard[i] === checkbox[j].value) {
+      //       this.customer.certification_standard.push(checkbox[j].value)
+      //     }
+      //   }
+      // }
+      this.customer.employee_count = dbData.employee_count
+      this.customer.design = dbData.design
+      this.customer.development_count = dbData.development_count
+      this.customer.scope_ko = dbData.scope_ko
+      this.customer.scope_en = dbData.scope_en
+
+      // activity
+      const dbActivity = JSON.parse(dbData.activity)
+      // console.log('dbActivity : ', dbActivity)
+      const checkboxActivity = document.getElementsByName(
+        'certification_activity'
+      )
+      for (let i = 0; i < dbActivity.length; i++) {
+        for (let j = 0; j < checkboxActivity.length; j++) {
+          if (dbActivity[i] === checkboxActivity[j].value) {
+            this.customer.activity.push(checkboxActivity[j].value)
+          }
+        }
+      }
+
+      // iaf_code
+      // const dbIAFCode = JSON.stringify(dbData.iaf_code)
+      const dbIAFCode = JSON.parse(dbData.iaf_code)
+      // console.log('dbIAFCode : ', dbIAFCode)
+      // console.log(dbIAFCode.length)
+      const checkboxIAFCode = document.getElementsByName('iaf_code')
+      // console.log('checkboxIAFCode : ', checkboxIAFCode)
+      if (dbIAFCode.length > 0) {
+        for (let i = 0; i < dbIAFCode.length; i++) {
+          for (let j = 0; j < checkboxIAFCode.length; j++) {
+            if (dbIAFCode[i] === checkboxIAFCode[j].value) {
+              this.customer.iaf_code.push(checkboxIAFCode[j].value)
+            }
+          }
+        }
+      }
+
+      this.customer.process = dbData.process
+      this.customer.shift = dbData.shift
+      this.customer.shift_work_count = dbData.shift_work_count
+      this.customer.exclusion = dbData.exclusion
+      this.customer.exclusion_reason = dbData.exclusion_reason
+
+      this.customer.manual_date = JSON.parse(dbData.manual_date)
+      this.customer.internal_date = JSON.parse(dbData.internal_date)
+      this.customer.management_date = JSON.parse(dbData.management_date)
+      this.customer.outsourcing = dbData.outsourcing
+      this.customer.outsourcing_process = dbData.outsourcing_process
+      this.customer.construction_license = dbData.construction_license
+      this.customer.construction_license_content =
+        dbData.construction_license_content
+      // this.customer.audit_fee = dbData.audit_fee
+      // this.customer.location = dbData.location
+      // this.customer.production_method = dbData.production_method
+      // this.customer.production_method_etc = dbData.production_method_etc
+      this.customer.environmental_aspect = dbData.environmental_aspect
+      this.customer.environmental_permit = dbData.environmental_permit
+      this.customer.environmental_permit_content =
+        dbData.environmental_permit_content
+      this.customer.environmental_accident = dbData.environmental_accident
+      this.customer.environmental_accident_content =
+        dbData.environmental_accident_content
+      this.customer.risk_factor = dbData.risk_factor
+      this.customer.safety_accident = dbData.safety_accident
+      this.customer.safety_accident_content = dbData.safety_accident_content
+      this.customer.outside_worker = dbData.outside_worker
+      this.customer.outside_worker_content = dbData.outside_worker_content
+
+      // this.customer.hazardous_chemical = dbData.hazardous_chemical
+      // this.customer.hazardous_chemical_content = dbData.hazardous_chemical_content
+
+      // air_pollution
+      // const dbAirPollution = JSON.parse(dbData.air_pollution)
+      // const checkboxAirPollution = document.getElementsByName('air_aspect')
+      // if (dbAirPollution.length > 0) {
+      //   for (let i = 0; i < dbAirPollution.length; i++) {
+      //     for (let j = 0; j < checkboxAirPollution.length; j++) {
+      //       if (dbAirPollution[i] === checkboxAirPollution[j].value) {
+      //         this.customer.air_pollution.push(checkboxAirPollution[j].value)
+      //       }
+      //     }
+      //   }
+      // }
+      // this.customer.air_pollution_content = dbData.air_pollution_content
+
+      // soil_pollution
+      // const dbSoilPollution = JSON.parse(dbData.soil_pollution)
+      // const checkboxSoilPollution = document.getElementsByName('soil_aspect')
+      // if (dbSoilPollution.length > 0) {
+      //   for (let i = 0; i < dbSoilPollution.length; i++) {
+      //     for (let j = 0; j < checkboxSoilPollution.length; j++) {
+      //       if (dbSoilPollution[i] === checkboxSoilPollution[j].value) {
+      //         this.customer.soil_pollution.push(checkboxSoilPollution[j].value)
+      //       }
+      //     }
+      //   }
+      // }
+
+      // this.customer.soil_pollution_content = dbData.soil_pollution_content
+
+      // water_pollution
+      // console.log('water_pollution : ', dbData.water_pollution)
+      // console.log(JSON.parse(dbData.water_pollution))
+      // const dbWaterPollution = JSON.parse(dbData.water_pollution)
+      // console.log('dbWaterPollution : ', dbWaterPollution)
+      // const checkboxWaterPollution = document.getElementsByName('water_aspect')
+      // console.log('checkboxWaterPollution : ', checkboxWaterPollution)
+      // if (dbWaterPollution !== null) {
+      //   for (let i = 0; i < dbWaterPollution.length; i++) {
+      //     for (let j = 0; j < checkboxWaterPollution.length; j++) {
+      //       if (dbWaterPollution[i] === checkboxWaterPollution[j].value) {
+      //         this.customer.water_pollution.push(checkboxWaterPollution[j].value)
+      //       }
+      //     }
+      //   }
+      // } else {
+      //   this.customer.water_pollution = []
+      // }
+
+      // nature_resource_pollution
+      // console.log(dbData.natural_resource_pollution)
+
+      // const dbNatureResourcePollution = JSON.parse(
+      //   dbData.natural_resource_pollution
+      // )
+      // const checkboxNatureResourcePollution =
+      //   document.getElementsByName('natural_aspect')
+      // if (dbNatureResourcePollution.length > 0) {
+      //   for (let i = 0; i < dbNatureResourcePollution.length; i++) {
+      //     for (let j = 0; j < checkboxNatureResourcePollution.length; j++) {
+      //       if (
+      //         dbNatureResourcePollution[i] ===
+      //         checkboxNatureResourcePollution[j].value
+      //       ) {
+      //         this.customer.natural_resource_pollution.push(
+      //           checkboxNatureResourcePollution[j].value
+      //         )
+      //       }
+      //     }
+      //   }
+      // }
+
+      // this.customer.natural_resource_pollution_content =
+      //   dbData.natural_resource_pollution_content
+
+      // energy_pollution
+      // const dbEnergyPollution = JSON.parse(dbData.energy_pollution)
+      // const checkboxEnergyPollution = document.getElementsByName('energy_aspect')
+      // if (dbEnergyPollution.length > 0) {
+      //   for (let i = 0; i < dbEnergyPollution.length; i++) {
+      //     for (let j = 0; j < checkboxEnergyPollution.length; j++) {
+      //       if (dbEnergyPollution[i] === checkboxEnergyPollution[j].value) {
+      //         this.customer.energy_pollution.push(
+      //           checkboxEnergyPollution[j].value
+      //         )
+      //       }
+      //     }
+      //   }
+      // }
+      // this.customer.energy_pollution_content = dbData.energy_pollution_content
+
+      // waste_pollution
+      // const dbWastePollution = JSON.parse(dbData.waste_pollution)
+      // const checkboxWastePollution = document.getElementsByName('waste_aspect')
+      // if (dbWastePollution.length > 0) {
+      //   for (let i = 0; i < dbWastePollution.length; i++) {
+      //     for (let j = 0; j < checkboxWastePollution.length; j++) {
+      //       if (dbWastePollution[i] === checkboxWastePollution[j].value) {
+      //         this.customer.waste_pollution.push(checkboxWastePollution[j].value)
+      //       }
+      //     }
+      //   }
+      // }
+      // this.customer.waste_pollution_content = dbData.waste_pollution_content
+
+      // machine-factor
+      // const dbMachineFactor = JSON.parse(dbData.machine_factor)
+      // const checkboxMachineFactor =
+      //   document.getElementsByName('mechanical_factor')
+      // if (dbMachineFactor.length > 0) {
+      //   for (let i = 0; i < dbMachineFactor.length; i++) {
+      //     for (let j = 0; j < checkboxMachineFactor.length; j++) {
+      //       if (dbMachineFactor[i] === checkboxMachineFactor[j].value) {
+      //         this.customer.machine_factor.push(checkboxMachineFactor[j].value)
+      //       }
+      //     }
+      //   }
+      // }
+
+      // electric-factor
+      // const dbElectricFactor = JSON.parse(dbData.electric_factor)
+      // const checkboxElectricFactor =
+      //   document.getElementsByName('electrical_factor')
+      // if (dbElectricFactor.length > 0) {
+      //   for (let i = 0; i < dbElectricFactor.length; i++) {
+      //     for (let j = 0; j < checkboxElectricFactor.length; j++) {
+      //       if (dbElectricFactor[i] === checkboxElectricFactor[j].value) {
+      //         this.customer.electric_factor.push(checkboxElectricFactor[j].value)
+      //       }
+      //     }
+      //   }
+      // }
+
+      // chemical_factor
+      // const dbChemicalFactor = JSON.parse(dbData.chemical_factor)
+      // const checkboxChemicalFactor = document.getElementsByName('chemical_factor')
+      // if (dbChemicalFactor.length > 0) {
+      //   for (let i = 0; i < dbChemicalFactor.length; i++) {
+      //     for (let j = 0; j < checkboxChemicalFactor.length; j++) {
+      //       if (dbChemicalFactor[i] === checkboxChemicalFactor[j].value) {
+      //         this.customer.chemical_factor.push(checkboxChemicalFactor[j].value)
+      //       }
+      //     }
+      //   }
+      // }
+
+      // biological_factor
+      // const dbBiologicalFactor = JSON.parse(dbData.biological_factor)
+      // const checkboxBiologicalFactor =
+      //   document.getElementsByName('biological_factor')
+      // if (dbBiologicalFactor.length > 0) {
+      //   for (let i = 0; i < dbBiologicalFactor.length; i++) {
+      //     for (let j = 0; j < checkboxBiologicalFactor.length; j++) {
+      //       if (dbBiologicalFactor[i] === checkboxBiologicalFactor[j].value) {
+      //         this.customer.biological_factor.push(
+      //           checkboxBiologicalFactor[j].value
+      //         )
+      //       }
+      //     }
+      //   }
+      // }
+
+      // work_factor
+      // const dbWorkFactor = JSON.parse(dbData.work_factor)
+      // const checkboxWorkFactor = document.getElementsByName(
+      //   'work_characteristic_factor'
+      // )
+      // if (dbWorkFactor.length > 0) {
+      //   for (let i = 0; i < dbWorkFactor.length; i++) {
+      //     for (let j = 0; j < checkboxWorkFactor.length; j++) {
+      //       if (dbWorkFactor[i] === checkboxWorkFactor[j].value) {
+      //         this.customer.work_factor.push(checkboxWorkFactor[j].value)
+      //       }
+      //     }
+      //   }
+      // }
+
+      // work_env
+      //   const dbWorkEnv = JSON.parse(dbData.work_env)
+      //   const checkboxWorkEnv = document.getElementsByName(
+      //     'work_environment_factor'
+      //   )
+      //   if (dbWorkEnv.length > 0) {
+      //     for (let i = 0; i < dbWorkEnv.length; i++) {
+      //       for (let j = 0; j < checkboxWorkEnv.length; j++) {
+      //         if (dbWorkEnv[i] === checkboxWorkEnv[j].value) {
+      //           this.customer.work_env.push(checkboxWorkEnv[j].value)
+      //         }
+      //       }
+      //     }
+      //   }
+      this.customer.auditor_email = dbData.auditor_email
+      this.customer.auditor_name = dbData.auditor_name
+      this.customer.img_license = dbData.img_license
+      console.log('db오리지널 네임: ', dbData.img_license_originalname)
+      this.customer.img_license_originalname = dbData.img_license_originalname
+    },
+
     getClassifyAudit() {
       if (this.customer.certification_standard.length > 1) {
         this.customer.classify_audit = '통합심사'
@@ -3691,7 +3695,7 @@ export default {
           console.log('수정할 ID : ', putId)
           const r = await this.$put(`/api/customer/${putId}`, {
             param: {
-              certification_type: this.customer.certification_type,
+              // certification_type: this.customer.certification_type,
               certification_standard: JSON.stringify(
                 this.customer.certification_standard
               ),
@@ -3792,10 +3796,10 @@ export default {
           console.log(r)
 
           if (r.status === 200) {
-            this.$swal('인증신청 정보가 저장되었습니다.')
+            this.$swal('인증신청 정보가 수정되었습니다.')
             this.$router.push({
-              path: '/customer/detail/',
-              query: { customer_id: this.id }
+              path: '/customer/detail',
+              query: { id: this.id }
             })
           }
         }

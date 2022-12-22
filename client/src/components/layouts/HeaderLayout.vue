@@ -1,6 +1,8 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <nav
+      class="navbar navbar-expand-md navbar-dark fixed-top bg-dark d-print-none"
+    >
       <div class="container-fluid">
         <a class="navbar-brand" href="#">KAI CERTIFICATION</a>
         <button
@@ -38,25 +40,6 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                :class="{ active: $route.path == '/auditor' }"
-                @click="goToMenu('/auditor')"
-                role="button"
-                >심사원</a
-              >
-            </li>
-
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                :class="{ active: $route.path == '/customer/list/auditor' }"
-                @click="goToMenu('/customer/list/auditor')"
-                role="button"
-                >고객리스트</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
                 :class="{ active: $route.path == '/customer/create' }"
                 @click="goToMenu('/customer/create')"
                 role="button"
@@ -66,10 +49,39 @@
             <li class="nav-item">
               <a
                 class="nav-link"
+                :class="{ active: $route.path == '/auditor' }"
+                @click="goToMenu('/auditor')"
+                role="button"
+                >심사원현황</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                :class="{ active: $route.path == '/customer/list/auditor' }"
+                @click="goToMenu('/customer/list/auditor')"
+                role="button"
+                >고객사현황</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link"
                 :class="{ active: $route.path == '/customer/cert/list' }"
                 @click="goToMenu('/customer/cert/list')"
                 role="button"
-                >심사현황</a
+                >인증심사현황</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                :class="{ active: $route.path == '/report/list' }"
+                @click="goToMenu('/report/list')"
+                role="button"
+                >심사보고서현황</a
               >
             </li>
           </ul>

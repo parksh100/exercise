@@ -505,7 +505,7 @@
       </div>
     </div>
     <hr />
-    <div class="row mb-3" v-show="this.addAuditInfo.audit_type === '최초'">
+    <!-- <div class="row mb-3" v-show="this.addAuditInfo.audit_type === '최초'">
       <label class="col-sm-3 col-form-label">매뉴얼 제/개정일</label>
       <div class="col-sm-9">
         <input
@@ -514,8 +514,8 @@
           v-model.trim="addAuditInfo.audit_manual_date"
         />
       </div>
-    </div>
-    <div class="row mb-3">
+    </div> -->
+    <!-- <div class="row mb-3">
       <label class="col-sm-3 col-form-label">내부심사일</label>
       <div class="col-sm-9">
         <input
@@ -534,15 +534,48 @@
           v-model.trim="addAuditInfo.audit_management_date"
         />
       </div>
-    </div>
-    <hr />
+    </div> -->
+    <!-- <hr /> -->
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">필요 심사M/D</label>
       <div class="col-sm-9 d-flex justify-content-between">
-        <p>{{ addAuditInfo.audit_md }} M/D</p>
+        <p>
+          <span v-if="addAuditInfo.audit_md"
+            >{{ addAuditInfo.audit_md }} M/D
+            <small> (※전환인 경우 전환심사M/D 별도)</small></span
+          >
+        </p>
         <button class="btn btn-primary btn-sm" @click="calculateMD">
           MD계산
         </button>
+      </div>
+    </div>
+
+    <div
+      v-show="
+        this.addAuditInfo.audit_type === '전환사후' ||
+        this.addAuditInfo.audit_type === '전환갱신'
+      "
+    >
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">전환심사시작일</label>
+        <div class="col-sm-9">
+          <input
+            type="date"
+            class="form-control"
+            v-model.trim="addAuditInfo.audit_trans_start"
+          />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">전환심사종료일</label>
+        <div class="col-sm-9">
+          <input
+            type="date"
+            class="form-control"
+            v-model.trim="addAuditInfo.audit_trans_end"
+          />
+        </div>
       </div>
     </div>
 
@@ -698,13 +731,15 @@ export default {
         business_no: '',
         audit_type: '',
         audit_degree: '',
+        audit_trans_start: null,
+        audit_trans_end: null,
         audit_s1_start: null,
         audit_s1_end: null,
         audit_s2_start: null,
         audit_s2_end: null,
-        audit_manual_date: null,
-        audit_internal_date: null,
-        audit_management_date: null,
+        // audit_manual_date: null,
+        // audit_internal_date: null,
+        // audit_management_date: null,
         audit_leader: '',
         audit_auditor: '',
         audit_fee: '',
@@ -798,180 +833,2726 @@ export default {
       }
     },
     calculateMD() {
-      // FIXME: 1) 표준이 qms이거나 cms인 경우와 ems이거나 ohsms인경우
-      // FIXME: 2) 최초, 사후, 갱신인 경우
-      // FIXME: 3) 인원이 5인이하, 10인이하, 20인이하.
       console.log(this.addAuditInfo.audit_standard)
       console.log(this.addAuditInfo.audit_standard[0])
       console.log(this.addAuditInfo.audit_standard.length)
       const NoOfStandard = this.addAuditInfo.audit_standard.length
-      let NoOfEmployee = this.customer.employee_count
+      const NoOfEmployee = this.customer.employee_count
+      const envComplexity = this.addAuditInfo.audit_env_complexity
+      const ohsRisk = this.addAuditInfo.audit_ohs_risk
+      console.log(envComplexity)
+
+      if (this.addAuditInfo.audit_standard.length === 0) {
+        this.$swal('인증표준을 선택하세요.')
+        return
+      }
+      if (this.addAuditInfo.audit_type === '') {
+        this.$swal('인증유형을 선택하세요.')
+        return
+      }
+
       if (NoOfStandard === 1 && this.addAuditInfo.audit_standard[0] === 'QMS') {
         if (this.addAuditInfo.audit_type === '최초') {
           if (NoOfEmployee <= 5) {
             this.addAuditInfo.audit_md = 1.5
           } else if (NoOfEmployee <= 10) {
-            this.addAuditInfo.audit_md = 2
+            this.addAuditInfo.audit_md = 2.0
           } else if (NoOfEmployee <= 15) {
             this.addAuditInfo.audit_md = 2.5
           } else if (NoOfEmployee <= 25) {
-            this.addAuditInfo.audit_md = 3
+            this.addAuditInfo.audit_md = 3.0
           } else if (NoOfEmployee <= 45) {
-            this.addAuditInfo.audit_md = 4
+            this.addAuditInfo.audit_md = 4.0
           } else if (NoOfEmployee <= 65) {
-            this.addAuditInfo.audit_md = 5
+            this.addAuditInfo.audit_md = 5.0
           } else if (NoOfEmployee <= 85) {
-            this.addAuditInfo.audit_md = 6
+            this.addAuditInfo.audit_md = 6.0
           } else if (NoOfEmployee <= 125) {
-            this.addAuditInfo.audit_md = 7
+            this.addAuditInfo.audit_md = 7.0
           } else if (NoOfEmployee <= 175) {
-            this.addAuditInfo.audit_md = 8
+            this.addAuditInfo.audit_md = 8.0
           } else if (NoOfEmployee <= 275) {
-            this.addAuditInfo.audit_md = 9
+            this.addAuditInfo.audit_md = 9.0
           } else if (NoOfEmployee <= 425) {
-            this.addAuditInfo.audit_md = 10
+            this.addAuditInfo.audit_md = 10.0
           } else if (NoOfEmployee <= 625) {
-            this.addAuditInfo.audit_md = 11
+            this.addAuditInfo.audit_md = 11.0
           } else if (NoOfEmployee <= 875) {
-            this.addAuditInfo.audit_md = 12
+            this.addAuditInfo.audit_md = 12.0
           } else if (NoOfEmployee <= 1175) {
-            this.addAuditInfo.audit_md = 13
+            this.addAuditInfo.audit_md = 13.0
           } else if (NoOfEmployee <= 1550) {
-            this.addAuditInfo.audit_md = 14
+            this.addAuditInfo.audit_md = 14.0
           } else if (NoOfEmployee <= 2025) {
-            this.addAuditInfo.audit_md = 15
+            this.addAuditInfo.audit_md = 15.0
           } else if (NoOfEmployee <= 2675) {
-            this.addAuditInfo.audit_md = 16
+            this.addAuditInfo.audit_md = 16.0
           } else if (NoOfEmployee <= 3450) {
-            this.addAuditInfo.audit_md = 17
+            this.addAuditInfo.audit_md = 17.0
           } else if (NoOfEmployee <= 4350) {
-            this.addAuditInfo.audit_md = 18
+            this.addAuditInfo.audit_md = 18.0
           } else if (NoOfEmployee <= 5450) {
-            this.addAuditInfo.audit_md = 19
+            this.addAuditInfo.audit_md = 19.0
           } else if (NoOfEmployee <= 6800) {
-            this.addAuditInfo.audit_md = 20
+            this.addAuditInfo.audit_md = 20.0
           } else if (NoOfEmployee <= 8500) {
-            this.addAuditInfo.audit_md = 21
+            this.addAuditInfo.audit_md = 21.0
           } else if (NoOfEmployee <= 10700) {
-            this.addAuditInfo.audit_md = 22
+            this.addAuditInfo.audit_md = 22.0
           } else {
             this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
           }
-        } else if (this.addAuditInfo.audit_type === '사후') {
+        } else if (
+          this.addAuditInfo.audit_type === '사후' ||
+          this.addAuditInfo.audit_type === '전환사후'
+        ) {
           if (this.customer.employee_count <= 20) {
-            NoOfEmployee = 1
+            this.addAuditInfo.audit_md = 1.0
           } else if (this.customer.employee_count <= 45) {
-            NoOfEmployee = 1.5
+            this.addAuditInfo.audit_md = 1.5
           } else if (this.customer.employee_count <= 85) {
-            NoOfEmployee = 2
+            this.addAuditInfo.audit_md = 2.0
           } else if (this.customer.employee_count <= 125) {
-            NoOfEmployee = 2.5
+            this.addAuditInfo.audit_md = 2.5
           } else if (this.customer.employee_count <= 275) {
-            NoOfEmployee = 3
+            this.addAuditInfo.audit_md = 3.0
           } else if (this.customer.employee_count <= 425) {
-            NoOfEmployee = 3.5
+            this.addAuditInfo.audit_md = 3.5
           } else if (this.customer.employee_count <= 875) {
-            NoOfEmployee = 4
+            this.addAuditInfo.audit_md = 4.0
           } else if (this.customer.employee_count <= 1175) {
-            NoOfEmployee = 4.5
+            this.addAuditInfo.audit_md = 4.5
           } else if (this.customer.employee_count <= 2025) {
-            NoOfEmployee = 5
+            this.addAuditInfo.audit_md = 5.0
           } else if (this.customer.employee_count <= 2675) {
-            NoOfEmployee = 5.5
+            this.addAuditInfo.audit_md = 5.5
           } else if (this.customer.employee_count <= 4350) {
-            NoOfEmployee = 6
+            this.addAuditInfo.audit_md = 6.0
           } else if (this.customer.employee_count <= 5450) {
-            NoOfEmployee = 6.5
+            this.addAuditInfo.audit_md = 6.5
           } else if (this.customer.employee_count <= 8500) {
-            NoOfEmployee = 7
+            this.addAuditInfo.audit_md = 7.0
           } else if (this.customer.employee_count <= 10700) {
-            NoOfEmployee = 7.5
+            this.addAuditInfo.audit_md = 7.5
           } else {
             this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
           }
-        } else if (this.addAuditInfo.audit_type === '갱신') {
+        } else if (
+          this.addAuditInfo.audit_type === '갱신' ||
+          this.addAuditInfo.audit_type === '전환갱신'
+        ) {
           if (this.customer.employee_count <= 10) {
-            NoOfEmployee = 1.5
+            this.addAuditInfo.audit_md = 1.5
           } else if (this.customer.employee_count <= 25) {
-            NoOfEmployee = 2
+            this.addAuditInfo.audit_md = 2.0
           } else if (this.customer.employee_count <= 45) {
-            NoOfEmployee = 3
+            this.addAuditInfo.audit_md = 3.0
           } else if (this.customer.employee_count <= 65) {
-            NoOfEmployee = 3.5
+            this.addAuditInfo.audit_md = 3.5
           } else if (this.customer.employee_count <= 85) {
-            NoOfEmployee = 4
+            this.addAuditInfo.audit_md = 4.0
           } else if (this.customer.employee_count <= 125) {
-            NoOfEmployee = 5
+            this.addAuditInfo.audit_md = 5.0
           } else if (this.customer.employee_count <= 175) {
-            NoOfEmployee = 5.5
+            this.addAuditInfo.audit_md = 5.5
           } else if (this.customer.employee_count <= 275) {
-            NoOfEmployee = 6
+            this.addAuditInfo.audit_md = 6.0
           } else if (this.customer.employee_count <= 425) {
-            NoOfEmployee = 7
+            this.addAuditInfo.audit_md = 7.0
           } else if (this.customer.employee_count <= 625) {
-            NoOfEmployee = 7.5
+            this.addAuditInfo.audit_md = 7.5
           } else if (this.customer.employee_count <= 875) {
-            NoOfEmployee = 8
+            this.addAuditInfo.audit_md = 8.0
           } else if (this.customer.employee_count <= 1175) {
-            NoOfEmployee = 9
+            this.addAuditInfo.audit_md = 9.0
           } else if (this.customer.employee_count <= 1550) {
-            NoOfEmployee = 9.5
+            this.addAuditInfo.audit_md = 9.5
           } else if (this.customer.employee_count <= 2025) {
-            NoOfEmployee = 10
+            this.addAuditInfo.audit_md = 10.0
           } else if (this.customer.employee_count <= 2675) {
-            NoOfEmployee = 11
+            this.addAuditInfo.audit_md = 11.0
           } else if (this.customer.employee_count <= 3450) {
-            NoOfEmployee = 11.5
+            this.addAuditInfo.audit_md = 11.5
           } else if (this.customer.employee_count <= 4350) {
-            NoOfEmployee = 12
+            this.addAuditInfo.audit_md = 12.0
           } else if (this.customer.employee_count <= 5450) {
-            NoOfEmployee = 13
+            this.addAuditInfo.audit_md = 13.0
           } else if (this.customer.employee_count <= 6800) {
-            NoOfEmployee = 13.5
+            this.addAuditInfo.audit_md = 13.5
           } else if (this.customer.employee_count <= 8500) {
-            NoOfEmployee = 14
+            this.addAuditInfo.audit_md = 14.0
           } else if (this.customer.employee_count <= 10700) {
-            NoOfEmployee = 15
+            this.addAuditInfo.audit_md = 15.0
           } else {
             this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
           }
         }
       } else if (
-        this.addAuditInfo.audit_standard === 'EMS' ||
-        this.addAuditInfo.audit_standard === 'OHSMS'
+        NoOfStandard === 1 &&
+        this.addAuditInfo.audit_standard[0] === 'CGMP'
       ) {
         if (this.addAuditInfo.audit_type === '최초') {
-          if (this.customer.employee_count <= 5) {
-            NoOfEmployee = 2
-          } else if (this.customer.employee_count <= 10) {
-            NoOfEmployee = 3
-          } else if (this.customer.employee_count <= 20) {
-            NoOfEmployee = 4
+          if (NoOfEmployee <= 5) {
+            this.addAuditInfo.audit_md = 1.5
+          } else if (NoOfEmployee <= 10) {
+            this.addAuditInfo.audit_md = 2.0
+          } else if (NoOfEmployee <= 15) {
+            this.addAuditInfo.audit_md = 2.5
+          } else if (NoOfEmployee <= 25) {
+            this.addAuditInfo.audit_md = 3.0
+          } else if (NoOfEmployee <= 45) {
+            this.addAuditInfo.audit_md = 4.0
+          } else if (NoOfEmployee <= 65) {
+            this.addAuditInfo.audit_md = 5.0
+          } else if (NoOfEmployee <= 85) {
+            this.addAuditInfo.audit_md = 6.0
+          } else if (NoOfEmployee <= 125) {
+            this.addAuditInfo.audit_md = 7.0
+          } else if (NoOfEmployee <= 175) {
+            this.addAuditInfo.audit_md = 8.0
+          } else if (NoOfEmployee <= 275) {
+            this.addAuditInfo.audit_md = 9.0
+          } else if (NoOfEmployee <= 425) {
+            this.addAuditInfo.audit_md = 10.0
+          } else if (NoOfEmployee <= 625) {
+            this.addAuditInfo.audit_md = 11.0
+          } else if (NoOfEmployee <= 875) {
+            this.addAuditInfo.audit_md = 12.0
+          } else if (NoOfEmployee <= 1175) {
+            this.addAuditInfo.audit_md = 13.0
+          } else if (NoOfEmployee <= 1550) {
+            this.addAuditInfo.audit_md = 14.0
+          } else if (NoOfEmployee <= 2025) {
+            this.addAuditInfo.audit_md = 15.0
+          } else if (NoOfEmployee <= 2675) {
+            this.addAuditInfo.audit_md = 16.0
+          } else if (NoOfEmployee <= 3450) {
+            this.addAuditInfo.audit_md = 17.0
+          } else if (NoOfEmployee <= 4350) {
+            this.addAuditInfo.audit_md = 18.0
+          } else if (NoOfEmployee <= 5450) {
+            this.addAuditInfo.audit_md = 19.0
+          } else if (NoOfEmployee <= 6800) {
+            this.addAuditInfo.audit_md = 20.0
+          } else if (NoOfEmployee <= 8500) {
+            this.addAuditInfo.audit_md = 21.0
+          } else if (NoOfEmployee <= 10700) {
+            this.addAuditInfo.audit_md = 22.0
           } else {
-            NoOfEmployee = 5
+            this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
           }
-        } else if (this.addAuditInfo.audit_type === '사후') {
+        } else if (
+          this.addAuditInfo.audit_type === '사후' ||
+          this.addAuditInfo.audit_type === '전환사후'
+        ) {
           if (this.customer.employee_count <= 5) {
-            NoOfEmployee = 2
-          } else if (this.customer.employee_count <= 10) {
-            NoOfEmployee = 3
-          } else if (this.customer.employee_count <= 20) {
-            NoOfEmployee = 4
+            this.addAuditInfo.audit_md = 1.0
+          } else if (this.customer.employee_count <= 15) {
+            this.addAuditInfo.audit_md = 1.5
+          } else if (this.customer.employee_count <= 25) {
+            this.addAuditInfo.audit_md = 2.0
+          } else if (this.customer.employee_count <= 45) {
+            this.addAuditInfo.audit_md = 2.5
+          } else if (this.customer.employee_count <= 85) {
+            this.addAuditInfo.audit_md = 3.0
+          } else if (this.customer.employee_count <= 175) {
+            this.addAuditInfo.audit_md = 4.0
+          } else if (this.customer.employee_count <= 275) {
+            this.addAuditInfo.audit_md = 4.5
+          } else if (this.customer.employee_count <= 425) {
+            this.addAuditInfo.audit_md = 5.0
+          } else if (this.customer.employee_count <= 625) {
+            this.addAuditInfo.audit_md = 5.5
+          } else if (this.customer.employee_count <= 875) {
+            this.addAuditInfo.audit_md = 6.0
+          } else if (this.customer.employee_count <= 1175) {
+            this.addAuditInfo.audit_md = 6.5
+          } else if (this.customer.employee_count <= 2025) {
+            this.addAuditInfo.audit_md = 7.0
+          } else if (this.customer.employee_count <= 2675) {
+            this.addAuditInfo.audit_md = 8.0
+          } else if (this.customer.employee_count <= 3450) {
+            this.addAuditInfo.audit_md = 8.5
+          } else if (this.customer.employee_count <= 4350) {
+            this.addAuditInfo.audit_md = 9.0
+          } else if (this.customer.employee_count <= 6800) {
+            this.addAuditInfo.audit_md = 10.0
+          } else if (this.customer.employee_count <= 8500) {
+            this.addAuditInfo.audit_md = 11.0
+          } else if (this.customer.employee_count <= 10700) {
+            this.addAuditInfo.audit_md = 11.5
           } else {
-            NoOfEmployee = 5
+            this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
           }
-        } else if (this.addAuditInfo.audit_type === '갱신') {
-          if (this.customer.employee_count <= 5) {
-            NoOfEmployee = 2
-          } else if (this.customer.employee_count <= 10) {
-            NoOfEmployee = 3
-          } else if (this.customer.employee_count <= 20) {
-            NoOfEmployee = 4
+        } else if (
+          this.addAuditInfo.audit_type === '갱신' ||
+          this.addAuditInfo.audit_type === '전환갱신'
+        ) {
+          if (this.customer.employee_count <= 10) {
+            this.addAuditInfo.audit_md = 1.5
+          } else if (this.customer.employee_count <= 25) {
+            this.addAuditInfo.audit_md = 2
+          } else if (this.customer.employee_count <= 45) {
+            this.addAuditInfo.audit_md = 3
+          } else if (this.customer.employee_count <= 65) {
+            this.addAuditInfo.audit_md = 3.5
+          } else if (this.customer.employee_count <= 85) {
+            this.addAuditInfo.audit_md = 4
+          } else if (this.customer.employee_count <= 125) {
+            this.addAuditInfo.audit_md = 5
+          } else if (this.customer.employee_count <= 175) {
+            this.addAuditInfo.audit_md = 5.5
+          } else if (this.customer.employee_count <= 275) {
+            this.addAuditInfo.audit_md = 6
+          } else if (this.customer.employee_count <= 425) {
+            this.addAuditInfo.audit_md = 7
+          } else if (this.customer.employee_count <= 625) {
+            this.addAuditInfo.audit_md = 7.5
+          } else if (this.customer.employee_count <= 875) {
+            this.addAuditInfo.audit_md = 8
+          } else if (this.customer.employee_count <= 1175) {
+            this.addAuditInfo.audit_md = 9
+          } else if (this.customer.employee_count <= 1550) {
+            this.addAuditInfo.audit_md = 9.5
+          } else if (this.customer.employee_count <= 2025) {
+            this.addAuditInfo.audit_md = 10
+          } else if (this.customer.employee_count <= 2675) {
+            this.addAuditInfo.audit_md = 11
+          } else if (this.customer.employee_count <= 3450) {
+            this.addAuditInfo.audit_md = 11.5
+          } else if (this.customer.employee_count <= 4350) {
+            this.addAuditInfo.audit_md = 12
+          } else if (this.customer.employee_count <= 5450) {
+            this.addAuditInfo.audit_md = 13
+          } else if (this.customer.employee_count <= 6800) {
+            this.addAuditInfo.audit_md = 13.5
+          } else if (this.customer.employee_count <= 8500) {
+            this.addAuditInfo.audit_md = 14
+          } else if (this.customer.employee_count <= 10700) {
+            this.addAuditInfo.audit_md = 15
           } else {
-            NoOfEmployee = 5
+            this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+          }
+        }
+      } else if (
+        NoOfStandard === 1 &&
+        this.addAuditInfo.audit_standard[0] === 'EMS'
+      ) {
+        if (envComplexity === '높음') {
+          if (this.addAuditInfo.audit_type === '최초') {
+            // ======================================== EMS 높음 최초
+            if (NoOfEmployee <= 5) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (NoOfEmployee <= 10) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (NoOfEmployee <= 15) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (NoOfEmployee <= 25) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (NoOfEmployee <= 45) {
+              this.addAuditInfo.audit_md = 7
+            } else if (NoOfEmployee <= 65) {
+              this.addAuditInfo.audit_md = 8
+            } else if (NoOfEmployee <= 85) {
+              this.addAuditInfo.audit_md = 9
+            } else if (NoOfEmployee <= 125) {
+              this.addAuditInfo.audit_md = 11
+            } else if (NoOfEmployee <= 175) {
+              this.addAuditInfo.audit_md = 12
+            } else if (NoOfEmployee <= 275) {
+              this.addAuditInfo.audit_md = 13
+            } else if (NoOfEmployee <= 425) {
+              this.addAuditInfo.audit_md = 15
+            } else if (NoOfEmployee <= 625) {
+              this.addAuditInfo.audit_md = 16
+            } else if (NoOfEmployee <= 875) {
+              this.addAuditInfo.audit_md = 17
+            } else if (NoOfEmployee <= 1175) {
+              this.addAuditInfo.audit_md = 19
+            } else if (NoOfEmployee <= 1550) {
+              this.addAuditInfo.audit_md = 20
+            } else if (NoOfEmployee <= 2025) {
+              this.addAuditInfo.audit_md = 21
+            } else if (NoOfEmployee <= 2675) {
+              this.addAuditInfo.audit_md = 23
+            } else if (NoOfEmployee <= 3450) {
+              this.addAuditInfo.audit_md = 25
+            } else if (NoOfEmployee <= 4350) {
+              this.addAuditInfo.audit_md = 27
+            } else if (NoOfEmployee <= 5450) {
+              this.addAuditInfo.audit_md = 28
+            } else if (NoOfEmployee <= 6800) {
+              this.addAuditInfo.audit_md = 30
+            } else if (NoOfEmployee <= 8500) {
+              this.addAuditInfo.audit_md = 32
+            } else if (NoOfEmployee <= 10700) {
+              this.addAuditInfo.audit_md = 34
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '사후' ||
+            this.addAuditInfo.audit_type === '전환사후'
+          ) {
+            // ======================================== EMS 높음 사후
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 1
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 6.5
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 8.5
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 11.5
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '갱신' ||
+            this.addAuditInfo.audit_type === '전환갱신'
+          ) {
+            // ======================================== EMS 높음 갱신
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 7.5
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 13.5
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 15.1
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 18.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 20.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 21.5
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 25.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          }
+        } else if (envComplexity === '보통') {
+          if (this.addAuditInfo.audit_type === '최초') {
+            // ========================================================= EMS 보통 최초
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 15.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 18.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 20.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 21.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 23.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 25.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 27.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '사후' ||
+            this.addAuditInfo.audit_type === '전환사후'
+          ) {
+            // ======================================== EMS 보통 사후
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 1.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 1.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 6.5
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 7.5
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 8.5
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 9.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '갱신' ||
+            this.addAuditInfo.audit_type === '전환갱신'
+          ) {
+            // ======================================== EMS 보통 갱신
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 7.5
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 11.5
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 13.5
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 15.5
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 18.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          }
+        } else if (envComplexity === '낮음') {
+          if (this.addAuditInfo.audit_type === '최초') {
+            // =========================== EMS 낮음 최초
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 15.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 20.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '사후' ||
+            this.addAuditInfo.audit_type === '전환사후'
+          ) {
+            // ======================================== EMS 낮음 사후
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 1
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 1.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 1.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 6.5
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 7.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '갱신' ||
+            this.addAuditInfo.audit_type === '전환갱신'
+          ) {
+            // ======================================== EMS 낮음 갱신
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 7.5
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 9.5
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 11.5
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 13.5
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          }
+        }
+      } else if (
+        NoOfStandard === 1 &&
+        this.addAuditInfo.audit_standard[0] === 'OHSMS'
+      ) {
+        if (ohsRisk === '높음') {
+          if (this.addAuditInfo.audit_type === '최초') {
+            // ======================================== OHSMS 높음 최초
+            if (NoOfEmployee <= 5) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (NoOfEmployee <= 10) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (NoOfEmployee <= 15) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (NoOfEmployee <= 25) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (NoOfEmployee <= 45) {
+              this.addAuditInfo.audit_md = 7
+            } else if (NoOfEmployee <= 65) {
+              this.addAuditInfo.audit_md = 8
+            } else if (NoOfEmployee <= 85) {
+              this.addAuditInfo.audit_md = 9
+            } else if (NoOfEmployee <= 125) {
+              this.addAuditInfo.audit_md = 11
+            } else if (NoOfEmployee <= 175) {
+              this.addAuditInfo.audit_md = 12
+            } else if (NoOfEmployee <= 275) {
+              this.addAuditInfo.audit_md = 13
+            } else if (NoOfEmployee <= 425) {
+              this.addAuditInfo.audit_md = 15
+            } else if (NoOfEmployee <= 625) {
+              this.addAuditInfo.audit_md = 16
+            } else if (NoOfEmployee <= 875) {
+              this.addAuditInfo.audit_md = 17
+            } else if (NoOfEmployee <= 1175) {
+              this.addAuditInfo.audit_md = 19
+            } else if (NoOfEmployee <= 1550) {
+              this.addAuditInfo.audit_md = 20
+            } else if (NoOfEmployee <= 2025) {
+              this.addAuditInfo.audit_md = 21
+            } else if (NoOfEmployee <= 2675) {
+              this.addAuditInfo.audit_md = 23
+            } else if (NoOfEmployee <= 3450) {
+              this.addAuditInfo.audit_md = 25
+            } else if (NoOfEmployee <= 4350) {
+              this.addAuditInfo.audit_md = 27
+            } else if (NoOfEmployee <= 5450) {
+              this.addAuditInfo.audit_md = 28
+            } else if (NoOfEmployee <= 6800) {
+              this.addAuditInfo.audit_md = 30
+            } else if (NoOfEmployee <= 8500) {
+              this.addAuditInfo.audit_md = 32
+            } else if (NoOfEmployee <= 10700) {
+              this.addAuditInfo.audit_md = 34
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '사후' ||
+            this.addAuditInfo.audit_type === '전환사후'
+          ) {
+            // ======================================== OHSMS 높음 사후
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 1
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 6.5
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 8.5
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 11.5
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '갱신' ||
+            this.addAuditInfo.audit_type === '전환갱신'
+          ) {
+            // ======================================== OHSMS 높음 갱신
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 7.5
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 13.5
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 15.1
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 18.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 20.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 21.5
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 25.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          }
+        } else if (ohsRisk === '보통') {
+          if (this.addAuditInfo.audit_type === '최초') {
+            // ======================================== OHSMS 보통 최초
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 15.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 18.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 20.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 21.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 23.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 25.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 27.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '사후' ||
+            this.addAuditInfo.audit_type === '전환사후'
+          ) {
+            // ======================================== OHSMS 보통 사후
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 1.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 1.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 6.5
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 7.5
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 8.5
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 9.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '갱신' ||
+            this.addAuditInfo.audit_type === '전환갱신'
+          ) {
+            // ======================================== OHSMS 보통 갱신
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 7.5
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 11.5
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 13.5
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 15.5
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 18.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          }
+        } else if (ohsRisk === '낮음') {
+          if (this.addAuditInfo.audit_type === '최초') {
+            // ======================================== OHSMS 낮음 최초
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 15.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 20.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '사후' ||
+            this.addAuditInfo.audit_type === '전환사후'
+          ) {
+            // ======================================== OHSMS 낮음 사후
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 1
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 1.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 1.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 1.5
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 4.5
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 6.5
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 7.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '갱신' ||
+            this.addAuditInfo.audit_type === '전환갱신'
+          ) {
+            // ======================================== OHSMS 낮음 갱신
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 2.5
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 3.5
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 5.5
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 7.5
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 9.5
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 11.5
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 13.5
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          }
+        }
+      } else if (NoOfStandard === 2) {
+        if (
+          this.addAuditInfo.audit_standard.includes('QMS') ||
+          this.addAuditInfo.audit_standard.includes('CGMP')
+        ) {
+          // TODO: 인원별로 qms md와 ems md를 합하여 80% 계산된 값 입력
+          // TODO: 높음, 중간, 낮음을 구분해서 계산
+          if (ohsRisk === '높음' || envComplexity === '높음') {
+            if (this.addAuditInfo.audit_type === '최초') {
+              // 표준 2개 높은 최초
+              if (NoOfEmployee <= 5) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (NoOfEmployee <= 10) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (NoOfEmployee <= 15) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (NoOfEmployee <= 25) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (NoOfEmployee <= 45) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (NoOfEmployee <= 65) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (NoOfEmployee <= 85) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (NoOfEmployee <= 125) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (NoOfEmployee <= 175) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (NoOfEmployee <= 275) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (NoOfEmployee <= 425) {
+                this.addAuditInfo.audit_md = 20.0
+              } else if (NoOfEmployee <= 625) {
+                this.addAuditInfo.audit_md = 22.0
+              } else if (NoOfEmployee <= 875) {
+                this.addAuditInfo.audit_md = 23.0
+              } else if (NoOfEmployee <= 1175) {
+                this.addAuditInfo.audit_md = 26.0
+              } else if (NoOfEmployee <= 1550) {
+                this.addAuditInfo.audit_md = 27.0
+              } else if (NoOfEmployee <= 2025) {
+                this.addAuditInfo.audit_md = 29.0
+              } else if (NoOfEmployee <= 2675) {
+                this.addAuditInfo.audit_md = 31.0
+              } else if (NoOfEmployee <= 3450) {
+                this.addAuditInfo.audit_md = 33.0
+              } else if (NoOfEmployee <= 4350) {
+                this.addAuditInfo.audit_md = 36.0
+              } else if (NoOfEmployee <= 5450) {
+                this.addAuditInfo.audit_md = 38.0
+              } else if (NoOfEmployee <= 6800) {
+                this.addAuditInfo.audit_md = 40.0
+              } else if (NoOfEmployee <= 8500) {
+                this.addAuditInfo.audit_md = 42.0
+              } else if (NoOfEmployee <= 10700) {
+                this.addAuditInfo.audit_md = 45.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '사후' ||
+              this.addAuditInfo.audit_type === '전환사후'
+            ) {
+              // 높음 사후
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 15.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '갱신' ||
+              this.addAuditInfo.audit_type === '전환갱신'
+            ) {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 15.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 19.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 21.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 23.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 24.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 26.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 27.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 28.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 32.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            }
+          } else if (ohsRisk === '보통' || envComplexity === '보통') {
+            if (this.addAuditInfo.audit_type === '최초') {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 15.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 17.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 20.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 22.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 24.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 26.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 27.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 29.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 30.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 32.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 34.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 37.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 39.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '사후' ||
+              this.addAuditInfo.audit_type === '전환사후'
+            ) {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 13.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '갱신' ||
+              this.addAuditInfo.audit_type === '전환갱신'
+            ) {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 15.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 17.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 20.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 20.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 22.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 23.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 25.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 26.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            }
+          } else if (ohsRisk === '낮음' || envComplexity === '낮음') {
+            if (this.addAuditInfo.audit_type === '최초') {
+              // ======================================== OHSMS 낮음 최초
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 19.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 21.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 22.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 23.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 25.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 26.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 28.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 30.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 32.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 34.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '사후' ||
+              this.addAuditInfo.audit_type === '전환사후'
+            ) {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 12.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '갱신' ||
+              this.addAuditInfo.audit_type === '전환갱신'
+            ) {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 17.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 19.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 20.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 22.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 23.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            }
           }
         } else {
-          NoOfEmployee = 0
+          // 표준이 2개이고 qms가 포함되지 않은 경우
+          if (ohsRisk === '높음' || envComplexity === '높음') {
+            if (this.addAuditInfo.audit_type === '최초') {
+              // 표준 2개 높은 최초
+              if (NoOfEmployee <= 5) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (NoOfEmployee <= 10) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (NoOfEmployee <= 15) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (NoOfEmployee <= 25) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (NoOfEmployee <= 45) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (NoOfEmployee <= 65) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (NoOfEmployee <= 85) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (NoOfEmployee <= 125) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (NoOfEmployee <= 175) {
+                this.addAuditInfo.audit_md = 19.0
+              } else if (NoOfEmployee <= 275) {
+                this.addAuditInfo.audit_md = 21.0
+              } else if (NoOfEmployee <= 425) {
+                this.addAuditInfo.audit_md = 24.0
+              } else if (NoOfEmployee <= 625) {
+                this.addAuditInfo.audit_md = 26.0
+              } else if (NoOfEmployee <= 875) {
+                this.addAuditInfo.audit_md = 27.0
+              } else if (NoOfEmployee <= 1175) {
+                this.addAuditInfo.audit_md = 30.0
+              } else if (NoOfEmployee <= 1550) {
+                this.addAuditInfo.audit_md = 32.0
+              } else if (NoOfEmployee <= 2025) {
+                this.addAuditInfo.audit_md = 34.0
+              } else if (NoOfEmployee <= 2675) {
+                this.addAuditInfo.audit_md = 37.0
+              } else if (NoOfEmployee <= 3450) {
+                this.addAuditInfo.audit_md = 40.0
+              } else if (NoOfEmployee <= 4350) {
+                this.addAuditInfo.audit_md = 43.0
+              } else if (NoOfEmployee <= 5450) {
+                this.addAuditInfo.audit_md = 45.0
+              } else if (NoOfEmployee <= 6800) {
+                this.addAuditInfo.audit_md = 48.0
+              } else if (NoOfEmployee <= 8500) {
+                this.addAuditInfo.audit_md = 51.0
+              } else if (NoOfEmployee <= 10700) {
+                this.addAuditInfo.audit_md = 54.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '사후' ||
+              this.addAuditInfo.audit_type === '전환사후'
+            ) {
+              // 높음 사후
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 18.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '갱신' ||
+              this.addAuditInfo.audit_type === '전환갱신'
+            ) {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 19.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 21.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 22.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 22.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 25.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 27.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 29.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 30.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 32.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 34.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 40.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            }
+          } else if (ohsRisk === '보통' || envComplexity === '보통') {
+            if (this.addAuditInfo.audit_type === '최초') {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 19.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 21.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 24.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 26.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 27.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 29.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 30.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 32.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 34.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 37.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 40.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 43.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '사후' ||
+              this.addAuditInfo.audit_type === '전환사후'
+            ) {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 14.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '갱신' ||
+              this.addAuditInfo.audit_type === '전환갱신'
+            ) {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 19.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 21.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 22.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 22.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 25.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 27.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 29.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            }
+          } else if (ohsRisk === '낮음' || envComplexity === '낮음') {
+            if (this.addAuditInfo.audit_type === '최초') {
+              // ======================================== OHSMS 낮음 최초
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 19.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 19.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 21.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 22.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 24.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 26.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 27.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 30.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 32.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '사후' ||
+              this.addAuditInfo.audit_type === '전환사후'
+            ) {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 2.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 7.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 11.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            } else if (
+              this.addAuditInfo.audit_type === '갱신' ||
+              this.addAuditInfo.audit_type === '전환갱신'
+            ) {
+              if (this.customer.employee_count <= 5) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 10) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 15) {
+                this.addAuditInfo.audit_md = 3.0
+              } else if (this.customer.employee_count <= 25) {
+                this.addAuditInfo.audit_md = 4.0
+              } else if (this.customer.employee_count <= 45) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 65) {
+                this.addAuditInfo.audit_md = 5.0
+              } else if (this.customer.employee_count <= 85) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 125) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 175) {
+                this.addAuditInfo.audit_md = 6.0
+              } else if (this.customer.employee_count <= 275) {
+                this.addAuditInfo.audit_md = 8.0
+              } else if (this.customer.employee_count <= 425) {
+                this.addAuditInfo.audit_md = 9.0
+              } else if (this.customer.employee_count <= 625) {
+                this.addAuditInfo.audit_md = 10.0
+              } else if (this.customer.employee_count <= 875) {
+                this.addAuditInfo.audit_md = 11.0
+              } else if (this.customer.employee_count <= 1175) {
+                this.addAuditInfo.audit_md = 12.0
+              } else if (this.customer.employee_count <= 1550) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (this.customer.employee_count <= 2025) {
+                this.addAuditInfo.audit_md = 13.0
+              } else if (this.customer.employee_count <= 2675) {
+                this.addAuditInfo.audit_md = 14.0
+              } else if (this.customer.employee_count <= 3450) {
+                this.addAuditInfo.audit_md = 15.0
+              } else if (this.customer.employee_count <= 4350) {
+                this.addAuditInfo.audit_md = 16.0
+              } else if (this.customer.employee_count <= 5450) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 6800) {
+                this.addAuditInfo.audit_md = 18.0
+              } else if (this.customer.employee_count <= 8500) {
+                this.addAuditInfo.audit_md = 21.0
+              } else if (this.customer.employee_count <= 10700) {
+                this.addAuditInfo.audit_md = 22.0
+              } else {
+                this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+              }
+            }
+          }
+        }
+      } else if (NoOfStandard === 3) {
+        if (ohsRisk === '높음' || envComplexity === '높음') {
+          if (this.addAuditInfo.audit_type === '최초') {
+            if (NoOfEmployee <= 5) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (NoOfEmployee <= 10) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (NoOfEmployee <= 15) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (NoOfEmployee <= 25) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (NoOfEmployee <= 45) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (NoOfEmployee <= 65) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (NoOfEmployee <= 85) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (NoOfEmployee <= 125) {
+              this.addAuditInfo.audit_md = 23.0
+            } else if (NoOfEmployee <= 175) {
+              this.addAuditInfo.audit_md = 26.0
+            } else if (NoOfEmployee <= 275) {
+              this.addAuditInfo.audit_md = 28.0
+            } else if (NoOfEmployee <= 425) {
+              this.addAuditInfo.audit_md = 32.0
+            } else if (NoOfEmployee <= 625) {
+              this.addAuditInfo.audit_md = 34.0
+            } else if (NoOfEmployee <= 875) {
+              this.addAuditInfo.audit_md = 37.0
+            } else if (NoOfEmployee <= 1175) {
+              this.addAuditInfo.audit_md = 41.0
+            } else if (NoOfEmployee <= 1550) {
+              this.addAuditInfo.audit_md = 43.0
+            } else if (NoOfEmployee <= 2025) {
+              this.addAuditInfo.audit_md = 46.0
+            } else if (NoOfEmployee <= 2675) {
+              this.addAuditInfo.audit_md = 50.0
+            } else if (NoOfEmployee <= 3450) {
+              this.addAuditInfo.audit_md = 54.0
+            } else if (NoOfEmployee <= 4350) {
+              this.addAuditInfo.audit_md = 58.0
+            } else if (NoOfEmployee <= 5450) {
+              this.addAuditInfo.audit_md = 60.0
+            } else if (NoOfEmployee <= 6800) {
+              this.addAuditInfo.audit_md = 64.0
+            } else if (NoOfEmployee <= 8500) {
+              this.addAuditInfo.audit_md = 68.0
+            } else if (NoOfEmployee <= 10700) {
+              this.addAuditInfo.audit_md = 72.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '사후' ||
+            this.addAuditInfo.audit_type === '전환사후'
+          ) {
+            // 높음 사후
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 15.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 15.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 18.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 21.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 22.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 23.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 24.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '갱신' ||
+            this.addAuditInfo.audit_type === '전환갱신'
+          ) {
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 17.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 22.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 24.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 26.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 28.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 29.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 30.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 34.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 36.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 38.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 41.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 43.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 46.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 52.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          }
+        } else if (ohsRisk === '보통' || envComplexity === '보통') {
+          if (this.addAuditInfo.audit_type === '최초') {
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 18.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 21.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 23.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 26.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 28.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 30.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 34.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 37.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 39.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 42.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 44.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 46.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 49.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 53.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 57.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 61.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '사후' ||
+            this.addAuditInfo.audit_type === '전환사후'
+          ) {
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 15.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 18.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 20.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '갱신' ||
+            this.addAuditInfo.audit_type === '전환갱신'
+          ) {
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 18.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 21.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 23.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 25.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 26.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 28.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 30.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 31.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 33.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 36.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 38.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 41.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          }
+        } else if (ohsRisk === '낮음' || envComplexity === '낮음') {
+          if (this.addAuditInfo.audit_type === '최초') {
+            // ======================================== OHSMS 낮음 최초
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 18.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 21.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 23.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 26.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 28.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 30.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 31.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 34.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 36.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 38.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 41.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 43.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 47.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 50.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '사후' ||
+            this.addAuditInfo.audit_type === '전환사후'
+          ) {
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 2.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 3.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 12.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 15.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 17.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          } else if (
+            this.addAuditInfo.audit_type === '갱신' ||
+            this.addAuditInfo.audit_type === '전환갱신'
+          ) {
+            if (this.customer.employee_count <= 5) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 10) {
+              this.addAuditInfo.audit_md = 4.0
+            } else if (this.customer.employee_count <= 15) {
+              this.addAuditInfo.audit_md = 5.0
+            } else if (this.customer.employee_count <= 25) {
+              this.addAuditInfo.audit_md = 6.0
+            } else if (this.customer.employee_count <= 45) {
+              this.addAuditInfo.audit_md = 7.0
+            } else if (this.customer.employee_count <= 65) {
+              this.addAuditInfo.audit_md = 8.0
+            } else if (this.customer.employee_count <= 85) {
+              this.addAuditInfo.audit_md = 9.0
+            } else if (this.customer.employee_count <= 125) {
+              this.addAuditInfo.audit_md = 10.0
+            } else if (this.customer.employee_count <= 175) {
+              this.addAuditInfo.audit_md = 11.0
+            } else if (this.customer.employee_count <= 275) {
+              this.addAuditInfo.audit_md = 13.0
+            } else if (this.customer.employee_count <= 425) {
+              this.addAuditInfo.audit_md = 14.0
+            } else if (this.customer.employee_count <= 625) {
+              this.addAuditInfo.audit_md = 16.0
+            } else if (this.customer.employee_count <= 875) {
+              this.addAuditInfo.audit_md = 18.0
+            } else if (this.customer.employee_count <= 1175) {
+              this.addAuditInfo.audit_md = 19.0
+            } else if (this.customer.employee_count <= 1550) {
+              this.addAuditInfo.audit_md = 20.0
+            } else if (this.customer.employee_count <= 2025) {
+              this.addAuditInfo.audit_md = 21.0
+            } else if (this.customer.employee_count <= 2675) {
+              this.addAuditInfo.audit_md = 23.0
+            } else if (this.customer.employee_count <= 3450) {
+              this.addAuditInfo.audit_md = 24.0
+            } else if (this.customer.employee_count <= 4350) {
+              this.addAuditInfo.audit_md = 26.0
+            } else if (this.customer.employee_count <= 5450) {
+              this.addAuditInfo.audit_md = 28.0
+            } else if (this.customer.employee_count <= 6800) {
+              this.addAuditInfo.audit_md = 29.0
+            } else if (this.customer.employee_count <= 8500) {
+              this.addAuditInfo.audit_md = 32.0
+            } else if (this.customer.employee_count <= 10700) {
+              this.addAuditInfo.audit_md = 34.0
+            } else {
+              this.$swal('인원수가 너무 많습니다. 관리자에게 문의하세요.')
+            }
+          }
         }
       }
     },
@@ -999,29 +3580,33 @@ export default {
         return
       }
       if (this.addAuditInfo.audit_type === '최초') {
-        if (this.addAuditInfo.audit_manual_date === null) {
-          this.$swal('매뉴얼 제/개정일을 선택하세요.')
-          return
-        }
-        if (this.addAuditInfo.audit_manual_date.length > 11) {
-          this.$swal('매뉴얼 제/개정일을<br/> 제대로 입력하세요.')
-          return
-        }
+        // if (this.addAuditInfo.audit_manual_date === null) {
+        //   this.$swal('매뉴얼 제/개정일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_manual_date.length > 11) {
+        //   this.$swal('매뉴얼 제/개정일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
 
-        if (this.addAuditInfo.audit_internal_date === null) {
-          this.$swal('내부심사일을 선택하세요.')
-          return
-        }
-        if (this.addAuditInfo.audit_internal_date.length > 11) {
-          this.$swal('내부심사일을<br/> 제대로 입력하세요.')
-          return
-        }
-        if (this.addAuditInfo.audit_management_date === null) {
-          this.$swal('경영검토일을 선택하세요.')
-          return
-        }
-        if (this.addAuditInfo.audit_management_date.length > 11) {
-          this.$swal('경영검토일을<br/> 제대로 입력하세요.')
+        // if (this.addAuditInfo.audit_internal_date === null) {
+        //   this.$swal('내부심사일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_internal_date.length > 11) {
+        //   this.$swal('내부심사일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_management_date === null) {
+        //   this.$swal('경영검토일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_management_date.length > 11) {
+        //   this.$swal('경영검토일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
+        if (this.addAuditInfo.audit_md === null) {
+          this.$swal('MD계산을 클릭하세요.')
           return
         }
         if (this.addAuditInfo.audit_s1_start === null) {
@@ -1069,24 +3654,29 @@ export default {
           this.$swal('심사비를 입력하세요.')
           return
         }
-      } else if (
-        this.addAuditInfo.audit_type === '갱신' ||
-        this.addAuditInfo.audit_type === '전환갱신'
-      ) {
-        if (this.addAuditInfo.audit_internal_date === null) {
-          this.$swal('내부심사일을 선택하세요.')
+      } else if (this.addAuditInfo.audit_type === '사후') {
+        if (this.addAuditInfo.audit_degree === '') {
+          this.$swal('심사차수를 선택하세요.')
           return
         }
-        if (this.addAuditInfo.audit_internal_date.length > 11) {
-          this.$swal('내부심사일을<br/> 제대로 입력하세요.')
-          return
-        }
-        if (this.addAuditInfo.audit_management_date === null) {
-          this.$swal('경영검토일을 선택하세요.')
-          return
-        }
-        if (this.addAuditInfo.audit_management_date.length > 11) {
-          this.$swal('경영검토일을<br/> 제대로 입력하세요.')
+        // if (this.addAuditInfo.audit_internal_date === null) {
+        //   this.$swal('내부심사일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_internal_date.length > 11) {
+        //   this.$swal('내부심사일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_management_date === null) {
+        //   this.$swal('경영검토일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_management_date.length > 11) {
+        //   this.$swal('경영검토일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
+        if (this.addAuditInfo.audit_md === null) {
+          this.$swal('MD계산을 클릭하세요.')
           return
         }
         if (this.addAuditInfo.audit_s2_start === null) {
@@ -1117,25 +3707,159 @@ export default {
           this.$swal('심사비를 입력하세요.')
           return
         }
-      } else {
+      } else if (this.addAuditInfo.audit_type === '전환사후') {
         if (this.addAuditInfo.audit_degree === '') {
           this.$swal('심사차수를 선택하세요.')
           return
         }
-        if (this.addAuditInfo.audit_internal_date === null) {
-          this.$swal('내부심사일을 선택하세요.')
+        // if (this.addAuditInfo.audit_internal_date === null) {
+        //   this.$swal('내부심사일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_internal_date.length > 11) {
+        //   this.$swal('내부심사일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_management_date === null) {
+        //   this.$swal('경영검토일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_management_date.length > 11) {
+        //   this.$swal('경영검토일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
+        if (this.addAuditInfo.audit_md === null) {
+          this.$swal('MD계산을 클릭하세요.')
           return
         }
-        if (this.addAuditInfo.audit_internal_date.length > 11) {
-          this.$swal('내부심사일을<br/> 제대로 입력하세요.')
+        if (this.addAuditInfo.audit_trans_start === null) {
+          this.$swal('전환심사시작일을 선택하세요.')
           return
         }
-        if (this.addAuditInfo.audit_management_date === null) {
-          this.$swal('경영검토일을 선택하세요.')
+        if (this.addAuditInfo.audit_trans_start.length > 11) {
+          this.$swal('전환심사시작일을<br/> 제대로 입력하세요.')
           return
         }
-        if (this.addAuditInfo.audit_management_date.length > 11) {
-          this.$swal('경영검토일을<br/> 제대로 입력하세요.')
+        if (this.addAuditInfo.audit_trans_end === null) {
+          this.$swal('전환심사종료일을 선택하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_trans_end.length > 11) {
+          this.$swal('전환심사종료일을<br/> 제대로 입력하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_s2_start === null) {
+          this.$swal('2단계 심사시작일을 선택하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_s2_start.length > 11) {
+          this.$swal('2단계 심사시작일을<br/> 제대로 입력하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_s2_end === null) {
+          this.$swal('2단계 심사종료일을 선택하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_s2_end.length > 11) {
+          this.$swal('2단계 심사종료일을<br/> 제대로 입력하세요.')
+          return
+        }
+        // if (this.auditInfo.audit_leader === '') {
+        //   this.$swal('심사팀장을 입력하세요.')
+        //   return
+        // }
+        if (this.addAuditInfo.audit_auditor === '') {
+          this.$swal('심사팀원을 입력하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_fee === '') {
+          this.$swal('심사비를 입력하세요.')
+          return
+        }
+      } else if (this.addAuditInfo.audit_type === '갱신') {
+        // if (this.addAuditInfo.audit_internal_date === null) {
+        //   this.$swal('내부심사일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_internal_date.length > 11) {
+        //   this.$swal('내부심사일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_management_date === null) {
+        //   this.$swal('경영검토일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_management_date.length > 11) {
+        //   this.$swal('경영검토일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
+        if (this.addAuditInfo.audit_md === null) {
+          this.$swal('MD계산을 클릭하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_s2_start === null) {
+          this.$swal('2단계 심사시작일을 선택하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_s2_start.length > 11) {
+          this.$swal('2단계 심사시작일을<br/> 제대로 입력하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_s2_end === null) {
+          this.$swal('2단계 심사종료일을 선택하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_s2_end.length > 11) {
+          this.$swal('2단계 심사종료일을<br/> 제대로 입력하세요.')
+          return
+        }
+        // if (this.auditInfo.audit_leader === '') {
+        //   this.$swal('심사팀장을 입력하세요.')
+        //   return
+        // }
+        if (this.addAuditInfo.audit_auditor === '') {
+          this.$swal('심사팀원을 입력하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_fee === '') {
+          this.$swal('심사비를 입력하세요.')
+          return
+        }
+      } else if (this.addAuditInfo.audit_type === '전환갱신') {
+        // if (this.addAuditInfo.audit_internal_date === null) {
+        //   this.$swal('내부심사일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_internal_date.length > 11) {
+        //   this.$swal('내부심사일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_management_date === null) {
+        //   this.$swal('경영검토일을 선택하세요.')
+        //   return
+        // }
+        // if (this.addAuditInfo.audit_management_date.length > 11) {
+        //   this.$swal('경영검토일을<br/> 제대로 입력하세요.')
+        //   return
+        // }
+        if (this.addAuditInfo.audit_md === null) {
+          this.$swal('MD계산을 클릭하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_trans_start === null) {
+          this.$swal('전환심사시작일을 선택하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_trans_start.length > 11) {
+          this.$swal('전환심사시작일을<br/> 제대로 입력하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_trans_end === null) {
+          this.$swal('전환심사종료일을 선택하세요.')
+          return
+        }
+        if (this.addAuditInfo.audit_trans_end.length > 11) {
+          this.$swal('전환심사종료일을<br/> 제대로 입력하세요.')
           return
         }
         if (this.addAuditInfo.audit_s2_start === null) {
@@ -1175,8 +3899,15 @@ export default {
       }
       if (this.addAuditInfo.audit_type === '사후') {
         isType = 'S'
-      } else if (this.addAuditInfo.audit_type === '갱신') {
+      }
+      if (this.addAuditInfo.audit_type === '갱신') {
         isType = 'R'
+      }
+      if (this.addAuditInfo.audit_type === '전환사후') {
+        isType = 'TS'
+      }
+      if (this.addAuditInfo.audit_type === '전환갱신') {
+        isType = 'TR'
       }
       // console.log('isType : ', isType)
 
@@ -1359,6 +4090,7 @@ export default {
           const loader = this.$loading.show({ canCancel: false })
           // const postID = this.id
           // console.log(postID)
+          console.log(this.addAuditInfo.audit_md)
           const r = await this.$post('/api/cert/audit', {
             param: {
               audit_standard: JSON.stringify(this.addAuditInfo.audit_standard),
@@ -1367,19 +4099,22 @@ export default {
               audit_classify: this.addAuditInfo.audit_classify,
               audit_type: this.addAuditInfo.audit_type,
               audit_degree: this.addAuditInfo.audit_degree,
+              audit_trans_start: this.addAuditInfo.audit_trans_start,
+              audit_trans_end: this.addAuditInfo.audit_trans_end,
               audit_s1_start: this.addAuditInfo.audit_s1_start,
               audit_s1_end: this.addAuditInfo.audit_s1_end,
               audit_s2_start: this.addAuditInfo.audit_s2_start,
               audit_s2_end: this.addAuditInfo.audit_s2_end,
-              audit_manual_date: this.addAuditInfo.audit_manual_date,
-              audit_internal_date: this.addAuditInfo.audit_internal_date,
-              audit_management_date: this.addAuditInfo.audit_management_date,
+              // audit_manual_date: this.addAuditInfo.audit_manual_date,
+              // audit_internal_date: this.addAuditInfo.audit_internal_date,
+              // audit_management_date: this.addAuditInfo.audit_management_date,
               audit_leader: this.customer.auditor_name,
               audit_auditor: this.addAuditInfo.audit_auditor,
               audit_fee: this.addAuditInfo.audit_fee,
               customer_id: this.customer.customer_id,
               audit_env_complexity: this.addAuditInfo.audit_env_complexity,
-              audit_ohs_risk: this.addAuditInfo.audit_ohs_risk
+              audit_ohs_risk: this.addAuditInfo.audit_ohs_risk,
+              audit_md: this.addAuditInfo.audit_md
             }
           })
 

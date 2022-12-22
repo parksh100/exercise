@@ -71,6 +71,13 @@
         </tr>
 
         <tr>
+          <th class="bg-light">전환심사시작일</th>
+          <td>{{ dBcrInfo.audit_trans_start }}</td>
+          <th class="bg-light">전환심사종료일</th>
+          <td>{{ dBcrInfo.audit_trans_end }}</td>
+        </tr>
+
+        <tr>
           <th class="bg-light">1단계심사 시작일</th>
           <td>
             {{ list.audit_s1_start }}
@@ -110,11 +117,20 @@
           <th class="bg-light">계약검토</th>
           <td style="text-align: center">{{ dBcrInfo.cr_created_date }}</td>
         </tr>
-        <tr>
-          <th class="bg-light">전환심사</th>
-          <td style="text-align: center"></td>
-          <th class="bg-light"></th>
-          <td style="text-align: center"></td>
+        <tr
+          v-show="
+            this.list.audit_type === '전환사후' ||
+            this.list.audit_type === '전환갱신'
+          "
+        >
+          <th class="bg-light">전환보고서접수</th>
+          <td class="text-center">
+            {{ dbTransReportInfo.created_at_trans_report }}
+          </td>
+          <th class="bg-light">전환보고서승인</th>
+          <td style="text-align: center">
+            {{ dbTransReportInfo.created_at_trans_report }}
+          </td>
         </tr>
 
         <tr>
@@ -132,9 +148,9 @@
         </tr>
 
         <tr>
-          <th class="bg-light">심사비지급</th>
+          <th class="bg-light">심사비정산 대기</th>
           <td></td>
-          <th class="bg-light">심사비지급</th>
+          <th class="bg-light">심사비정산</th>
           <td></td>
         </tr>
       </tbody>
@@ -156,8 +172,17 @@
             >
           </li>
           <li class="p-1" role="button">
-            <span class="p-2 bg-secondary rounded text-white"
-              >심사보고서작성</span
+            <span
+              class="p-2 bg-secondary rounded text-white"
+              @click="goToTransReport"
+              >전환심사보고서작성</span
+            >
+          </li>
+          <li class="p-1" role="button">
+            <span
+              class="p-2 bg-secondary rounded text-white"
+              @click="goToMakeReport"
+              >보고서작성</span
             >
           </li>
         </ul>
@@ -172,10 +197,13 @@
 
     <!-- 버튼 -->
     <div class="d-flex justify-content-center mt-5">
-      <button class="btn btn-secondary me-1" @click="goToAuditList">
+      <button
+        class="btn btn-secondary me-1 d-print-none"
+        @click="goToAuditList"
+      >
         목록
       </button>
-      <button class="btn btn-primary" @click="printApplication">
+      <button class="btn btn-primary d-print-none" @click="printApplication">
         인쇄하기
       </button>
     </div>
@@ -208,7 +236,8 @@ export default {
       imgExt: '',
       customer: {},
       list: {},
-      dBcrInfo: {}
+      dBcrInfo: {},
+      dbTransReportInfo: {}
     }
   },
   created() {
@@ -232,6 +261,7 @@ export default {
 
     this.getList()
     this.crInfo()
+    this.getTransReportInfo()
   },
   unmounted() {},
   methods: {
@@ -277,6 +307,23 @@ export default {
       this.dBcrInfo.cr_created_date = Intl.DateTimeFormat('fr-CA').format(
         new Date(this.dBcrInfo.cr_created_date)
       )
+      this.dBcrInfo.audit_trans_start = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.dBcrInfo.audit_trans_start)
+      )
+      this.dBcrInfo.audit_trans_end = Intl.DateTimeFormat('fr-CA').format(
+        new Date(this.dBcrInfo.audit_trans_end)
+      )
+    },
+    async getTransReportInfo() {
+      console.log(this.id)
+      const transReport = await this.$get(
+        `http://localhost:3000/api/report/trans/${this.id}`
+      )
+      this.dbTransReportInfo = transReport
+      console.log(transReport)
+      this.dbTransReportInfo.created_at_trans_report = Intl.DateTimeFormat(
+        'fr-CA'
+      ).format(new Date(this.dbTransReportInfo.created_at_trans_report))
     },
     async uploadFile(files) {
       const r = await this.$upload('/api/upload/file', files[0])
@@ -361,6 +408,38 @@ export default {
     goToPlan() {
       this.$router.push({
         path: '/report/audit/plan/',
+        query: { id: this.list.audit_no }
+      })
+    },
+    goToMakeReport() {
+      if (this.list.audit_type === '최초') {
+        this.$router.push({
+          path: '/report/s1/',
+          query: { audit_no: this.list.audit_no }
+        })
+      } else {
+        this.$router.push({
+          path: '/report/s2/',
+          query: { audit_no: this.list.audit_no }
+        })
+      }
+    },
+
+    goToTransReport() {
+      this.$router.push({
+        path: '/report/trans/',
+        query: { audit_no: this.list.audit_no }
+      })
+    },
+    goToS1Report() {
+      this.$router.push({
+        path: '/report/s1/',
+        query: { id: this.list.audit_no }
+      })
+    },
+    goToS2Report() {
+      this.$router.push({
+        path: '/report/s2/',
         query: { id: this.list.audit_no }
       })
     },

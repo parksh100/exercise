@@ -111,7 +111,7 @@ export default {
       alert('로그인이 필요합니다.')
       this.$router.push({ path: '/login' })
     }
-    this.getList()
+    // this.getList()
 
     // charter.js
     const ctx = document.getElementById('myChart')

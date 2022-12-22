@@ -1,30 +1,82 @@
 <template>
-  <div class="container mt-5">
-    <div class="d-flex justify-content-between">
-      <p class="text-black-50 fst-italic">PF960-02(Rev.1)</p>
-      <p class="text-black-50 fst-italic">Audit Plan</p>
-    </div>
-    <div class="mb-5 text-center">
-      <h2 class="fw-bold">심 사 계 획 서</h2>
-      <span></span>
-      <hr />
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <img src="@/assets/20221213_KAI로고.png" style="width: 27%" alt="" />
+      </div>
+      <div class="col">
+        <div class="text-center">
+          <h1 class="fw-bold">심 사 계 획 서</h1>
+          <h4 class="fw-bold">( 최초심사 )</h4>
+          <p>www.kaicert.co.kr</p>
+        </div>
+      </div>
+      <div class="col">
+        <img
+          src="@/assets/IAS로고.png"
+          style="width: 27%; float: right"
+          alt=""
+        />
+      </div>
     </div>
 
-    <h5 class="fw-bold mb-5">
+    <h6 class="fw-bold">
       <!-- <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i> -->
       I. 인증고객정보
-    </h5>
+    </h6>
     <!-- table -->
-    <table class="table text-center">
-      <tbody>
+    <table class="table text-center table-bordered table-sm">
+      <tbody class="table-group-divider">
         <tr>
-          <th style="width: 10%">고객명</th>
-          <td style="width: 10%">(주)비티씨씨큐</td>
-          <td style="width: 10%"></td>
-          <td style="width: 10%"></td>
-          <td style="width: 25%"></td>
-          <td style="width: 25%"></td>
+          <th style="width: 15%" class="bg-light">고객명</th>
+          <td style="width: 25%">(주)비티씨씨큐</td>
+          <th style="width: 15%" class="bg-light">대표자</th>
+          <td style="width: 10%">박건준</td>
+          <th style="width: 15%" class="bg-light">심사번호</th>
+          <td style="width: 20%">22QEO10411</td>
         </tr>
+        <tr>
+          <th style="width: 10%" rowspan="3" class="bg-light">사업장 주소</th>
+          <td style="width: 30%" colspan="3" class="text-start">
+            사업장1: 인천광역시 서구 대평로 36-1(연희동)
+          </td>
+          <!-- <th style="width: 10%">대표자</th> -->
+          <!-- <td style="width: 20%"></td> -->
+          <th style="width: 10%" class="bg-light">담당부서</th>
+          <td style="width: 20%">관리팀</td>
+        </tr>
+        <tr>
+          <!-- <th style="width: 10%">사업장 주소</th> -->
+          <td style="width: 30%" colspan="3" class="text-start">사업장2:</td>
+          <!-- <th style="width: 10%">대표자</th> -->
+          <!-- <td style="width: 20%"></td> -->
+          <th style="width: 10%" class="bg-light">담당자</th>
+          <td style="width: 20%">박건우/대표이사</td>
+        </tr>
+        <tr>
+          <!-- <th style="width: 10%">사업장 주소</th> -->
+          <td style="width: 30%" colspan="3" class="text-start">사업장3:</td>
+          <!-- <th style="width: 10%">대표자</th> -->
+          <!-- <td style="width: 20%"></td> -->
+          <th style="width: 10%" class="bg-light">이메일</th>
+          <td style="width: 20%">ecodrill@ecodrill.co.kr</td>
+        </tr>
+        <tr>
+          <th style="width: 10%" class="bg-light">인증범위</th>
+          <td style="width: 30%" colspan="3">친환경 천공장비의 판매</td>
+          <!-- <th style="width: 10%">대표자</th>
+          <td style="width: 20%"></td>-->
+          <th style="width: 10%" class="bg-light">IAF 코드</th>
+          <td style="width: 30%" colspan="5">29</td>
+        </tr>
+        <!-- <tr>
+          <th style="width: 10%" class="bg-light">IAF 코드</th>
+          <td style="width: 30%" colspan="5">29</td>
+          <th style="width: 10%">대표자</th>
+          <td style="width: 20%"></td>
+          <th style="width: 10%">이메일</th>
+          <td style="width: 20%">ecodrill@ecodrill.co.kr</td>
+        </tr> -->
       </tbody>
     </table>
 
@@ -34,2085 +86,242 @@
       <h3 class="fw-bold">심 사 보 고 서</h3>
       <span>(2단계)</span>
     </div> -->
-    <h5 class="fw-bold mt-5 mb-5">
-      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-      II. 심사기준
-    </h5>
-
-    <!-- <table class="table table-hover text-center">
-      <thead>
-        <tr>
-          <th style="width: 20%">고객명</th>
-          <td style="width: 25%">""""</td>
-          <th style="width: 20%">심사번호</th>
-          <td style="width: 25%">""</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th style="width: 20%">사업장주소</th>
-          <td style="width: 80%" colspan="3">""""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">대표자명</th>
-          <td style="width: 25%">""""</td>
-          <th style="width: 20%">사업자등록번호</th>
-          <td style="width: 25%">""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">부서</th>
-          <td style="width: 25%">""""</td>
-          <th style="width: 20%">자명</th>
-          <td style="width: 25%">""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">대표전화</th>
-          <td style="width: 25%">""""</td>
-          <th style="width: 20%">대표이메일</th>
-          <td style="width: 25%">""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">심사표준</th>
-          <td style="width: 80%" colspan="3">""""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">인증범위</th>
-          <td style="width: 80%" colspan="3">""""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">IAF코드</th>
-          <td style="width: 80%" colspan="3">""""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">심사일자</th>
-          <td style="width: 80%" colspan="3">"""" ~ """"</td>
-        </tr>
-      </tbody>
-    </table>
-    <p>
-      1. 본 심사는 고객의 인증범위와 관련된 활동에 대하여 샘플링으로
-      수행되었으며, 발견되지 않은 우려사항이 존재할 수 있습니다.
-    </p>
-    <p>
-      2. 이 심사보고서는 KAI으 인증 등록과 관련된 사항에 활용되며, 관련 법률
-      또는 인정기관의 요구 이외에는 고객의 동의없이 제3자에게 제공하지 않습니다.
-    </p>
-
-    <p class="text-center fw-bold fs-5">
-      심사팀과 고객은 검토된 심사보고서 내용에 동의합니다.
-    </p>
-
-    <table class="table table-borderless text-center">
-      <tbody>
-        <tr>
-          <th style="width: 20%">심사팀장</th>
-          <td style="width: 25%">(서명)</td>
-          <th style="width: 20%">고객대표</th>
-          <td style="width: 25%">(서명)</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="text-center">
-      <img src="@/assets/KAI.png" alt="" style="width: 5%" />
-      <span class="fw-bold fs-4 ms-3">케이에이아이인증원(주)</span>
-    </div>
-    <div class="text-center mt-3 mb-3">
-      <span>서울특별시 마포구 월드컵로 86, 3층(우.03996)</span> <br />
-      <span>Tel. 02-2661-8503 / Fax. 02-6305-9543</span>
-    </div> -->
-    <!---->
-    <!-- 1. 심사개요 -->
-    <!--
-    <h5>I. 심사개요</h5>
-    <h6>1. 인증범위 확인</h6>
-
-    <table class="table table-hover text-center">
-      <thead>
-        <tr>
-          <th style="width: 20%">고객명</th>
-          <td style="width: 25%">""""</td>
-          <th style="width: 20%">심사번호</th>
-          <td style="width: 25%">""</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th style="width: 20%">사업장주소</th>
-          <td style="width: 80%" colspan="3">""""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">대표자명</th>
-          <td style="width: 25%">""""</td>
-          <th style="width: 20%">사업자등록번호</th>
-          <td style="width: 25%">""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">부서</th>
-          <td style="width: 25%">""""</td>
-          <th style="width: 20%">자명</th>
-          <td style="width: 25%">""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">대표전화</th>
-          <td style="width: 25%">""""</td>
-          <th style="width: 20%">대표이메일</th>
-          <td style="width: 25%">""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">심사표준</th>
-          <td style="width: 80%" colspan="3">""""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">인증범위</th>
-          <td style="width: 80%" colspan="3">""""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">IAF코드</th>
-          <td style="width: 80%" colspan="3">""""</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">MD적합성</th>
-          <td style="width: 80%" colspan="3">
-            사업장 현황 및 조직인원 수가 인증신청정보와 동일하며 산정된
-            심사일수가 적절함.
-          </td>
-        </tr>
-        <tr>
-          <th style="width: 20%">전문가필요성</th>
-          <td style="width: 80%" colspan="3">불필요</td>
-        </tr>
-        <tr>
-          <th style="width: 20%">부적합사항</th>
-          <td style="width: 80%" colspan="3">해당없음</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h5 class="fw-bold mb-3">심사팀구성</h5>
-    <table class="table text-center">
-      <thead>
-        <tr>
-          <td style="width: 20%">구분</td>
-          <th style="width: 20%">심사팀장</th>
-          <td style="width: 20%">심사팀원</td>
-          <td style="width: 20%">심사팀원</td>
-          <td style="width: 20%">심사팀원</td>
-        </tr>
-      </thead>
-      <tbody class="align-middle">
-        <tr>
-          <th style="width: 20%">심사팀</th>
-          <td style="width: 20%">
-            <input
-              type="text"
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              v-model="auditTeam.leader"
-            />
-          </td>
-          <td style="width: 20%">
-            <input
-              type="text"
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              v-model="auditTeam.auditor1"
-            />
-          </td>
-          <td style="width: 20%">
-            <input
-              type="text"
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              v-model="auditTeam.auditor2"
-            />
-          </td>
-          <td style="width: 20%">
-            <input
-              type="text"
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              v-model="auditTeam.auditor3"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table class="table text-center">
-      <thead>
-        <tr>
-          <td style="width: 20%">구분</td>
-          <th style="width: 20%">기술전문가</th>
-          <td style="width: 20%">훈련심사원</td>
-          <td style="width: 20%">훈련심사원</td>
-          <td style="width: 20%">훈련심사원</td>
-        </tr>
-      </thead>
-      <tbody class="align-middle">
-        <tr>
-          <td style="width: 20%">심사팀</td>
-          <th style="width: 20%">동반인원</th>
-          <td style="width: 20%">
-            <input
-              type="text"
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              v-model="companions.tech_expert"
-            />
-          </td>
-          <td style="width: 20%">
-            <input
-              type="text"
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              v-model="companions.trainee1"
-            />
-          </td>
-          <td style="width: 20%">
-            <input
-              type="text"
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              v-model="companions.trainee2"
-            />
-          </td>
-          <td style="width: 20%">
-            <input
-              type="text"
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              v-model="companions.trainee3"
-            />
-          </td>
-        </tr>
-        <tr></tr>
-      </tbody>
-    </table>
-    -->
-    <!-- II. 1단계심사 확인사항 -->
-    <!-- <div class="mb-4">
-      <h5 class="fw-bold mt-5">1단계심사 확인사항</h5>
-      <span>
-        ＊확인사항: 간략하게 기재하되, 인증기업의 사정을 충분히 파악할 수 있어야
-        함. 부적합 사항이 발행한 경우 부적합표시 후 III.발견사항에 상세기재 </span
-      ><br />
-      <span>＊해당사항 없는 경우 "N/A" 또는 "해당없음" 표기</span>
-    </div> -->
-    <h5 class="fw-bold">
-      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-      III. 심사정보
-    </h5>
-    <table class="table">
-      <thead>
-        <tr class="text-center">
-          <th style="width: 40%">확인사항</th>
-          <th style="width: 60%">확인내용</th>
-        </tr>
-      </thead>
+    <h6 class="fw-bold">II. 심사표준</h6>
+    <table class="table text-center table-sm">
       <tbody class="table-group-divider">
         <tr>
-          <td style="width: 40%">
-            시스템문서 관련정보 (문서구조, 문서번호, Rev 등)
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.biz_area"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">심사계획서와의 차이 (해당 시 기재)</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.reliability"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            복수사업장 여부 확인 (해당 시 주소 등 기재)
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              name=""
-              class="form-control"
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.issue"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            시공 또는 설치 현장 확인 (해당 시 주소 및 자, 시스템운영현황 등을
-            세부적으로 기재)
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              name=""
-              class="form-control"
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.biz_status"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            외주처리 프로세스 확인 (해당 시 외주처리프로스 상세 기재)
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.needs"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">적용제외 조항 확인</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.scope"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            이전 심사의 부적합 조치 여부 확인 (해당 시 조치결과 확인사항 기재)
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.quality_risk"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">조직에 적용되는 법규 및 준수사항</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.env_risk"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">인증서 및 로고 사용상태 (최초심사 시 제외)</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.safety_risk"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">기타 확인사항</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.regal"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            경영시스템방침이 문서화되어 있으며 목표와 일관성을 가지고 있는가?
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.policy"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            인증대상 경영시스템의 핵심목표는 무엇인가? <br /><span
-              >(조직의상황과 리스크를 반영한 목표)
-            </span>
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.goal"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            내부심사는 계획되고 실행되었는가? 심사일은 언제인가?
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.internal_audit"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            경영검토의 실시되었는가? 실시일은 언제인가?
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.management_review"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            고객의 시스템에 대한 이해수준은 어느정도인가?
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.understanding_level"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            고객의 사업장 정보(사업장 수, 위치)가 신청정보와 동일한가?
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.workspace"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            적용제외조항과 근거는 무엇인가? 그것을 수용할 것인가?
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.exclusion"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">
-            조직의 인원은 몇 명이며 신청정보와 동일한가?
-          </td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="2"
-              v-model="checkpoint.worker_count"
-            ></textarea>
-          </td>
+          <th>ISO9001:2015, ISO14001:2015, ISO45001:2018</th>
         </tr>
       </tbody>
     </table>
 
-    <h5>
-      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-      V. 의사소통정보
-    </h5>
-    <table class="table">
-      <thead>
-        <tr class="text-center">
-          <th style="width: 40%">확인사항</th>
-          <th style="width: 60%">확인내용</th>
+    <h6 class="fw-bold">III. 심사목적</h6>
+    <table class="table table-sm">
+      <tbody>
+        <tr>
+          <p style="font-size: small">
+            <ins>[1단계 심사]</ins><br />
+            <b>1)</b>고객의 경영시스템을 문화화한 정보 검토, 고객의 위치 및
+            사업장별 상태를 평가하고, <b>2)</b>2단계 심사를 위한 준비상태를
+            결정하기 위한 고객 구성원들과의 협의, <b>3)</b>신청한 경영시스템
+            표준 요구사항, 특히 경영시스템의 주요 성과 또는 중대한 측면의 파악,
+            프로세스, 목표 및 운영과 관련된 조직의 상태 및 이해정도를 검토,
+            <b>4)</b>경영시스템의 인증범위와 관련된 필수 정보 획득(- 고객사업장,
+            사용된 프로세스 및 장비, 수립된 시스템의 관리수준, 적용가능한 법적,
+            규제적 요구사항), <b>5)</b>2단계 심사를 위한 자원의 배정에 대해
+            검토하고, 2단계 심사의 세부사항에 대하여 고객과 협의,
+            <b>6)</b>중대한 측면과 관련하여 조직의 경영시스템 및 사업장 운영에
+            대하여 충분히 이해함으로써 2단계 심사 계획을 위한 중점사항을 제공,
+            <b>7)</b>내부심사와 경영검토를 계획 및 수행하고 있는지의 여부를
+            평가하고, 고객의 경영시스템 실행 수준이 2단계 심사를 받을 준비가
+            되었음을 평가
+          </p>
         </tr>
-      </thead>
+        <tr>
+          <p style="font-size: small">
+            <ins>[2단계 심사]</ins><br />
+            <b>1)최초심사</b> - 경영시스템의 실행 및 효과성을 평가,
+            <b>2)사후심사</b> - 경영시스템의 지속적 실행 검증, 변경사항 검토를
+            통한 지속적 적합성 여부 확인, <b>3)갱신심사</b> - 경영시스템 전반의
+            지속적 적합성, 효과성 확인 및 인증범위에 대해 경영시스템의 관련성 및
+            적용성 확인
+          </p>
+        </tr>
+      </tbody>
+    </table>
+
+    <h6 class="fw-bold">VI. 심사정보[1단계]</h6>
+    <table class="table text-center table-bordered table-sm">
       <tbody class="table-group-divider">
         <tr>
-          <td style="width: 40%">회사명</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-              v-model="checkpoint.biz_area"
-            ></textarea>
-          </td>
+          <th style="width: 11%" class="bg-light">심사유형</th>
+          <td style="width: 11%" colspan="4">최초심사</td>
+          <!-- <th style="width: 11%" class="bg-light"></th>
+          <td style="width: 11%"></td>
+          <th style="width: 11%" class="bg-light"></th> -->
+          <th style="width: 11%" class="bg-light" colspan="2">심사구분</th>
+          <!-- <td style="width: 11%"></td> -->
+          <td style="width: 11%" colspan="2">통합심사</td>
+          <!-- <td style="width: 11%"></td> -->
         </tr>
         <tr>
-          <td style="width: 40%">사업장주소</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-              v-model="checkpoint.reliability"
-            ></textarea>
-          </td>
+          <th style="width: 11%" class="bg-light">심사일자</th>
+          <td style="width: 11%" colspan="4">2022-11-22 ~ 2022-11-22</td>
+          <!-- <th style="width: 11%" class="bg-light"></th>
+          <td style="width: 11%"></td>
+          <th style="width: 11%" class="bg-light"></th> -->
+          <th style="width: 11%" colspan="2" class="bg-light">심사 M/D</th>
+          <!-- <td style="width: 11%"></td> -->
+          <td style="width: 11%" colspan="2">1.0 MD</td>
+          <!-- <td style="width: 11%"></td> -->
         </tr>
         <tr>
-          <td style="width: 40%">대표자 및 조직</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-              class="form-control"
-              v-model="checkpoint.issue"
-            ></textarea>
-          </td>
+          <th style="width: 11%" rowspan="2" class="bg-light">심사팀구성</th>
+          <th style="width: 11%" class="bg-light">역할</th>
+          <th style="width: 11%" class="bg-light">소속</th>
+          <th style="width: 11%" class="bg-light">성명</th>
+          <th style="width: 11%" class="bg-light">코드</th>
+          <th style="width: 11%" class="bg-light">역할</th>
+          <th style="width: 11%" class="bg-light">소속</th>
+          <th style="width: 11%" class="bg-light">성명</th>
+          <th style="width: 11%" class="bg-light">코드</th>
         </tr>
         <tr>
-          <td style="width: 40%">인원</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              name=""
-              class="form-control"
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-              v-model="checkpoint.biz_status"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">인증범위</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-              v-model="checkpoint.needs"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">관련법령</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-              v-model="checkpoint.scope"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">경영시스템(매뉴얼 및 프로세스)</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-              v-model="checkpoint.quality_risk"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">주요공정</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-              v-model="checkpoint.env_risk"
-            ></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 40%">기타</td>
-          <td style="width: 60%" colspan="3">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-              v-model="checkpoint.safety_risk"
-            ></textarea>
-          </td>
+          <!-- <th style="width: 11%" class="bg-light">심사팀구성</th> -->
+          <td style="width: 11%">심사팀장</td>
+          <td style="width: 11%">KAI</td>
+          <td style="width: 11%">박성훈</td>
+          <td style="width: 11%">29</td>
+          <td style="width: 11%">심사팀원</td>
+          <td style="width: 11%">KAI</td>
+          <td style="width: 11%"></td>
+          <td style="width: 11%"></td>
         </tr>
       </tbody>
     </table>
 
-    <!-- 요구사항확인 -->
-    <h5 class="mt-5">
-      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-      요구사항 확인
-    </h5>
-    <small
-      >* 결과: "A(적합)", "N(부적합)", "R(권고)", "N/A(해당없음) 기재</small
-    >
-    <table class="table table-bordered" style="font-size: 14px">
-      <thead>
-        <tr class="text-center">
-          <th style="width: 5%">조항</th>
-          <th style="width: 25%">요구사항</th>
-          <th style="width: 50%">확인사항</th>
-          <th style="width: 20%">결과</th>
-        </tr>
-        25
-      </thead>
-      <tbody>
+    <h6 class="fw-bold">V. 심사정보[2단계]</h6>
+    <table class="table text-center table-bordered table-sm">
+      <tbody class="table-group-divider">
         <tr>
-          <th style="width: 5%">4.1</th>
-          <th style="width: 25%">조직과 조직상황의 이해</th>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
+          <th style="width: 11%" class="bg-light">심사유형</th>
+          <td style="width: 11%" colspan="4">최초심사</td>
+          <!-- <th style="width: 11%" class="bg-light"></th>
+          <td style="width: 11%"></td>
+          <th style="width: 11%" class="bg-light"></th> -->
+          <th style="width: 11%" class="bg-light" colspan="2">심사구분</th>
+          <!-- <td style="width: 11%"></td> -->
+          <td style="width: 11%" colspan="2">통합심사</td>
+          <!-- <td style="width: 11%"></td> -->
         </tr>
         <tr>
-          <th style="width: 5%">4.2</th>
-          <th style="width: 25%">이해관계자의 니즈와 기대 이해</th>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
+          <th style="width: 11%" class="bg-light">심사일자</th>
+          <td style="width: 11%" colspan="4">2022-11-22 ~ 2022-11-22</td>
+          <!-- <th style="width: 11%" class="bg-light"></th>
+          <td style="width: 11%"></td>
+          <th style="width: 11%" class="bg-light"></th> -->
+          <th style="width: 11%" colspan="2" class="bg-light">심사 M/D</th>
+          <!-- <td style="width: 11%"></td> -->
+          <td style="width: 11%" colspan="2">1.0 MD</td>
+          <!-- <td style="width: 11%"></td> -->
         </tr>
         <tr>
-          <th style="width: 5%">4.2</th>
-          <td style="width: 25%">
-            근로자 및 기타 이해관계자의 니즈와 기대 이해(O)
-          </td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
+          <th style="width: 11%" rowspan="3" class="bg-light">심사팀구성</th>
+          <th style="width: 11%" class="bg-light">역할</th>
+          <th style="width: 11%" class="bg-light">소속</th>
+          <th style="width: 11%" class="bg-light">성명</th>
+          <th style="width: 11%" class="bg-light">코드</th>
+          <th style="width: 11%" class="bg-light">역할</th>
+          <th style="width: 11%" class="bg-light">소속</th>
+          <th style="width: 11%" class="bg-light">성명</th>
+          <th style="width: 11%" class="bg-light">코드</th>
         </tr>
         <tr>
-          <td style="width: 5%">4.3</td>
-          <td style="width: 25%">
-            경영시스템 적용범위 결정 (문서화된 범위가 조직의 상황에 적절하고
-            관련성이 있는가?)
-          </td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
+          <!-- <th style="width: 11%" class="bg-light">심사팀구성</th> -->
+          <td style="width: 11%">심사팀장</td>
+          <td style="width: 11%">KAI</td>
+          <td style="width: 11%">박성훈</td>
+          <td style="width: 11%">29</td>
+          <td style="width: 11%"></td>
+          <td style="width: 11%"></td>
+          <td style="width: 11%"></td>
+          <td style="width: 11%"></td>
         </tr>
         <tr>
-          <td style="width: 5%">4.4</td>
-          <td style="width: 25%">품질경영시스템과 그 프로세스</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">4.4</td>
-          <td style="width: 25%">환경/안전보건경영시스템(E,O)</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">5.1</td>
-          <td style="width: 25%">
-            리더십과 의지표명 (모니터링, 이해관계자, 위험과기회)
-          </td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">5.2</td>
-          <td style="width: 25%">방침</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">5.3</td>
-          <td style="width: 25%">조직의 역할, 책임 및 권한</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">5.4</td>
-          <td style="width: 25%">근로자의 협의 및 참여(O)</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">6.1</td>
-          <td style="width: 25%">
-            리스크와 기회를 다루는 조치 (품질,환경,안전보건리스크 및 기회,
-            현장의 품질환경안전보건 운영규칙 등)
-          </td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">6.2</td>
-          <td style="width: 25%">목표와 목표 달성 기획</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">6.3</td>
-          <td style="width: 25%">변경의 기획(Q)</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">7.1</td>
-          <td style="width: 25%">자원</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">7.2</td>
-          <td style="width: 25%">역량/적격성</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">7.3</td>
-          <td style="width: 25%">인식</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">7.4</td>
-          <td style="width: 25%">의사소통</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">7.5</td>
-          <td style="width: 25%">문서화된 정보</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">8.1</td>
-          <td style="width: 25%">운용기획 및 관리</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">8.2</td>
-          <td style="width: 25%">비상사태 대비 및 대응(E,O)</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">8.3</td>
-          <td style="width: 25%">제품 및 서비스의 설계와 개발</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">8.4</td>
-          <td style="width: 25%">
-            외부에서 제공되는 프로세스, 제품 및 서비스의 관리
-          </td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">8.5</td>
-          <td style="width: 25%">생산 및 서비스 제공</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">8.6</td>
-          <td style="width: 25%">제품 및 서비스의 불출/출시</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">8.7</td>
-          <td style="width: 25%">부적합 출력/산출물의 관리</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">9.1</td>
-          <td style="width: 25%">모니터링, 측정, 분석 및 평가</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">9.2</td>
-          <td style="width: 25%">
-            내부심사(심사주기, 심사일, 심사팀, 부적합, 시정조치, 유효성, 문서화
-            등)
-          </td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">9.3</td>
-          <td style="width: 25%">
-            경영검토(실시일, 참석자, 입출력사항 적절성, 문서화 등)
-          </td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">10.1</td>
-          <td style="width: 25%">일반사항</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">10.2</td>
-          <td style="width: 25%">사건(O), 부적합 및 시정조치</td>
-          <td style="width: 50%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 20%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="width: 5%">10.3</td>
-          <td style="width: 25%">지속적 개선</td>
-          <td style="width: 55%">
-            <textarea
-              class="form-control"
-              name=""
-              id=""
-              style="width: 100%; border: 0"
-              rows="1"
-            ></textarea>
-          </td>
-          <td style="width: 10%">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0; font-size: 14px"
-            >
-              <option value="A" selected>A</option>
-              <option value="R">R</option>
-              <option value="N">N</option>
-              <option value="N/A">N/A</option>
-            </select>
-            <!-- <input
-              type="text"
-              class="form-control"
-              style="width: 100%; border: 0"
-            /> -->
-          </td>
+          <!-- <th style="width: 11%" class="bg-light">심사팀구성</th> -->
+          <td style="width: 11%">심사팀원</td>
+          <td style="width: 11%">KAI</td>
+          <td style="width: 11%"></td>
+          <td style="width: 11%"></td>
+          <td style="width: 11%"></td>
+          <td style="width: 11%"></td>
+          <td style="width: 11%"></td>
+          <td style="width: 11%"></td>
         </tr>
       </tbody>
     </table>
 
-    <div class="mt-5">
-      <h5>
-        <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-        심사프로그램 사이클
-      </h5>
-      <span style="font-size: 14px">
-        - 최초/갱신 심사 시 차기 갱신심사 시까지, 인증주기 전체에 대해 계획하고
-        인증주기 내에 심사프로그램은 모든 경영시스템 요구사항을 다루도록
-        작성.<br />
-        - O표는 모든 심사시 필수 확인사항이며, 해당 주기 심사 시 심사한
-        경영시스템 요구사항에 V, 적용제외 조항은 '-'로 표시.</span
-      >
-    </div>
-    <!-- 심사프로그램 사이클 테이블 -->
-    <table class="table mt-5" style="font-size: 14px">
-      <thead>
-        <tr class="text-center">
-          <th style="width: 25%">심사단계</th>
-          <th style="width: 8.75%">1단계</th>
-          <th style="width: 8.75%">2단계</th>
-          <th style="width: 8.75%">1차</th>
-          <th style="width: 8.75%">2차</th>
-          <th style="width: 8.75%">갱신</th>
-          <th style="width: 8.75%">4차</th>
-          <th style="width: 8.75%">5차</th>
-          <th style="width: 8.75%">갱신</th>
-        </tr>
-      </thead>
-      <tbody class="">
+    <!-- 심사비 -->
+    <h6 class="fw-bold">VI. 심사비</h6>
+    <table class="table text-center table-bordered table-sm">
+      <tbody class="table-group-divider">
         <tr>
-          <th>심사월</th>
-          <td class="text-center">22/09</td>
-          <td class="text-center">23/09</td>
-          <td class="text-center">24/09</td>
-          <td class="text-center">25/09</td>
-          <td class="text-center">26/09</td>
-          <td class="text-center">27/09</td>
-          <td class="text-center">28/09</td>
-          <td class="text-center">29/09</td>
+          <th style="width: 11%" class="bg-light" rowspan="3">심사비</th>
+          <th style="width: 11%" class="bg-light">신청비</th>
+          <td style="width: 11%">원</td>
+          <th style="width: 11%" class="bg-light">심사비</th>
+          <td style="width: 11%">1,200,000원</td>
+          <th style="width: 11%" class="bg-light" rowspan="2">비고</th>
+          <td style="width: 11%" colspan="3"></td>
+          <!-- <td style="width: 11%"></td> -->
+          <!-- <td style="width: 11%"></td> -->
         </tr>
         <tr>
-          <th>4.1 조직과 조직상황의 이해</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
+          <!-- <th style="width: 11%" class="bg-light">심사비</th> -->
+          <th style="width: 11%" class="bg-light">출장비</th>
+          <td style="width: 11%">원</td>
+          <th style="width: 11%" class="bg-light">합계(VAT포함)</th>
+          <th style="width: 11%">1,200,000원</th>
+          <!-- <th style="width: 11%" class="bg-light">비고</th> -->
+          <td style="width: 11%" colspan="3"></td>
+          <!-- <td style="width: 11%"></td> -->
+          <!-- <td style="width: 11%"></td> -->
         </tr>
         <tr>
-          <th>4.2 이해관계자의 니즈와 기대 이해</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>4.2 근로자 및 기타 이해관계자의 니즈와 기대 이해(O)</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>4.3 경영시스템 적용범위 결정</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-
-        <tr>
-          <th>4.4 품질경영시스템과 그 프로세스</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>4.4 환경/안전보건경영시스템(E,O)</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>5.1 리더십과 의지표명</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>5.2 방침</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>5.4 근로자의 협의 및 참여(O)</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>6.1 리스크와 기회를 다루는 조치</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>6.2 목표와 목표 달성 기획</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>6.3 변경의 기획(Q)</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>7.1 자원</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>7.2 역량/적격성</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>7.4 의사소통</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>7.5 문서화된 정보</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>8.1 운용기획 및 관리</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>8.2 비상사태 대비 및 대응(E,O)</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>8.3 제품 및 서비스의 설계와 개발</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>8.4 외부에서 제공되는 프로세스, 제품 및 서비스의 관리</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>8.5 생산 및 서비스 제공</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>8.6 제품 및 서비스의 불출/출시</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>8.7 부적합 출력/산출물의 관리</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>9.1 모니터링, 측정, 분석 및 평가</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>9.2 내부심사</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>9.3 경영검토</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>10.1 일반사항</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>10.2 사건(O), 부적합 및 시정조치</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-        </tr>
-        <tr>
-          <th>10.3 지속적 개선</th>
-          <td class="text-center">v</td>
-          <td class="text-center">v</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
-          <td class="text-center">O</td>
+          <!-- <th style="width: 11%" class="bg-light">심사비</th> -->
+          <th style="width: 11%" colspan="6">
+            납부계좌정보: (기업은행) / 988-012789-04-012 / 케이에이아이인증원
+          </th>
+          <!-- <td style="width: 11%">원</td>
+          <th style="width: 11%" class="bg-light">심사비</th>
+          <td style="width: 11%">1,200,000원</td>
+          <th style="width: 11%" class="bg-light">비고</th>
+          <td style="width: 11%" colspan="3"></td> -->
+          <!-- <td style="width: 11%"></td> -->
+          <!-- <td style="width: 11%"></td> -->
         </tr>
       </tbody>
+      <small>
+        ▶심사팀에는 기술전문가, 심사훈련자(심사원 양성), 검증심사원(심사원
+        검증), 인증심사원(입회평가)이 참석할 수 있으나, 이에 따라 심사 시간이
+        추가되거나 비용이 발생하지않습니다.
+      </small>
     </table>
 
-    <!-- 심사결과요약 -->
-    <div class="mt-5">
-      <h5>
-        <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-        최종 심사결과 요약
-      </h5>
-    </div>
-    <textarea
-      name=""
-      id=""
-      cols="30"
-      rows="6"
-      class="form-control"
-      style="font-size: 14px"
-    ></textarea>
+    <!-- <h6 class="fw-bold">VII. 의사소통 정보</h6> -->
+    <!-- <table class="table text-center table-sm"> -->
+    <!-- <tbody class="table-group-divider"> -->
+    <!-- <tr> -->
+    <p>
+      ▶우리 인증원은 귀사의 경영시스템 향상을 위하여 최선을 다하겠습니다. 인증
+      심사와 관련하여 궁금한 사항은 인증원으로(service@kaicert.com) 문의 주시면
+      상세하게 안내드리겠습니다.
+    </p>
+    <!-- </tr> -->
+    <!-- </tbody> -->
+    <!-- </table> -->
+    <img
+      src="@/assets/stamp_KAI.png"
+      alt=""
+      style="width: 90px; position: absolute; left: 58%; top: 90 %"
+    />
 
-    <!-- 심사목적 달성여부 -->
-    <div class="mt-5">
-      <h5>
-        <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-        심사목적의 달성 여부
-      </h5>
-    </div>
-    <div>
-      <div class="form-check mb-2" style="padding-left: 50px">
-        <input
-          class="form-check-input"
-          type="radio"
-          value=""
-          id="flexRadioDefault1"
-        />
-        <label class="form-check-label" for="flexRadioDefault1">
-          심사 결과, 경영시스템이 요구사항에 적합하며 심사목적을 달성하였으므로,
-          인증 등록(또는 유지) 추천
-        </label>
-      </div>
-      <div class="form-check mb-2" style="padding-left: 50px">
-        <input
-          class="form-check-input"
-          type="radio"
-          value=""
-          id="flexRadioDefault2"
-        />
-        <label class="form-check-label" for="flexRadioDefault2">
-          심사 결과, 경영시스템에 경부적합이 발견되어 시정조치 이후
-          인증등록(또는 유지) 추천
-        </label>
-      </div>
-      <div class="form-check mb-2" style="padding-left: 50px">
-        <input
-          class="form-check-input"
-          type="radio"
-          value=""
-          id="flexRadioDefault3"
-        />
-        <label class="form-check-label" for="flexRadioDefault3">
-          심사 결과, 경영시스템에 1건의 중부적합이 발견되어 시정조치 이후
-          확인심사 진행
-        </label>
-      </div>
-      <div class="form-check mb-2" style="padding-left: 50px">
-        <input
-          class="form-check-input"
-          type="radio"
-          value=""
-          id="flexRadioDefault4"
-        />
-        <label class="form-check-label" for="flexRadioDefault4">
-          심사 결과, 경영시스템에 다수의 중부적합이 발견되어 시정조치 이후
-          재심사 진행
-        </label>
-      </div>
+    <div class="text-center fw-bold">
+      <p>2022년 12월 13일</p>
+      <h2 class="fw-bold">케이에이아이인증원</h2>
     </div>
 
-    <!-- 참석자 서명 -->
-    <div class="mt-5">
-      <h5>
-        <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
-        참석자 서명
-      </h5>
-    </div>
-    <p>심사일:</p>
-    <table class="table table-bordered text-center">
-      <thead>
-        <th style="width: 10%">No</th>
-        <th style="width: 20%">성명</th>
-        <th style="width: 20%">부서</th>
-        <th style="width: 25%">시작회의</th>
-        <th style="width: 25%">종료회의</th>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>10</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="text-end mt-5">
-      <button type="button" class="btn btn-primary" @click="doSave">
-        저장
+    <div class="text-end d-print-none">
+      <button type="button" class="btn btn-primary" @click="printApplication">
+        인쇄
       </button>
-      <button type="button" class="btn btn-secondary ms-2">취소</button>
+      <button
+        type="button"
+        class="btn btn-secondary ms-2"
+        @click="goToCertDetail"
+      >
+        목록
+      </button>
     </div>
   </div>
 </template>
@@ -2136,63 +345,13 @@ export default {
       id: '',
       // searchName: '',
       imgSrc: '',
-      imgExt: '',
-      rows: [
-        {
-          start_h: '',
-          start_m: '',
-          end_h: '',
-          end_m: '',
-          leader: '',
-          auditor: ''
-        }
-      ],
-      auditTeam: {
-        leader: '',
-        auditor1: '',
-        auditor2: '',
-        auditor3: ''
-      },
-      companions: {
-        tech_expert: '',
-        trainee1: '',
-        trainee2: '',
-        trainee3: ''
-      },
-      checkpoint: {
-        biz_area: '',
-        reliability: '',
-        issue: '',
-        biz_status: '',
-        needs: '',
-        scope: '',
-        quality_risk: '',
-        env_risk: '',
-        safety_risk: '',
-        regal: '',
-        policy: '',
-        goal: '',
-        internal_audit: '',
-        management_review: '',
-        understanding_level: '',
-        workspace: '',
-        exclusion: '',
-        worker_count: '',
-        s2md: '',
-        guider: '',
-        place: '',
-        precautions: '',
-        site_address: '',
-        visit_time: '',
-        contact: ''
-        // findings: {},
-        // findings_content: {},
-        // findings_standard: {}
-        // findings_array: []
-      }
+      imgExt: ''
     }
   },
-  created() {},
+  created() {
+    this.id = this.$route.query.id
+    console.log(this.id)
+  },
   mounted() {
     // console.log(this.user.userInfo.email)
     if (this.user.userInfo.email === undefined) {
@@ -2202,22 +361,41 @@ export default {
   },
   unmounted() {},
   methods: {
-    showRequirement() {
-      window.open()
+    async getCertListByBizNo() {
+      // console.log(this.id)
+      const dbAuditDataByBizNo = await this.$get(
+        // `/api/customer/cert/list/${this.id}`
+        `http://localhost:3000/api/customer/cert/list/cid/${this.id}`
+      )
+      // const dbAuditDataByCustomer = await this.$post(
+      //   `/api/customer/cert/list/${this.id}`
+      // )
+      // const dbAuditDataByCustomer = await this.$get('/api/customer/cert/list')
+      console.log('DB에서 가져온 CertListByBizNo', dbAuditDataByBizNo)
+      this.dbAuditInfo = dbAuditDataByBizNo
     },
-    addRow() {
-      this.rows.push({
-        start_h: '',
-        start_m: '',
-        end_h: '',
-        end_m: '',
-        leader: '',
-        auditor: ''
-      })
+    async getCustomer() {
+      console.log(this.id)
+      const dbData = await this.$get(
+        `http://localhost:3000/api/customer/list/${this.id}`
+      )
+      console.log(this.customer)
+      console.log('db에서 가져온 data : ', dbData)
+
+      this.customer.name_ko = dbData.name_ko
+      this.customer.customer_type = dbData.customer_type
+      this.customer.scope_ko = dbData.scope_ko
+      this.customer.employee_count = dbData.employee_count
+      this.customer.auditor_email = dbData.auditor_email
+      this.customer.auditor_name = dbData.auditor_name
+      this.customer.business_no = dbData.business_no
+      this.customer.customer_id = dbData.customer_id
+      this.customer.iaf_code = JSON.parse(dbData.iaf_code)
     },
-    removeRow() {
-      this.rows.pop()
+    printApplication() {
+      window.print()
     },
+
     execDaumPostcode() {
       // @click을 사용할 때 함수는 이렇게 작성해야 한다.
       new window.daum.Postcode({
@@ -2393,6 +571,12 @@ export default {
     },
     goToList() {
       this.$router.push({ path: '/customer/list' })
+    },
+    goToCertDetail() {
+      this.$router.push({
+        path: '/customer/cert/detail',
+        query: { audit_no: this.id }
+      })
     }
   }
 }
@@ -2404,4 +588,16 @@ export default {
 table {
   font-size: 14px;
 } */
+@media print {
+  /* header,
+  footer,
+  .no-print {
+    display: none;
+  } */
+  @page {
+    size: A4;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
 </style>

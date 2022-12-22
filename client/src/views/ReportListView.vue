@@ -2,7 +2,7 @@
   <div class="container">
     <div class="col mb-3">
       <div class="text-center">
-        <h1 class="fw-bold">인증심사현황</h1>
+        <h1 class="fw-bold">심사보고서현황</h1>
       </div>
       <hr />
     </div>
@@ -56,12 +56,7 @@
           v-for="item in listByEmailAndSearchName.data"
         >
           <td style="word-break: break-all">
-            <a
-              @click="goToDetailAudit(item.audit_no)"
-              class="text-decoration-underline"
-              role="button"
-              >{{ item.audit_no }}</a
-            >
+            {{ item.audit_no }}
           </td>
           <!-- <td>{{ item.customer_id }}</td> -->
           <td>
@@ -73,7 +68,7 @@
             > -->
             <a
               @click="goToDetail(item.business_no)"
-              class="text-decoration-underline"
+              style="text-decoration: underline"
               role="button"
               >{{ item.name_ko }}</a
             >
@@ -484,13 +479,6 @@ export default {
     },
     goToList() {
       this.$router.push({ path: '/customer/create' })
-    },
-    goToDetailAudit(id) {
-      console.log(id)
-      this.$router.push({
-        path: '/customer/cert/detail',
-        query: { audit_no: id }
-      })
     }
   }
 }

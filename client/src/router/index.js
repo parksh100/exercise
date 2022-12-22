@@ -170,6 +170,12 @@ const routes = [
     name: 'AuditPlanView',
     component: () =>
       import(/* webpackChunkName: "report" */ '../views/AuditPlanView.vue')
+  },
+  {
+    path: '/report/list',
+    name: 'ReportListView',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/ReportListView.vue')
   }
 ]
 

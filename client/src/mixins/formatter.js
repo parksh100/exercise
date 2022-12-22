@@ -15,8 +15,8 @@ export default {
 
       if (typeof d === 'string') {
         year = d.substr(0, 4)
-        month = d.substr(4, 2)
-        day = d.substr(6, 2)
+        month = d.substr(5, 2)
+        day = d.substr(8, 2)
       } else if (typeof d === 'object') {
         year = d.getFullYear()
         month = (d.getMonth() + 1).toString().padStart(2, 0)

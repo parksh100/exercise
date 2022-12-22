@@ -198,10 +198,10 @@ export default {
     console.log('userEmail', this.user.userInfo.email)
     console.log('searchName', this.searchName)
 
-    this.listByAuditor = await this.$post('/api/customer/auditor/search', {
-      param: [this.searchName, this.user.userInfo.email]
-    })
-    console.log('list', this.listByAuditor)
+    // this.listByAuditor = await this.$post('/api/customer/auditor/search', {
+    //   param: [this.searchName, this.user.userInfo.email]
+    // })
+    // console.log('list', this.listByAuditor)
     this.getSearch()
   },
   unmounted() {},
