@@ -388,7 +388,10 @@ export default {
       })
     },
     goToList() {
-      this.$router.push({ path: '/customer/list' })
+      this.$router.push({
+        path: '/customer/cert/detail',
+        query: { audit_no: this.id }
+      })
     },
     goToCRList() {
       this.$router.push({ path: '/customer/cr/list' })
@@ -445,6 +448,13 @@ export default {
     },
     printApplication() {
       window.print()
+    },
+    goToDetailAudit(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/customer/cert/detail',
+        query: { audit_no: id }
+      })
     }
   }
 }

@@ -39,15 +39,19 @@
       <thead>
         <tr class="bg-light table-group-divider">
           <!-- <th width="4%">ID</th> -->
-          <th style="width: 15%">심사번호</th>
-          <th style="width: 15%">회사명</th>
-          <!-- <th style="width: 7%">인증유형</th> -->
-          <th style="width: 20%">표준</th>
-          <th style="width: 10%">시작일</th>
-          <th style="width: 10%">종료일</th>
-          <th style="width: 10%">심사원</th>
-          <th style="width: 10%">심사비</th>
-          <th style="width: 10%">보고서작성</th>
+          <th style="width: 10%" rowspan="2">심사번호</th>
+          <th style="width: 15%" rowspan="2">회사명</th>
+          <th style="width: 10%" rowspan="2">표준</th>
+          <th style="width: 10%" rowspan="2">심사유형</th>
+          <th style="width: 10%" rowspan="2">S2종료일</th>
+          <th style="width: 10%" rowspan="2">심사비</th>
+          <th colspan="4">전환보고서</th>
+        </tr>
+        <tr class="bg-light table-group-divider">
+          <th style="width: 10%">전환보고서</th>
+          <th style="width: 10%">S1보고서</th>
+          <th style="width: 10%">S2보고서</th>
+          <th style="width: 5%">보고서작성</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
@@ -75,14 +79,14 @@
           </td>
           <!-- <td>{{ item.certification_type }}</td> -->
           <td>{{ item.audit_standard }}</td>
-          <td>{{ $convertDateFormat(item.audit_s2_start, 'YYYY-MM-DD') }}</td>
+          <td>{{ item.audit_type }}</td>
           <td>
             {{ $convertDateFormat(item.audit_s2_end, 'YYYY-MM-DD') }}
           </td>
           <td>{{ item.auditor_name }}</td>
-          <td class="text-end">
-            {{ $convertNumberFormat(item.audit_fee, '#,###') }}원
-          </td>
+          <td></td>
+          <td></td>
+          <td></td>
           <td>
             <!-- <button
               class="btn btn-primary btn-sm me-1"
@@ -99,7 +103,7 @@
             <!-- <p>{{ item.customer_id }}</p> -->
             <button
               class="btn btn-primary btn-sm me-1"
-              @click="goToMakeReport(item.audit_no)"
+              @click="goToDetailAudit(item.audit_no)"
             >
               보고서작성
             </button>
@@ -203,8 +207,9 @@ export default {
     this.getAuditListBySearch()
   },
   unmounted() {},
+
   methods: {
-    // 조회 적용
+    // 등록된 심사정보 & 조회 적용
     async getAuditListBySearch() {
       const loader = this.$loading.show({ canCancel: false })
       console.log(this.user.userInfo.email)
@@ -217,6 +222,7 @@ export default {
           param: [searchName, this.user.userInfo.email]
         }
       )
+      // this.listByEmailAndSearchName.replace('QMS', 'Q')
 
       console.log(
         'auditListByEmailAndSearchName',
@@ -479,6 +485,13 @@ export default {
     },
     goToList() {
       this.$router.push({ path: '/customer/create' })
+    },
+    goToDetailAudit(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/customer/cert/detail',
+        query: { audit_no: id }
+      })
     }
   }
 }

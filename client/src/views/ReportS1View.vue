@@ -777,7 +777,9 @@
       <button type="button" class="btn btn-primary" @click="doSave">
         저장
       </button>
-      <button type="button" class="btn btn-secondary ms-2">취소</button>
+      <button type="button" class="btn btn-secondary ms-2" @click="goToList">
+        취소
+      </button>
     </div>
   </div>
 </template>
@@ -1047,7 +1049,10 @@ export default {
       })
     },
     goToList() {
-      this.$router.push({ path: '/customer/list' })
+      this.$router.push({
+        path: '/customer/cert/detail',
+        query: { audit_no: this.id }
+      })
     }
   }
 }

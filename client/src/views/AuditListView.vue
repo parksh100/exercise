@@ -104,7 +104,7 @@
             <!-- <p>{{ item.customer_id }}</p> -->
             <button
               class="btn btn-primary btn-sm me-1"
-              @click="goToMakeReport(item.audit_no)"
+              @click="goToDetailAudit(item.audit_no)"
             >
               보고서작성
             </button>
