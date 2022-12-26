@@ -26,12 +26,42 @@
 
     <h5 class="fw-bold mt-3">
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      기본사항
+    </h5>
+    <table class="table text-center">
+      <thead class="table-group-divider">
+        <tr class="bg-light">
+          <th style="width: 20%">업체명</th>
+          <th style="width: 15%">심사번호</th>
+          <th style="width: 20%">심사표준</th>
+          <th style="width: 15%">심사유형</th>
+          <th style="width: 20%">인증범위</th>
+          <th style="width: 10%">종업원수</th>
+        </tr>
+      </thead>
+      <tbody class="align-middle">
+        <tr>
+          <td>{{ list.name_ko }}</td>
+          <td>{{ list.audit_no }}</td>
+          <td>{{ list.audit_standard }}</td>
+          <td>{{ list.audit_type + ' ' + list.audit_degree }}</td>
+          <td>{{ list.scope_ko }}</td>
+          <td>{{ list.employee_count }}명</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h5 class="fw-bold mt-5">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
       심사세부일정표
     </h5>
     <!-- table -->
     <div class="fw-bold italic">
-      심사일자: {{ this.list.audit_s2_start }} ~
-      {{ this.list.audit_s2_end }} ({{ this.s2AuditDayDiff }}일간)
+      심사일자:
+      {{ $convertDateFormat(this.list.audit_s2_start, 'YYYY-MM-DD') }} ~
+      {{ $convertDateFormat(this.list.audit_s2_end, 'YYYY-MM-DD') }} ({{
+        this.s2AuditDayDiff
+      }}일간)
     </div>
     <table class="table text-center">
       <thead class="table-group-divider">
@@ -3189,7 +3219,11 @@
 </template>
 
 <script>
+import Formatter from '@/mixins/formatter'
+
 export default {
+  mixins: [Formatter],
+
   computed: {
     user() {
       const data = this.$store.state.user
@@ -3463,7 +3497,7 @@ export default {
       },
       finalAuditSummary:
         'ISO9001요구사항, 조직에 적용되는 법규 및 준수사항 및 조직자체의 적용가능한 요구사항을 기준으로 심사가 진행되었으며 조직의 경영시스템 운영역량은 요구사항에 적합함. 다만, 전반적으로 조직의 경영시스템 수립은 체계적으로 수립되어 있으나 보다 적극적인 실행이 요구됨.  심사팀은 불확실성을 고려하여 업체와 심사결론을 합의하였으며 샘플링 심사가 고객의 경영시스템의 완전성을 보증하지 않음에 대해 안내하였습니다. 심사결과 부적합 00건, 권고사항 00건 발견되었음. 부적합에 대해서는 30일 내로 시정조치를 완료하여 결과서를 심사원에게 회신해주시기 바랍니다.',
-      auditPurpose: '',
+      auditPurpose: '인증등록유지추천',
       participants: [
         {
           name: '',
@@ -3475,7 +3509,7 @@ export default {
   created() {
     // this.id = this.$route.query.customer_id
     // console.log('넘어온 id : ', this.id)
-    this.id = this.$route.query.audit_no
+    this.id = this.$route.query.id
     console.log('넘어온 audit_no :', this.id)
   },
   mounted() {
@@ -3853,7 +3887,9 @@ export default {
               continuousImproveRe: this.s2AuditCycle.continuousImproveRe,
               finalAuditSummary: this.finalAuditSummary,
               auditPurpose: this.auditPurpose,
-              participants: JSON.stringify(this.participants)
+              participants: JSON.stringify(this.participants),
+              report_s2_no: 's24' + this.id,
+              auditor_email: this.$store.state.user.userInfo.email
             }
           })
 
@@ -3862,10 +3898,10 @@ export default {
           console.log(r)
 
           if (r.status === 200) {
-            this.$swal('1단계 심사보고서가 저장되었습니다.')
+            this.$swal('2단계 심사보고서가 저장되었습니다.')
             this.$router.push({
-              path: '/customer/list',
-              query: { customer_id: r.data.insertId }
+              path: '/customer/cert/detail',
+              query: { audit_no: this.id }
             })
           }
         }

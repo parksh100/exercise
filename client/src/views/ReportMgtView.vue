@@ -2,11 +2,10 @@
   <div class="container">
     <div class="col mb-3">
       <div class="text-center">
-        <h1 class="fw-bold">인증심사현황</h1>
+        <h1 class="fw-bold">심사보고서관리</h1>
       </div>
       <hr />
     </div>
-
     <!-- 조회조건 -->
     <div class="row row-cols-lg-auto g-3 align-items-center mb-1">
       <div class="col-12">
@@ -14,16 +13,12 @@
           type="search"
           class="form-control"
           v-model.trim="searchName"
-          @keyup.enter="getAuditListBySearch"
+          @keyup.enter="getReportListAll"
           placeholder="Name"
         />
       </div>
-
       <div class="col-12">
-        <button
-          class="btn btn-outline-primary me-1"
-          @click="getAuditListBySearch"
-        >
+        <button class="btn btn-outline-primary me-1" @click="getReportListAll">
           조회
         </button>
         <button class="btn btn-outline-success me-1" @click="goToList">
@@ -33,10 +28,6 @@
           엑셀다운로드
         </button>
       </div>
-      <small class="text-end"
-        >※ 심사원이 등록한 전체 심사정보현황입니다. S2심사 시작일을 기준
-        최신순으로 정렬되며, 회사명으로 조회가능합니다.</small
-      >
     </div>
     <table
       class="table table-bordered"
@@ -45,27 +36,22 @@
       <thead>
         <tr class="bg-light table-group-divider">
           <!-- <th width="4%">ID</th> -->
-          <th style="width: 15%">심사번호</th>
-          <th style="width: 15%">회사명</th>
-          <!-- <th style="width: 7%">인증유형</th> -->
-          <th style="width: 20%; word-break: break-all">표준</th>
-          <th style="width: 8%">유형</th>
-          <th style="width: 9%">시작일</th>
-          <th style="width: 9%">종료일</th>
-          <th style="width: 9%">심사원</th>
-          <th style="width: 10%">심사비</th>
-          <th style="width: 10%">보고서작성</th>
+          <th style="width: 10%" rowspan="2">보고서번호</th>
+          <th style="width: 10%" rowspan="2">심사번호</th>
+          <th style="width: 20%" rowspan="2">회사명</th>
+          <th style="width: 15%" rowspan="2">표준</th>
+          <th style="width: 10%" rowspan="2">심사유형</th>
+          <th style="width: 15%">전환보고서</th>
+          <th style="width: 15%">S1보고서</th>
+          <th style="width: 15%">S2보고서</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        <tr
-          :key="item.customer_id"
-          v-for="item in listByEmailAndSearchName.data"
-        >
+        <tr :key="item.audit_no" v-for="item in dbAuditList.data">
           <td style="word-break: break-all">
             <a
               @click="goToDetailAudit(item.audit_no)"
-              class="text-decoration-underline"
+              class="text-decoration-underline align-middle"
               role="button"
               >{{ item.audit_no }}</a
             >
@@ -80,43 +66,47 @@
             > -->
             <a
               @click="goToDetail(item.business_no)"
-              class="text-decoration-underline"
+              class="text-decoration-underline align-middle"
               role="button"
-              >{{ item.name_ko }}</a
+              >{{ item.report_trans_no }}</a
             >
           </td>
           <!-- <td>{{ item.certification_type }}</td> -->
-          <td style="word-break: break-all">{{ item.audit_standard }}</td>
-          <td>{{ item.audit_type + item.audit_degree }}</td>
-          <td>{{ $convertDateFormat(item.audit_s2_start, 'YYYY-MM-DD') }}</td>
+          <td>{{ item.name_ko }}</td>
+          <td>{{ item.audit_type + '' + item.audit_degree }}</td>
           <td>
-            {{ $convertDateFormat(item.audit_s2_end, 'YYYY-MM-DD') }}
-          </td>
-          <td>{{ item.auditor_name }}</td>
-          <td class="text-end">
-            {{ $convertNumberFormat(item.audit_fee, '#,###') }}원
+            <div
+              v-show="
+                item.audit_type === '전환사후' || item.audit_type === '전환갱신'
+              "
+            >
+              <button class="btn btn-danger btn-sm me-1">수정</button>
+              <button class="btn btn-secondary btn-sm">인쇄</button>
+            </div>
+            <!-- {{
+              item.audit_type === '전환사후' || item.audit_type === '전환갱신'
+                ? item.audit_s2_end
+                : 'N/A'
+            }} -->
           </td>
           <td>
-            <!-- <button
-              class="btn btn-primary btn-sm me-1"
-              @click="goToDetail(item.customer_id)"
-            >
-              상세보기
-            </button> -->
-            <!-- <button
-              class="btn btn-danger btn-sm me-1"
-              @click="doDelete(item.customer_id)"
-            >
-              삭제
-            </button> -->
-            <!-- <p>{{ item.customer_id }}</p> -->
-            <button
-              class="btn btn-primary btn-sm me-1"
-              @click="goToDetailAudit(item.audit_no)"
-            >
-              보고서작성
-            </button>
-            <!-- <router-link
+            <div v-show="item.audit_type === '최초'">
+              <button class="btn btn-danger btn-sm me-1">수정</button>
+              <button class="btn btn-secondary btn-sm">인쇄</button>
+            </div>
+            <!-- {{ item.audit_type === '최초' ? item.audit_s2_end : 'N/A' }} -->
+          </td>
+          <td>
+            <div v-show="item.audit_s2_end">
+              <button class="btn btn-danger btn-sm me-1">수정</button>
+              <button class="btn btn-secondary btn-sm">인쇄</button>
+            </div>
+            <!-- {{ item.audit_s2_end }} -->
+          </td>
+          <td></td>
+          <td></td>
+
+          <!-- <router-link
               :to="{
                 name: 'CertCreateView',
                 params: { customer_id: item.customer_id }
@@ -125,7 +115,7 @@
               >심사신청</router-link
             > -->
 
-            <!--<button
+          <!--<button
               class="btn btn-info btn-sm me-1"
               @click="goToCR(item.customer_id)"
             >
@@ -144,7 +134,6 @@
             >
               {{ item.status_yn === 'Y' ? '사용중지' : '사용' }}
             </button> -->
-          </td>
         </tr>
       </tbody>
     </table>
@@ -180,6 +169,7 @@ export default {
       list: [],
       listByAuditor: [],
       listByEmailAndSearchName: [],
+      dbAuditList: [],
       auditor_email: '',
       searchName: ''
       // selectedItem: {
@@ -213,11 +203,28 @@ export default {
     console.log('searchName', this.searchName)
 
     // this.getList()
-    this.getAuditListBySearch()
+    // this.getAuditListBySearch()
+    this.getReportListAll()
   },
   unmounted() {},
+
   methods: {
-    // 조회 적용
+    // 보고서 자료 모두 불러오기
+    async getReportListAll() {
+      const loader = this.$loading.show({ canCancel: false })
+      console.log(this.user.userInfo.email)
+      const searchName = `%${this.searchName.toLowerCase()}%`
+      console.log(searchName)
+
+      const result = await this.$post('/api/report/list/search', {
+        param: [searchName, this.user.userInfo.email]
+      })
+      this.dbAuditList = result
+      console.log('result', result)
+      loader.hide()
+    },
+
+    // 등록된 심사정보 & 조회 적용
     async getAuditListBySearch() {
       const loader = this.$loading.show({ canCancel: false })
       console.log(this.user.userInfo.email)
@@ -230,6 +237,7 @@ export default {
           param: [searchName, this.user.userInfo.email]
         }
       )
+      // this.listByEmailAndSearchName.replace('QMS', 'Q')
 
       console.log(
         'auditListByEmailAndSearchName',

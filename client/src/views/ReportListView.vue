@@ -13,14 +13,14 @@
           type="search"
           class="form-control"
           v-model.trim="searchName"
-          @keyup.enter="getAuditListBySearch"
+          @keyup.enter="listByEmailAndSearchName"
           placeholder="Name"
         />
       </div>
       <div class="col-12">
         <button
           class="btn btn-outline-primary me-1"
-          @click="getAuditListBySearch"
+          @click="listByEmailAndSearchName"
         >
           조회
         </button>
@@ -44,14 +44,13 @@
           <th style="width: 10%" rowspan="2">표준</th>
           <th style="width: 10%" rowspan="2">심사유형</th>
           <th style="width: 10%" rowspan="2">S2종료일</th>
-          <th style="width: 10%" rowspan="2">심사비</th>
-          <th colspan="4">전환보고서</th>
+          <th style="width: 10%" rowspan="2">심사원</th>
+          <th colspan="3">전환보고서</th>
         </tr>
         <tr class="bg-light table-group-divider">
           <th style="width: 10%">전환보고서</th>
           <th style="width: 10%">S1보고서</th>
           <th style="width: 10%">S2보고서</th>
-          <th style="width: 5%">보고서작성</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
@@ -60,7 +59,12 @@
           v-for="item in listByEmailAndSearchName.data"
         >
           <td style="word-break: break-all">
-            {{ item.audit_no }}
+            <a
+              @click="goToDetailAudit(item.audit_no)"
+              class="text-decoration-underline"
+              role="button"
+              >{{ item.audit_no }}</a
+            >
           </td>
           <!-- <td>{{ item.customer_id }}</td> -->
           <td>
@@ -72,42 +76,51 @@
             > -->
             <a
               @click="goToDetail(item.business_no)"
-              style="text-decoration: underline"
+              class="text-decoration-underline"
               role="button"
               >{{ item.name_ko }}</a
             >
           </td>
           <!-- <td>{{ item.certification_type }}</td> -->
-          <td>{{ item.audit_standard }}</td>
-          <td>{{ item.audit_type }}</td>
+          <td style="word-break: break-all">{{ item.audit_standard }}</td>
+          <td>{{ item.audit_type + item.audit_degree }}</td>
           <td>
             {{ $convertDateFormat(item.audit_s2_end, 'YYYY-MM-DD') }}
           </td>
           <td>{{ item.auditor_name }}</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>
-            <!-- <button
+          <!-- 전환보고서 -->
+          <td class="report" style="word-break: break-all; font-size: 12px">
+            {{
+              item.audit_type == '전환사후' || item.audit_type === '전환갱신'
+                ? item.report_trans_no
+                : 'N/A'
+            }}
+          </td>
+          <!-- 1단계보고서 -->
+          <td style="word-break: break-all; font-size: 12px">
+            {{ item.audit_type === '최초' ? item.report_s1_no : 'N/A' }}
+          </td>
+          <!-- 2단계보고서 -->
+          <td style="word-break: break-all; font-size: 12px">
+            {{ item.report_s2_no }}
+          </td>
+          <!-- 불러오기 -->
+          <!--<td>
+             <button
               class="btn btn-primary btn-sm me-1"
               @click="goToDetail(item.customer_id)"
             >
               상세보기
             </button> -->
-            <!-- <button
+          <!-- <button
               class="btn btn-danger btn-sm me-1"
               @click="doDelete(item.customer_id)"
             >
               삭제
             </button> -->
-            <!-- <p>{{ item.customer_id }}</p> -->
-            <button
-              class="btn btn-primary btn-sm me-1"
-              @click="goToDetailAudit(item.audit_no)"
-            >
-              보고서작성
-            </button>
-            <!-- <router-link
+          <!-- <p>{{ item.customer_id }}</p> -->
+
+          <!-- <router-link
               :to="{
                 name: 'CertCreateView',
                 params: { customer_id: item.customer_id }
@@ -116,7 +129,7 @@
               >심사신청</router-link
             > -->
 
-            <!--<button
+          <!--<button
               class="btn btn-info btn-sm me-1"
               @click="goToCR(item.customer_id)"
             >
@@ -134,8 +147,8 @@
               "
             >
               {{ item.status_yn === 'Y' ? '사용중지' : '사용' }}
-            </button> -->
-          </td>
+            </button>
+          </td>-->
         </tr>
       </tbody>
     </table>
@@ -171,8 +184,10 @@ export default {
       list: [],
       listByAuditor: [],
       listByEmailAndSearchName: [],
+      reportList: [],
       auditor_email: '',
-      searchName: ''
+      searchName: '',
+      isYellow: false
       // selectedItem: {
       //   auditor_id: -1,
       //   auditor_name: '',
@@ -205,10 +220,14 @@ export default {
 
     // this.getList()
     this.getAuditListBySearch()
+    this.getReportBySearch()
   },
   unmounted() {},
 
   methods: {
+    yellow() {
+      this.isYellow = true
+    },
     // 등록된 심사정보 & 조회 적용
     async getAuditListBySearch() {
       const loader = this.$loading.show({ canCancel: false })
@@ -224,11 +243,57 @@ export default {
       )
       // this.listByEmailAndSearchName.replace('QMS', 'Q')
 
-      console.log(
-        'auditListByEmailAndSearchName',
-        this.listByEmailAndSearchName
-      )
+      console.log('db심사정보', this.listByEmailAndSearchName)
 
+      loader.hide()
+    },
+
+    // 등록된 심사정보에 audit_no 대한 보고서 정보 및 조회 적용
+    async getReportBySearch() {
+      // console.log(id)
+      const loader = this.$loading.show({ canCancel: false })
+      // console.log(this.user.userInfo.email)
+      const searchName = `%${this.searchName.toLowerCase()}%`
+      // console.log(searchName)
+
+      const result = await this.$post('/api/report/list/search', {
+        param: [searchName, this.user.userInfo.email]
+      })
+      // console.log('db보고서정보', result.data)
+      // console.log(this.listByEmailAndSearchName.data)
+      // console.log(result.data.length)
+      // console.log(this.listByEmailAndSearchName.data.length)
+      // console.log(id)
+      for (let i = 0; i < result.data.length; i++) {
+        // console.log(result.data[i].audit_no)
+        for (let j = 0; j < this.listByEmailAndSearchName.data.length; j++) {
+          // console.log(j)
+          // console.log(result.data[i].audit_no)
+          // console.log(this.listByEmailAndSearchName.data[j].audit_no)
+          // console.log(result.data[i].audit_no)
+          // console.log(this.listByEmailAndSearchName.data[j].audit_no)
+          if (
+            result.data[i].audit_no ===
+            this.listByEmailAndSearchName.data[j].audit_no
+          ) {
+            this.listByEmailAndSearchName.data[j].audit_no =
+              result.data[i].audit_no
+            this.listByEmailAndSearchName.data[j].report_s1_no =
+              result.data[i].report_s1_no
+            this.listByEmailAndSearchName.data[j].report_s2_no =
+              result.data[i].report_s2_no
+            this.listByEmailAndSearchName.data[j].report_trans_no =
+              result.data[i].report_trans_no
+          }
+        }
+        // this.reportList.push(result.data[i].audit_no)
+      }
+
+      // console.log('심사번호별보고서작성정보', this.reportList)
+      console.log(
+        '심사번호별보고서작성정보',
+        this.listByEmailAndSearchName.data
+      )
       loader.hide()
     },
 
@@ -499,5 +564,8 @@ export default {
 <style scoped>
 th {
   text-align: center;
+}
+.yellow {
+  background-color: yellow;
 }
 </style>

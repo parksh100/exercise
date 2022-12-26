@@ -650,7 +650,9 @@ export default {
               business_no: this.list.business_no,
               audit_no: this.list.audit_no,
               leader_name: this.list.audit_leader,
-              trans_audit_date: this.addTransReport.trans_audit_date
+              trans_audit_date: this.addTransReport.trans_audit_date,
+              report_trans_no: 't4' + this.list.audit_no,
+              auditor_email: this.$store.state.user.userInfo.email
             }
           })
 

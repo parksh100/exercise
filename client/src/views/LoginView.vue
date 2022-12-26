@@ -84,7 +84,7 @@ export default {
                 email: res.data.userData.user_email,
                 role: res.data.userData.user_role
               })
-              this.$router.push({ path: '/' })
+              this.$router.push({ path: '/customer/list/auditor' })
             }
           },
           (err) => {

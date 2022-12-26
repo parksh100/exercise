@@ -278,7 +278,10 @@
             {{ customer.img_license_originalname }}
           </td>
           <td>
-            <button class="btn btn-outline-secondary" @click="fileDownload">
+            <button
+              class="btn btn-outline-secondary d-print-none"
+              @click="fileDownload"
+            >
               다운로드
             </button>
           </td>
@@ -290,7 +293,7 @@
         당사는 KAI의 인증시스템 심사절차에 따라 제반정보를 제공하고 상기와 같은
         인증신청항목에 대한 인증심사를 수검하고자 관련 서류를 함께
         제출합니다.<button
-          class="btn btn-secondary ms-2"
+          class="btn btn-secondary ms-2 d-print-none"
           @click="printApplication"
         >
           인쇄하기
@@ -413,11 +416,18 @@
         <span></span>
       </div>
     </div> -->
-
-    <button class="btn btn-secondary me-1" @click="goToList">목록</button>
-    <button class="btn btn-primary me-1" @click="goToChange">수정</button>
-    <!-- <button class="btn btn-warning me-1" @click="goToCR">계약검토</button> -->
-    <button class="btn btn-success me-1" @click="goToApply">심사신청</button>
+    <div class="text-end">
+      <button class="btn btn-secondary me-1 d-print-none" @click="goToList">
+        목록
+      </button>
+      <button class="btn btn-primary me-1 d-print-none" @click="goToChange">
+        수정
+      </button>
+      <!-- <button class="btn btn-warning me-1" @click="goToCR">계약검토</button> -->
+      <button class="btn btn-success me-1 d-print-none" @click="goToApply">
+        심사신청
+      </button>
+    </div>
   </div>
 </template>
 <script>

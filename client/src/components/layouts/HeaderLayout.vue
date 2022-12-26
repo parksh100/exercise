@@ -81,7 +81,16 @@
                 :class="{ active: $route.path == '/report/list' }"
                 @click="goToMenu('/report/list')"
                 role="button"
-                >심사보고서현황</a
+                >보고서작성현황</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                :class="{ active: $route.path == '/report/list/mgt' }"
+                @click="goToMenu('/report/list/mgt')"
+                role="button"
+                >보고서제출현황</a
               >
             </li>
           </ul>

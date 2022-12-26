@@ -332,14 +332,49 @@ app.get("/api/customer/cr/detail/:audit_no", async (req, res) => {
 app.get("/api/report/trans/:audit_no", async (req, res) => {
   const { audit_no } = req.params;
   const transReport = await mysql.query("transReport", audit_no);
-  console.log(transReport);
+  // console.log(transReport);
   res.send(transReport[0]);
+});
+
+//s1Report 조회 by audit_no
+app.get("/api/report/s1/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  const s1Report = await mysql.query("s1Report", audit_no);
+  // console.log(s1Report);
+  res.send(s1Report[0]);
+});
+
+//s2Report 조회 by audit_no
+app.get("/api/report/s2/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  const s2Report = await mysql.query("s2Report", audit_no);
+  // console.log(s2Report);
+  res.send(s2Report[0]);
+});
+
+//심사보고서 모두 조회 by auditor_email
+app.get("/api/report/list/:auditor_email", async (req, res) => {
+  const { auditor_email } = req.params;
+  const reportListAllByAuditor = await mysql.query(
+    "auditListByAuditor",
+    auditor_email
+  );
+  // console.log(reportListAllByAuditor);
+  res.send(reportListAllByAuditor);
+});
+
+//Report 모두 조회
+app.get("/api/report/list", async (req, res) => {
+  // const { audit_no } = req.params;
+  const reportList = await mysql.query("reportListAll");
+  // console.log(transReport);
+  res.send(reportList);
 });
 
 //active customer
 app.get("/api/customer/active", async (req, res) => {
   const activeCustomers = await mysql.query("activeCustomers");
-  console.log(activeCustomers);
+  // console.log(activeCustomers);
   res.send(activeCustomers);
 });
 
@@ -358,7 +393,7 @@ app.post("/api/customer", async (req, res) => {
 // 전환심사보고서 생성
 app.post("/api/report/trans", async (req, res) => {
   const result = await mysql.query("reportTransInsert", req.body.param);
-  console.log(result);
+  // console.log(result);
   res.send(result);
 });
 
@@ -400,8 +435,8 @@ app.put("/api/auditor/:auditor_id", async (req, res) => {
 // customer 수정
 app.put("/api/customer/:business_no", async (req, res) => {
   const { business_no } = req.params;
-  console.log(req.body.param);
-  console.log(business_no);
+  // console.log(req.body.param);
+  // console.log(business_no);
   const result = await mysql.query("customerUpdate", [
     req.body.param,
     business_no,
@@ -412,7 +447,7 @@ app.put("/api/customer/:business_no", async (req, res) => {
 // 심사정보 수정
 app.put("/api/customer/cert/:audit_no", async (req, res) => {
   const { audit_no } = req.params;
-  console.log(req.body.param);
+  // console.log(req.body.param);
   // console.log(customer_id);
   const result = await mysql.query("auditUpdate", [req.body.param, audit_no]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
   res.send(result);
@@ -510,6 +545,22 @@ app.post("/api/cert/auditor/search", async (req, res) => {
   const result = await mysql.query("auditListByEmailAndSearchName", [
     req.body.param[1],
     req.body.param[0],
+  ]);
+  // console.log(result);
+  res.send(result);
+});
+
+// 심사보고서 전체조회
+app.post("/api/report/list/search", async (req, res) => {
+  // console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("reportListAllByAuditNo", [
+    req.body.param[1],
+    req.body.param[0],
+    // req.body.param[2],
+    // req.body.param[3],
   ]);
   // console.log(result);
   res.send(result);

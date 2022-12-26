@@ -6,14 +6,29 @@ module.exports = {
   auditList: `select t1.name_ko, t2.* from customer t1, certification_audit t2 where t1.customer_id = t2.customer_id`,
   // auditListByAuditorEmail: `select t1.*, t2.* from customer t1, certification_audit t2 where t1.customer_id = t2.customer_id`,
   customerListByAuditorEmail: `select * from customer where customer.auditor_email = ?`,
+  reportListAll: `select t1.*, t2.*, t3.*, t4.name_ko, t4.business_no from report_trans t1, report_s1 t2, report_s2 t3, customer t4 where t1.auditor_email = t2.auditor_email or t2.auditor_email = t3.auditor_email and t3.auditor_email = t4.auditor_email and t3.auditor_email=? and lower(name_ko) like ?`,
+
+  // reportListAllByEmail: `select t1.*, t2.*, t3.*, t4.* from report_trans t1, report_s1 t2, report_s2 t3, customer t4 where t1.auditor_email = t2.auditor_email and t2.auditor_email=t3.auditor_email and t3.auditor_email = t4.auditor_email and t1.auditor_email=? and t2.auditor_email=? and t3.auditor_email=? and t4.auditor_email=?`,
+  reportListAllByEmail: `SELECT report_s2.audit_no, report_s2.report_s2_no, certification_audit.audit_s2_end, report_s1.report_s1_no, report_trans.report_trans_no, report_s2.auditor_email, report_s1.s1_report_created, report_trans.created_at_trans_report, customer.name_ko, certification_audit.audit_type, certification_audit.audit_degree, certification_audit.audit_standard FROM report_s2 left join report_s1 on report_s2.audit_no = report_s1.audit_no left join report_trans on report_s2.audit_no = report_trans.audit_no left join customer on report_s2.customer_id = customer.customer_id left join certification_audit on report_s2.customer_id = certification_audit.customer_id WHERE report_s2.audit_no=? and lower(name_ko) like ?  `,
+
+  // reportListAllByAuditNo: `SELECT certification_audit.* FROM certification_audit LEFT JOIN report_s2 ON certification_audit.audit_no = report_s2.audit_no LEFT JOIN report_s1 ON certification_audit.audit_no = report_s1.audit_no LEFT JOIN report_trans ON certification_audit.audit_no = report_trans.audit_no LEFT JOIN customer ON certification_audit.customer_id = customer.customer_id WHERE certification_audit.audit_no = ? and lower(name_ko) like ?`,
+  reportListAllByAuditNo: `SELECT certification_audit.audit_no, report_s2.report_s2_no, report_s1.report_s1_no, report_trans.report_trans_no, customer.name_ko FROM certification_audit LEFT JOIN report_s2 ON certification_audit.audit_no = report_s2.audit_no LEFT JOIN report_s1 ON certification_audit.audit_no = report_s1.audit_no LEFT JOIN report_trans ON certification_audit.audit_no = report_trans.audit_no LEFT JOIN customer on certification_audit.customer_id= customer.customer_id WHERE certification_audit.auditor_email = ? and lower(name_ko) like ?`,
+
   transReport: `select * from report_trans where audit_no = ?`,
+  s1Report: `select * from report_s1 where audit_no = ?`,
+  s2Report: `select * from report_s2 where audit_no = ?`,
   // auditListByCustomer: `select t1.*, t2.* from customer t1, certification_audit t2  where  t1.customer_id = t2.customer_id and t2.customer_id=?`,
   auditListByCustomer: `select * from certification_audit where customer_id=?`,
   auditListByBizNo: `select * from certification_audit where business_no=?`,
   auditListByAuditNo: `select t1.*, t2.* from customer t1, certification_audit t2 where t1.customer_id = t2.customer_id and t2.audit_no =?`,
-  auditListByEmailAndSearchName: `select t1.*, t2.* from customer t1, certification_audit t2 where t1.customer_id = t2.customer_id and t1.auditor_email=? and lower(name_ko) like ?`,
+  auditListByAuditor: `select t1.*, t2.*, t3.* from report_trans t1, report_s1 t2, report_s2 t3 where t1.auditor_email = t2.auditor_email and t2.auditor_email = t3.auditor_email and t3.auditor_email =?`,
+  reportListByAuditor: `select t1.*, t2.*, t3.* from report_trans t1, report_s1 t2, report_s2 t3 where t1.auditor_email = t2.auditor_email and t2.auditor_email = t3.auditor_email and t3.auditor_email =?`,
+
+  auditListByEmailAndSearchName: `select t1.*, t2.* from customer t1,  certification_audit t2 where t1.customer_id = t2.customer_id and t1.auditor_email=? and lower(name_ko) like ? order by t2.audit_s2_start desc`,
+  // auditListByEmailAndSearchName: `SELECT * FROM certification_audit AS t1 LEFT JOIN report_s2 AS t2 ON t1.audit_no = t2.audit_no LEFT JOIN report_s1 AS t3 ON t1.audit_no = t3.audit_no LEFT JOIN report_trans AS t4 ON t1.audit_no = t4.audit_no LEFT JOIN customer AS t5 ON t1.customer_id = t5.customer_id WHERE t1.audit_no = ? AND lower(name_ko) like ? order by t1.audit_s2_start desc`,
+
   s2AuditDayDiff: `select certification_audit.audit_no, certification_audit.audit_s2_end, timestampdiff(day, audit_s2_start, audit_s2_end) as diff_Day from certification_audit where certification_audit.audit_no =?`,
-  crSelectedList: `select t1.*, t2.* from certification_audit t1, contract_review t2 where t1.customer_id=t2.customer_id and t2.audit_no=?`,
+  crSelectedList: `select t1.*, t2.* from certification_audit t1, contract_review t2 where t1.audit_no = t2.audit_no and t2.audit_no=?`,
   auditSelectedList: `select t1.name_ko, t1.auditor_name, t2.* from customer t1, contract_review t2 where t1.customer_id=t2.customer_id`,
   auditorInsert: `insert into auditor set ?`,
   customerInsert: `insert into customer set ?`,

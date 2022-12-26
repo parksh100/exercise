@@ -264,7 +264,11 @@
 </template>
 
 <script>
+import Formatter from '@/mixins/formatter.js'
+
 export default {
+  mixins: [Formatter],
+
   computed: {
     user() {
       const data = this.$store.state.user
@@ -329,15 +333,26 @@ export default {
       // const dbAuditDataByCustomer = await this.$get('/api/customer/cert/list')
       console.log('DB에서 가져온 AuditListByAuditNo', dbAuditListByAuditNo)
       this.dbAuditDataByAuditNo = dbAuditListByAuditNo
+      console.log(
+        this.$convertDateFormat(
+          this.dbAuditDataByAuditNo.audit_s2_start,
+          'YYYY-MM-DD'
+        )
+      )
       this.dbAuditDataByAuditNo.audit_s1_start =
         dbAuditListByAuditNo.audit_s1_start
 
       this.dbAuditDataByAuditNo.audit_s1_end = dbAuditListByAuditNo.audit_s1_end
 
-      this.dbAuditDataByAuditNo.audit_s2_start =
-        dbAuditListByAuditNo.audit_s2_start
+      this.dbAuditDataByAuditNo.audit_s2_start = this.$convertDateFormat(
+        this.dbAuditDataByAuditNo.audit_s2_start,
+        'YYYY-MM-DD'
+      )
 
-      this.dbAuditDataByAuditNo.audit_s2_end = dbAuditListByAuditNo.audit_s2_end
+      this.dbAuditDataByAuditNo.audit_s2_end = this.$convertDateFormat(
+        this.dbAuditDataByAuditNo.audit_s2_end,
+        'YYYY-MM-DD'
+      )
 
       this.dbAuditDataByAuditNo.audit_fee = dbAuditListByAuditNo.audit_fee
     },
@@ -359,18 +374,10 @@ export default {
           console.log(putId)
           const r = await this.$put(`/api/customer/cert/${putId}`, {
             param: {
-              audit_s1_start: JSON.stringify(
-                this.dbAuditDataByAuditNo.audit_s1_start
-              ),
-              audit_s1_end: JSON.stringify(
-                this.dbAuditDataByAuditNo.audit_s1_end
-              ),
-              audit_s2_start: JSON.stringify(
-                this.dbAuditDataByAuditNo.audit_s2_start
-              ),
-              audit_s2_end: JSON.stringify(
-                this.dbAuditDataByAuditNo.audit_s2_end
-              ),
+              audit_s1_start: this.dbAuditDataByAuditNo.audit_s1_start,
+              audit_s1_end: this.dbAuditDataByAuditNo.audit_s1_end,
+              audit_s2_start: this.dbAuditDataByAuditNo.audit_s2_start,
+              audit_s2_end: this.dbAuditDataByAuditNo.audit_s2_end,
               audit_auditor: this.dbAuditDataByAuditNo.audit_auditor,
               audit_fee: this.dbAuditDataByAuditNo.audit_fee
             }

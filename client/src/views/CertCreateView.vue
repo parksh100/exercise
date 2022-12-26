@@ -765,7 +765,7 @@ export default {
       alert('로그인이 필요합니다.')
       this.$router.push({ path: '/login' })
     }
-
+    console.log(this.addAuditInfo.audit_trans_start)
     this.getCustomer()
     this.getCertListByBizNo()
   },
@@ -4114,7 +4114,8 @@ export default {
               customer_id: this.customer.customer_id,
               audit_env_complexity: this.addAuditInfo.audit_env_complexity,
               audit_ohs_risk: this.addAuditInfo.audit_ohs_risk,
-              audit_md: this.addAuditInfo.audit_md
+              audit_md: this.addAuditInfo.audit_md,
+              auditor_email: this.user.userInfo.email
             }
           })
 

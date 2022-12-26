@@ -176,12 +176,25 @@ const routes = [
     name: 'ReportListView',
     component: () =>
       import(/* webpackChunkName: "report" */ '../views/ReportListView.vue')
+  },
+  {
+    path: '/report/list/mgt',
+    name: 'ReportMgtView',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/ReportMgtView.vue')
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })
 
 // ==라우터 네비게이션 ==============================
