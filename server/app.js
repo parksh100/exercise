@@ -552,13 +552,13 @@ app.post("/api/cert/auditor/search", async (req, res) => {
 
 // 심사보고서 전체조회
 app.post("/api/report/list/search", async (req, res) => {
-  // console.log(req.body.param);
+  console.log(req.body.param);
   // const { auditor_email } = req.params;
   // const { searchName } = req.params;
   // console.log(auditor_email, searchName);
   const result = await mysql.query("reportListAllByAuditNo", [
-    req.body.param[1],
-    req.body.param[0],
+    req.body.param,
+    // req.body.param[0],
     // req.body.param[2],
     // req.body.param[3],
   ]);

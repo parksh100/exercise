@@ -2,7 +2,7 @@
   <div class="container">
     <div class="col mb-3">
       <div class="text-center">
-        <h1 class="fw-bold">심사보고서현황</h1>
+        <h1 class="fw-bold">심사보고서 작성현황</h1>
       </div>
       <hr />
     </div>
@@ -13,14 +13,14 @@
           type="search"
           class="form-control"
           v-model.trim="searchName"
-          @keyup.enter="listByEmailAndSearchName"
+          @keyup.enter="getAuditListBySearch"
           placeholder="Name"
         />
       </div>
       <div class="col-12">
         <button
           class="btn btn-outline-primary me-1"
-          @click="listByEmailAndSearchName"
+          @click="getAuditListBySearch"
         >
           조회
         </button>
@@ -89,20 +89,24 @@
           </td>
           <td>{{ item.auditor_name }}</td>
           <!-- 전환보고서 -->
-          <td class="report" style="word-break: break-all; font-size: 12px">
+          <td class="report" style="word-break: break-all">
             {{
               item.audit_type == '전환사후' || item.audit_type === '전환갱신'
-                ? item.report_trans_no
+                ? item.created_trans_report
                 : 'N/A'
             }}
           </td>
           <!-- 1단계보고서 -->
-          <td style="word-break: break-all; font-size: 12px">
-            {{ item.audit_type === '최초' ? item.report_s1_no : 'N/A' }}
+          <td style="word-break: break-all">
+            {{ item.audit_type === '최초' ? item.created_s1_report : 'N/A' }}
           </td>
           <!-- 2단계보고서 -->
-          <td style="word-break: break-all; font-size: 12px">
-            {{ item.report_s2_no }}
+          <td style="word-break: break-all">
+            {{
+              item.created_s2_report === '1970-01-01'
+                ? ''
+                : item.created_s2_report
+            }}
           </td>
           <!-- 불러오기 -->
           <!--<td>
@@ -186,8 +190,7 @@ export default {
       listByEmailAndSearchName: [],
       reportList: [],
       auditor_email: '',
-      searchName: '',
-      isYellow: false
+      searchName: ''
       // selectedItem: {
       //   auditor_id: -1,
       //   auditor_name: '',
@@ -220,14 +223,12 @@ export default {
 
     // this.getList()
     this.getAuditListBySearch()
-    this.getReportBySearch()
+    // this.getReportBySearch()
+    console.log(this.searchName)
   },
   unmounted() {},
 
   methods: {
-    yellow() {
-      this.isYellow = true
-    },
     // 등록된 심사정보 & 조회 적용
     async getAuditListBySearch() {
       const loader = this.$loading.show({ canCancel: false })
@@ -244,6 +245,7 @@ export default {
       // this.listByEmailAndSearchName.replace('QMS', 'Q')
 
       console.log('db심사정보', this.listByEmailAndSearchName)
+      this.getReportBySearch()
 
       loader.hide()
     },
@@ -253,11 +255,11 @@ export default {
       // console.log(id)
       const loader = this.$loading.show({ canCancel: false })
       // console.log(this.user.userInfo.email)
-      const searchName = `%${this.searchName.toLowerCase()}%`
+      // const searchName = `%${this.searchName.toLowerCase()}%`
       // console.log(searchName)
 
       const result = await this.$post('/api/report/list/search', {
-        param: [searchName, this.user.userInfo.email]
+        param: [this.user.userInfo.email]
       })
       // console.log('db보고서정보', result.data)
       // console.log(this.listByEmailAndSearchName.data)
@@ -284,6 +286,20 @@ export default {
               result.data[i].report_s2_no
             this.listByEmailAndSearchName.data[j].report_trans_no =
               result.data[i].report_trans_no
+            this.listByEmailAndSearchName.data[j].created_s1_report =
+              Intl.DateTimeFormat('fr-CA').format(
+                new Date(result.data[i].s1_report_created)
+              )
+
+            this.listByEmailAndSearchName.data[j].created_s2_report =
+              Intl.DateTimeFormat('fr-CA').format(
+                new Date(result.data[i].s2_report_created)
+              )
+
+            this.listByEmailAndSearchName.data[j].created_trans_report =
+              Intl.DateTimeFormat('fr-CA').format(
+                new Date(result.data[i].created_at_trans_report)
+              )
           }
         }
         // this.reportList.push(result.data[i].audit_no)
