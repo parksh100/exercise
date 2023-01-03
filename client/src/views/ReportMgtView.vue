@@ -204,7 +204,7 @@ export default {
 
     // this.getList()
     // this.getAuditListBySearch()
-    this.getReportListAll()
+    // this.getReportListAll()
   },
   unmounted() {},
 

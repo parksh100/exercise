@@ -552,7 +552,7 @@
     </div>
 
     <div
-      v-show="
+      v-if="
         this.addAuditInfo.audit_type === '전환사후' ||
         this.addAuditInfo.audit_type === '전환갱신'
       "
@@ -579,7 +579,7 @@
       </div>
     </div>
 
-    <div v-show="this.addAuditInfo.audit_type === '최초'">
+    <div v-if="this.addAuditInfo.audit_type === '최초'">
       <div class="row mb-3">
         <label class="col-sm-3 col-form-label">1단계 심사시작일</label>
         <div class="col-sm-9">

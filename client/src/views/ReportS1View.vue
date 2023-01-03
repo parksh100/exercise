@@ -345,6 +345,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.biz_area"
             ></textarea
@@ -361,6 +362,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.reliability"
             ></textarea
@@ -376,6 +378,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.issue"
             ></textarea
@@ -405,6 +408,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.needs"
             ></textarea
@@ -420,6 +424,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.scope"
             ></textarea
@@ -434,6 +439,7 @@
               name=""
               id=""
               rows="2"
+              maxlength="200"
               v-model="checkpoint.quality_risk"
             ></textarea
             >({{ this.checkpoint.quality_risk.length }}/200)
@@ -501,7 +507,7 @@
               />
               <label class="form-check-label" for="air_pollution5">악취</label>
             </div>
-            <div class="form-check form-check-inline">
+            <!-- <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -522,7 +528,7 @@
                   v-model.trim="customer.air_pollution_content"
                 />
               </div>
-            </div>
+            </div> -->
           </td>
         </tr>
         <tr>
@@ -586,7 +592,7 @@
                 >화학폐기물</label
               >
             </div>
-            <div class="form-check form-check-inline">
+            <!-- <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -606,7 +612,7 @@
                   v-model.trim="customer.soil_pollution_content"
                 />
               </div>
-            </div>
+            </div> -->
           </td>
         </tr>
         <tr>
@@ -672,7 +678,7 @@
                 >빗물</label
               >
             </div>
-            <div class="form-check form-check-inline">
+            <!-- <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -694,7 +700,7 @@
                   v-model.trim="customer.water_pollution_content"
                 />
               </div>
-            </div>
+            </div> -->
           </td>
         </tr>
         <tr>
@@ -760,7 +766,7 @@
                 >광물</label
               >
             </div>
-            <div class="form-check form-check-inline">
+            <!-- <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -785,7 +791,7 @@
                   v-model.trim="customer.natural_resource_pollution_content"
                 />
               </div>
-            </div>
+            </div> -->
           </td>
         </tr>
         <tr>
@@ -851,7 +857,7 @@
                 >전자파</label
               >
             </div>
-            <div class="form-check form-check-inline">
+            <!-- <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -873,7 +879,7 @@
                   v-model.trim="customer.energy_pollution_content"
                 />
               </div>
-            </div>
+            </div> -->
           </td>
         </tr>
         <tr>
@@ -939,7 +945,7 @@
                 >화학물</label
               >
             </div>
-            <div class="form-check form-check-inline">
+            <!-- <div class="form-check form-check-inline">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -961,7 +967,7 @@
                   v-model.trim="customer.waste_pollution_content"
                 />
               </div>
-            </div>
+            </div> -->
           </td>
         </tr>
 
@@ -1481,6 +1487,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.regal"
             ></textarea
@@ -1497,6 +1504,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.policy"
             ></textarea
@@ -1514,6 +1522,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.goal"
             ></textarea
@@ -1529,6 +1538,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.internal_audit"
             ></textarea
@@ -1544,6 +1554,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.management_review"
             ></textarea
@@ -1559,6 +1570,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.understanding_level"
             ></textarea
@@ -1574,6 +1586,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.workspace"
             ></textarea
@@ -1589,6 +1602,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.exclusion"
             ></textarea
@@ -1604,6 +1618,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.worker_count"
             ></textarea
@@ -1635,6 +1650,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.s2md"
             ></textarea
@@ -1650,6 +1666,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.guider"
             ></textarea
@@ -1665,6 +1682,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.place"
             ></textarea
@@ -1678,6 +1696,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.precautions"
             ></textarea
@@ -1695,6 +1714,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.site_address"
             ></textarea
@@ -1708,6 +1728,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.visit_time"
             ></textarea
@@ -1721,6 +1742,7 @@
               class="form-control"
               name=""
               id=""
+              maxlength="200"
               rows="2"
               v-model="checkpoint.contact"
             ></textarea
@@ -1753,9 +1775,9 @@
     <table class="table">
       <thead class="table-group-divider">
         <tr class="mt-0 text-center bg-light">
-          <th style="width: 10%">발견사항</th>
+          <th style="width: 15%">발견사항</th>
           <!-- <th style="width: 10%">No.</th> -->
-          <th style="width: 70%">발견내용</th>
+          <th style="width: 65%">발견내용</th>
           <th style="width: 20%">표준/조항</th>
         </tr>
       </thead>
@@ -1765,6 +1787,7 @@
             <select
               name=""
               id=""
+              maxlength="200"
               class="form-select"
               v-model="row.findings"
               style="border: 0"
@@ -1834,6 +1857,9 @@ export default {
 
       // return this.$store.state.user.user
       // return this.$store.user.userInfo
+    },
+    isContentsValid() {
+      return this.s2CheckPoint.systemDocument.length < 10
     }
   },
   data() {
@@ -2061,6 +2087,7 @@ export default {
       // if (this.auditTeam.leader === '') {
       //   return this.$swal('심사팀장명을 입력하세요.')
       // }
+
       if (this.checkpoint.reliability === '') {
         return this.$swal('2번 확인사항을 입력하세요.')
       }

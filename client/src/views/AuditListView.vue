@@ -88,7 +88,9 @@
           <!-- <td>{{ item.certification_type }}</td> -->
           <td style="word-break: break-all">{{ item.audit_standard }}</td>
           <td>{{ item.audit_type + item.audit_degree }}</td>
-          <td>{{ $convertDateFormat(item.audit_s2_start, 'YYYY-MM-DD') }}</td>
+          <td>
+            {{ $convertDateFormat(item.audit_s2_start, 'YYYY-MM-DD') }}
+          </td>
           <td>
             {{ $convertDateFormat(item.audit_s2_end, 'YYYY-MM-DD') }}
           </td>
@@ -235,7 +237,7 @@ export default {
         'auditListByEmailAndSearchName',
         this.listByEmailAndSearchName
       )
-
+      console.log(this.listByEmailAndSearchName.audit_s1_start)
       loader.hide()
     },
 

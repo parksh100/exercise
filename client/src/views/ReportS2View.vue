@@ -51,6 +51,29 @@
       </tbody>
     </table>
 
+    <h5 class="fw-bold mt-3">
+      <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
+      심사팀구성
+    </h5>
+    <table class="table text-center">
+      <thead class="table-group-divider">
+        <tr class="bg-light">
+          <th style="width: 20%">심사팀장</th>
+          <th style="width: 60%">심사팀원</th>
+          <th style="width: 20%" colspan="2">동반인원</th>
+        </tr>
+      </thead>
+      <tbody class="align-middle">
+        <tr class="text-center">
+          <td class="text-center">{{ list.audit_leader }}</td>
+          <td class="text-center">{{ list.audit_auditor }}</td>
+          <td class="text-center">
+            <input v-model="companion" type="text" class="form-control" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
     <h5 class="fw-bold mt-5">
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
       심사세부일정표
@@ -73,131 +96,645 @@
           <!-- <col style="width: 10%" /> -->
         </colgroup>
         <tr>
-          <th colspan="2" class="bg-light">일시</th>
+          <th class="bg-light">일시</th>
           <th colspan="3" class="bg-light">심사원별심사대상</th>
         </tr>
         <tr class="bg-light">
-          <th>심사일자</th>
+          <th style="width: 20%">심사일자</th>
           <!-- <th>심사시간</th> -->
-          <th>심사팀장</th>
-          <th>심사팀원</th>
-          <!-- <th>추가</th> -->
+          <th style="width: 40%">심사팀장</th>
+          <th style="width: 40%">
+            심사팀원 <small>*심사원이 2인 이상인 경우 '/' 구분하여 작성</small>
+          </th>
+          <!-- <th>심사시간</th> -->
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            <!-- <div>{{ rows.s2AuditDate }}</div> -->
+          <td rowspan="9">
             <input
               type="date"
               class="form-control"
               v-model="s2DetailPlan1.s2AuditDate1"
             />
           </td>
-
           <td>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
+            <input
+              type="text"
               class="form-control"
-              v-model="s2DetailPlan1.leader1"
-            ></textarea>
+              v-model="this.s2DetailPlan1.leader11"
+            />
           </td>
           <td>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
+            <input
+              type="text"
               class="form-control"
-              v-model="s2DetailPlan1.auditor1"
-            ></textarea>
+              v-model="this.s2DetailPlan1.auditor11"
+            />
           </td>
-          <!-- <td>
-            <button class="btn btn-primary btn-sm" @click="addRow">
-              <i class="fa-regular fa-plus"></i></button
-            ><button class="btn btn-primary ms-1 btn-sm" @click="removeRow">
-              <i class="fa-solid fa-x"></i>
-            </button>
-          </td> -->
         </tr>
-        <tr v-if="this.s2AuditDayDiff === 2">
+        <tr>
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
           <td>
-            <!-- <div>{{ rows.s2AuditDate }}</div> -->
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.leader12"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.auditor12"
+            />
+          </td>
+        </tr>
+        <tr>
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.leader13"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.auditor13"
+            />
+          </td>
+        </tr>
+        <tr>
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.leader14"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.auditor14"
+            />
+          </td>
+        </tr>
+        <tr>
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.leader15"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.auditor15"
+            />
+          </td>
+        </tr>
+        <tr>
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.leader16"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.auditor16"
+            />
+          </td>
+        </tr>
+        <tr>
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.leader17"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.auditor17"
+            />
+          </td>
+        </tr>
+        <tr>
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.leader18"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.auditor18"
+            />
+          </td>
+        </tr>
+        <tr>
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.leader19"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan1.auditor19"
+            />
+          </td>
+        </tr>
+
+        <!-- 2일째 심사 -->
+        <!-- <tr v-if="this.s2AuditDayDiff === 2"> -->
+        <tr v-if="this.s2AuditDayDiff === 2">
+          <td rowspan="9">
             <input
               type="date"
               class="form-control"
               v-model="s2DetailPlan2.s2AuditDate2"
             />
           </td>
-
           <td>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
+            <input
+              type="text"
               class="form-control"
-              v-model="s2DetailPlan2.leader2"
-            ></textarea>
+              v-model="this.s2DetailPlan2.leader21"
+            />
           </td>
           <td>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
+            <input
+              type="text"
               class="form-control"
-              v-model="s2DetailPlan2.auditor2"
-            ></textarea>
+              v-model="this.s2DetailPlan2.auditor21"
+            />
           </td>
-          <!-- <td>
-            <button class="btn btn-primary btn-sm" @click="addRow">
-              <i class="fa-regular fa-plus"></i></button
-            ><button class="btn btn-primary ms-1 btn-sm" @click="removeRow">
-              <i class="fa-solid fa-x"></i>
-            </button>
-          </td> -->
         </tr>
-        <tr v-if="this.s2AuditDayDiff === 3">
-          <td>
-            <!-- <div>{{ rows.s2AuditDate }}</div> -->
+        <tr v-if="this.s2AuditDayDiff === 2">
+          <!-- <td>
             <input
               type="date"
               class="form-control"
-              v-model="s2DetailPlan3.s2AuditDate3"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.leader22"
             />
           </td>
-
           <td>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
+            <input
+              type="text"
               class="form-control"
-              v-model="s2DetailPlan3.leader3"
-            ></textarea>
+              v-model="this.s2DetailPlan2.auditor22"
+            />
           </td>
-          <td>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
-              class="form-control"
-              v-model="s2DetailPlan3.auditor3"
-            ></textarea>
-          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 2">
           <!-- <td>
-            <button class="btn btn-primary btn-sm" @click="addRow">
-              <i class="fa-regular fa-plus"></i></button
-            ><button class="btn btn-primary ms-1 btn-sm" @click="removeRow">
-              <i class="fa-solid fa-x"></i>
-            </button>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
           </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.leader23"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.auditor23"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 2">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.leader24"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.auditor24"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 2">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.leader25"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.auditor25"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 2">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.leader26"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.auditor26"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 2">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.leader27"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.auditor27"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 2">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.leader28"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.auditor28"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 2">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan1.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.leader29"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan2.auditor29"
+            />
+          </td>
+        </tr>
+        <!-- 3일째 심사 -->
+        <!-- <tr v-if="this.s2AuditDayDiff === 3"> -->
+        <tr v-if="this.s2AuditDayDiff === 3">
+          <td rowspan="9">
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan3.s2AuditDate1"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.leader31"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.auditor31"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 3">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan3.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.leader32"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.auditor32"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 3">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan3.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.leader33"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.auditor33"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 3">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan3.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.leader34"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.auditor34"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 3">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan3.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.leader35"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.auditor35"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 3">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan3.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.leader36"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.auditor36"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 3">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan3.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.leader37"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.auditor37"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 3">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan3.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.leader38"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.auditor38"
+            />
+          </td>
+        </tr>
+        <tr v-if="this.s2AuditDayDiff === 3">
+          <!-- <td>
+            <input
+              type="date"
+              class="form-control"
+              v-model="s2DetailPlan3.s2AuditDate1"
+            />
+          </td> -->
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.leader39"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              v-model="this.s2DetailPlan3.auditor39"
+            />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -346,8 +883,9 @@
               cols="30"
               rows="3"
               class="form-control"
-              v-model="s2CheckPoint.systemDocument"
-            ></textarea>
+              v-model="s2CheckPoint.documentStructure"
+            ></textarea
+            >({{ this.s2CheckPoint.documentStructure.length }}/200)
           </td>
         </tr>
         <tr>
@@ -362,7 +900,8 @@
               rows="3"
               class="form-control"
               v-model="s2CheckPoint.difference"
-            ></textarea>
+            ></textarea
+            >({{ this.s2CheckPoint.difference.length }}/200)
           </td>
         </tr>
 
@@ -378,7 +917,8 @@
               rows="3"
               class="form-control"
               v-model="s2CheckPoint.doubleWorkplace"
-            ></textarea>
+            ></textarea
+            >({{ this.s2CheckPoint.doubleWorkplace.length }}/200)
           </td>
         </tr>
 
@@ -397,7 +937,8 @@
               rows="3"
               class="form-control"
               v-model="s2CheckPoint.constructSite"
-            ></textarea>
+            ></textarea
+            >({{ this.s2CheckPoint.constructSite.length }}/200)
           </td>
         </tr>
         <tr>
@@ -414,7 +955,8 @@
               rows="3"
               class="form-control"
               v-model="s2CheckPoint.outSourcing"
-            ></textarea>
+            ></textarea
+            >({{ this.s2CheckPoint.outSourcing.length }}/200)
           </td>
         </tr>
         <tr>
@@ -431,7 +973,8 @@
               rows="3"
               class="form-control"
               v-model="s2CheckPoint.exclusiveClause"
-            ></textarea>
+            ></textarea
+            >({{ this.s2CheckPoint.exclusiveClause.length }}/200)
           </td>
         </tr>
         <tr>
@@ -448,7 +991,8 @@
               rows="3"
               class="form-control"
               v-model="s2CheckPoint.previousAudit"
-            ></textarea>
+            ></textarea
+            >({{ this.s2CheckPoint.previousAudit.length }}/200)
           </td>
         </tr>
         <tr>
@@ -463,7 +1007,8 @@
               rows="3"
               class="form-control"
               v-model="s2CheckPoint.appliedLaw"
-            ></textarea>
+            ></textarea
+            >({{ this.s2CheckPoint.appliedLaw.length }}/200)
           </td>
         </tr>
         <tr>
@@ -478,7 +1023,8 @@
               rows="3"
               class="form-control"
               v-model="s2CheckPoint.logoUsage"
-            ></textarea>
+            ></textarea
+            >({{ this.s2CheckPoint.logoUsage.length }}/200)
           </td>
         </tr>
       </tbody>
@@ -501,7 +1047,7 @@
       </thead>
       <tbody>
         <tr>
-          <td class="fw-bold">1. 회사명 <br /><small></small></td>
+          <td class="fw-bold">10. 회사명 <br /><small></small></td>
           <td>
             <textarea
               name=""
@@ -510,12 +1056,13 @@
               rows="2"
               class="form-control"
               v-model="s2Change.companyName"
-            ></textarea>
+            ></textarea
+            >({{ this.s2Change.companyName.length }}/150)
           </td>
         </tr>
         <tr>
           <td class="fw-bold">
-            2. 사업장주소<br /><small>(해당 시 변경 전, 후 구분기재)</small>
+            11. 사업장주소<br /><small>(해당 시 변경 전, 후 구분기재)</small>
           </td>
           <td>
             <textarea
@@ -525,12 +1072,13 @@
               rows="2"
               class="form-control"
               v-model="s2Change.companyAddress"
-            ></textarea>
+            ></textarea
+            >({{ this.s2Change.companyAddress.length }}/150)
           </td>
         </tr>
 
         <tr>
-          <td class="fw-bold">3. 대표자 및 조직 <br /><small></small></td>
+          <td class="fw-bold">12. 대표자 및 조직 <br /><small></small></td>
           <td>
             <textarea
               name=""
@@ -539,12 +1087,13 @@
               rows="2"
               class="form-control"
               v-model="s2Change.companyCeo"
-            ></textarea>
+            ></textarea
+            >({{ this.s2Change.companyCeo.length }}/150)
           </td>
         </tr>
 
         <tr>
-          <td class="fw-bold">4. 인원 <br /><small></small></td>
+          <td class="fw-bold">13. 인원 <br /><small></small></td>
           <td>
             <textarea
               name=""
@@ -553,11 +1102,12 @@
               rows="2"
               class="form-control"
               v-model="s2Change.companyEmployee"
-            ></textarea>
+            ></textarea
+            >({{ this.s2Change.companyEmployee.length }}/150)
           </td>
         </tr>
         <tr>
-          <td class="fw-bold">5. 인증범위 <br /><small></small></td>
+          <td class="fw-bold">14. 인증범위 <br /><small></small></td>
           <td>
             <textarea
               name=""
@@ -566,11 +1116,12 @@
               rows="2"
               class="form-control"
               v-model="s2Change.scope"
-            ></textarea>
+            ></textarea
+            >({{ this.s2Change.scope.length }}/150)
           </td>
         </tr>
         <tr>
-          <td class="fw-bold">6. 관련법령 <br /><small></small></td>
+          <td class="fw-bold">15. 관련법령 <br /><small></small></td>
           <td>
             <textarea
               name=""
@@ -579,12 +1130,13 @@
               rows="2"
               class="form-control"
               v-model="s2Change.concernedLaw"
-            ></textarea>
+            ></textarea
+            >({{ this.s2Change.concernedLaw.length }}/150)
           </td>
         </tr>
         <tr>
           <td class="fw-bold">
-            7. 경영시스템 <br /><small>(매뉴얼 및 프로세스)</small>
+            16. 경영시스템 <br /><small>(매뉴얼 및 프로세스)</small>
           </td>
           <td>
             <textarea
@@ -594,11 +1146,12 @@
               rows="2"
               class="form-control"
               v-model="s2Change.mgtSystem"
-            ></textarea>
+            ></textarea
+            >({{ this.s2Change.mgtSystem.length }}/150)
           </td>
         </tr>
         <tr>
-          <td class="fw-bold">8. 주요공정 <br /><small></small></td>
+          <td class="fw-bold">17. 주요공정 <br /><small></small></td>
           <td>
             <textarea
               name=""
@@ -607,11 +1160,12 @@
               rows="2"
               class="form-control"
               v-model="s2Change.majorProcess"
-            ></textarea>
+            ></textarea
+            >({{ this.s2Change.majorProcess.length }}/150)
           </td>
         </tr>
         <tr>
-          <td class="fw-bold">9. 기타 <br /><small></small></td>
+          <td class="fw-bold">18. 기타 <br /><small></small></td>
           <td>
             <textarea
               name=""
@@ -620,7 +1174,8 @@
               rows="2"
               class="form-control"
               v-model="s2Change.etc"
-            ></textarea>
+            ></textarea
+            >({{ this.s2Change.etc.length }}/150)
           </td>
         </tr>
       </tbody>
@@ -654,7 +1209,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.orgStatus"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.orgStatus.length }}/250)
           </td>
           <td>
             <select
@@ -681,7 +1237,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.needs"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.needs.length }}/250)
           </td>
           <td>
             <select
@@ -708,7 +1265,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.employeeNeeds"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.employeeNeeds.length }}/250)
           </td>
           <td>
             <select
@@ -740,7 +1298,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.appliedScope"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.appliedScope.length }}/250)
           </td>
           <td>
             <select
@@ -767,7 +1326,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.qmsProcess"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.qmsProcess.length }}/250)
           </td>
           <td>
             <select
@@ -794,7 +1354,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.eomSystem"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.eomSystem.length }}/250)
           </td>
           <td>
             <select
@@ -824,7 +1385,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.leadership"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.leadership.length }}/250)
           </td>
           <td>
             <select
@@ -851,7 +1413,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.policy"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.policy.length }}/250)
           </td>
           <td>
             <select
@@ -878,7 +1441,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.role"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.role.length }}/250)
           </td>
           <td>
             <select
@@ -905,7 +1469,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.employeeParticipation"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.employeeParticipation.length }}/250)
           </td>
           <td>
             <select
@@ -937,7 +1502,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.riskHandling"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.riskHandling.length }}/500)
           </td>
           <td>
             <select
@@ -964,7 +1530,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.objectPlan"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.objectPlan.length }}/250)
           </td>
           <td>
             <select
@@ -991,7 +1558,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.changePlan"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.changePlan.length }}/250)
           </td>
           <td>
             <select
@@ -1018,7 +1586,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.reSource"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.reSource.length }}/250)
           </td>
           <td>
             <select
@@ -1045,7 +1614,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.capability"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.capability.length }}/250)
           </td>
           <td>
             <select
@@ -1072,7 +1642,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.recognition"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.recognition.length }}/250)
           </td>
           <td>
             <select
@@ -1099,7 +1670,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.communication"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.communication.length }}/250)
           </td>
           <td>
             <select
@@ -1126,7 +1698,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.document"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.document.length }}/250)
           </td>
           <td>
             <select
@@ -1153,7 +1726,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.operationPlan"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.operationPlan.length }}/500)
           </td>
           <td>
             <select
@@ -1180,7 +1754,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.productServiceRequirement"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.productServiceRequirement.length }}/500)
           </td>
           <td>
             <select
@@ -1207,7 +1782,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.emergency"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.emergency.length }}/250)
           </td>
           <td>
             <select
@@ -1234,7 +1810,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.design"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.design.length }}/250)
           </td>
           <td>
             <select
@@ -1261,7 +1838,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.purchase"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.purchase.length }}/250)
           </td>
           <td>
             <select
@@ -1288,7 +1866,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.productService"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.productService.length }}/500)
           </td>
           <td>
             <select
@@ -1315,7 +1894,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.productRelease"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.productRelease.length }}/250)
           </td>
           <td>
             <select
@@ -1342,7 +1922,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.output"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.output.length }}/250)
           </td>
           <td>
             <select
@@ -1369,7 +1950,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.monitoring"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.monitoring.length }}/250)
           </td>
           <td>
             <select
@@ -1402,7 +1984,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.internal_audit"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.internal_audit.length }}/250)
           </td>
           <td>
             <select
@@ -1433,7 +2016,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.management_review"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.management_review.length }}/500)
           </td>
           <td>
             <select
@@ -1460,7 +2044,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.general"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.general.length }}/500)
           </td>
           <td>
             <select
@@ -1487,7 +2072,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.nonconformity"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.nonconformity.length }}/500)
           </td>
           <td>
             <select
@@ -1514,7 +2100,8 @@
               id=""
               rows="3"
               v-model="s2AuditCheckpoint.continuousImprove"
-            ></textarea>
+            ></textarea
+            >({{ this.s2AuditCheckpoint.continuousImprove.length }}/500)
           </td>
           <td>
             <select
@@ -1548,8 +2135,8 @@
         - 최초/갱신 심사 시 차기 갱신심사 시까지, 인증주기 전체에 대해 계획하고
         인증주기 내에 심사프로그램은 모든 경영시스템 요구사항을 다루도록
         작성.<br />
-        - O표는 모든 심사시 필수 확인사항이며, 해당 주기 심사 시 심사한
-        경영시스템 요구사항에 V, 적용제외 조항은 '-'로 표시.</span
+        - O표는 모든 심사시 필수 확인사항이며, △표시는 적용여부에 따른
+        확인사항임.</span
       >
     </div>
     <!-- 심사프로그램 사이클 테이블 -->
@@ -1581,1265 +2168,185 @@
         </tr> -->
         <tr>
           <th>4.1 조직과 조직상황의 이해</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.orgStatusS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.orgStatusS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.orgStatusRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>4.2 이해관계자의 니즈와 기대 이해</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.needsS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.needsS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.orgStatusRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>4.2 근로자 및 기타 이해관계자의 니즈와 기대 이해(O)</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.employeeNeedsS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.employeeNeedsS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.employeeNeedsRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>4.3 경영시스템 적용범위 결정</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.appliedScopeS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.appliedScopeS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.appliedScopeRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
 
         <tr>
           <th>4.4 품질경영시스템과 그 프로세스</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.qmsProcessS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.qmsProcessS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.qmsProcessRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>4.4 환경/안전보건경영시스템(E,O)</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.eomSystemS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.eomSystemS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.eomSystemRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>5.1 리더십과 의지표명</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.leadershipS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.leadershipS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.leadershipRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>5.2 방침</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.policyS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.policyS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.policyRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>5.3 조직의 역할, 책임 및 권한</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.roleS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.roleS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.roleRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>5.4 근로자의 협의 및 참여(O)</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.employeeParticipationS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.employeeParticipationS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.employeeParticipationRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>6.1 리스크와 기회를 다루는 조치</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.riskHandlingS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.riskHandlingS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.riskHandlingRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>6.2 목표와 목표 달성 기획</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.objectPlanS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.objectPlanS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.objectPlanRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>6.3 변경의 기획(Q)</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.changePlanS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.changePlanS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.changePlanRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>7.1 자원</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.reSourceS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.reSourceS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.reSourceRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>7.2 역량/적격성</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.capabilityS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.capabilityS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.capabilityRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>7.4 의사소통</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.communicationS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.communicationS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.communicationRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>7.5 문서화된 정보</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.documentS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.documentS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.documentRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>8.1 운용기획 및 관리</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.operationPlanS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.operationPlanS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.operationPlanRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
 
         <tr>
           <th>8.2 비상사태 대비 및 대응(E,O)</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.emergencyS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.emergencyS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.emergencyRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>8.3 제품 및 서비스의 설계와 개발(Q)</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.designS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.designS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.designRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">△</td>
+          <td class="text-center">△</td>
+          <td class="text-center">△</td>
         </tr>
         <tr>
           <th>8.4 외부에서 제공되는 프로세스, 제품 및 서비스의 관리(Q)</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.purchaseS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.purchaseS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.purchaseRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>8.5 생산 및 서비스 제공(Q)</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.productServiceS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.productServiceS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.productServiceRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>8.6 제품 및 서비스의 불출/출시</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.productReleaseS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.productReleaseS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.productReleaseRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>8.7 부적합 출력/산출물의 관리</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.outputS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.outputS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.outputRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>9.1 모니터링, 측정, 분석 및 평가</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.monitoringS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.monitoringS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.monitoringRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>9.2 내부심사</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.internal_auditS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.internal_auditS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.internal_auditRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>9.3 경영검토</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.management_reviewS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.management_reviewS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.management_reviewRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>10.1 일반사항</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.generalS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.generalS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.generalRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>10.2 사건(O), 부적합 및 시정조치</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.nonconformityS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.nonconformityS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.nonconformityRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
         <tr>
           <th>10.3 지속적 개선</th>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.continuousImproveS1"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.continuousImproveS2"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
-          <td class="text-center">
-            <select
-              name=""
-              id=""
-              class="form-select text-center"
-              style="border: 0"
-              v-model="s2AuditCycle.continuousImproveRe"
-            >
-              <option value="O" selected>O</option>
-              <option value="V">V</option>
-              <option value="N/A">-</option>
-            </select>
-          </td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
+          <td class="text-center">○</td>
         </tr>
       </tbody>
     </table>
@@ -2971,8 +2478,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
         <tr>
           <td>2</td>
@@ -2994,8 +2501,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
         <tr>
           <td>3</td>
@@ -3017,8 +2524,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
         <tr>
           <td>4</td>
@@ -3040,8 +2547,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
         <tr>
           <td>5</td>
@@ -3063,8 +2570,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
         <tr>
           <td>6</td>
@@ -3086,8 +2593,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
         <tr>
           <td>7</td>
@@ -3109,8 +2616,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
         <tr>
           <td>8</td>
@@ -3132,8 +2639,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
         <tr>
           <td>9</td>
@@ -3155,8 +2662,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
         <tr>
           <td>2</td>
@@ -3178,8 +2685,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
         <tr>
           <td>10</td>
@@ -3201,8 +2708,8 @@
               v-model="participants.position"
             />
           </td>
-          <td></td>
-          <td></td>
+          <td class="text-secondary">(서명)</td>
+          <td class="text-secondary">(서명)</td>
         </tr>
       </tbody>
     </table>
@@ -3247,27 +2754,70 @@ export default {
       s2AuditDayDiff: 0,
       s2DetailPlan1: {
         s2AuditDate1: null,
-        leader1:
-          '~09:30 시작회의, \n~10:00 경영자 면담, \n~11:00 현장순회, \n~12:00 OOO팀 심사(4항~10항), \n~14:00 OOO팀 심사(4항~10항), \n~15:00 OOO팀 심사(4항~10항), \n~16:30 OOO팀 심사(4항~10항), \n~17:30 심사팀 회의 및 보고서 작성, \n~18:00 종료회의',
-        auditor1:
-          '~09:30 시작회의, \n~10:00 경영자 면담, \n~11:00 현장순회, \n~12:00 OOO팀 심사(4항~10항), \n~14:00 OOO팀 심사(4항~10항), \n~15:00 OOO팀 심사(4항~10항), \n~16:30 OOO팀 심사(4항~10항), \n~17:30 심사팀 회의 및 보고서 작성, \n~18:00 종료회의'
+        leader11: '~09:30 시작회의',
+        leader12: '~10:00 경영자 면담',
+        leader13: '~11:00 현장순회',
+        leader14: '~12:00 OOO팀 심사(4항~10항)',
+        leader15: '~14:00 OOO팀 심사(4항~10항)',
+        leader16: '~15:00 OOO팀 심사(4항~10항)',
+        leader17: '~16:30 OOO팀 심사(4항~10항)',
+        leader18: '~17:30 심사팀 회의 및 보고서 작성',
+        leader19: '~18:00 종료회의',
+        auditor11: '~09:30 시작회의',
+        auditor12: '~10:00 경영자 면담',
+        auditor13: '~11:00 현장순회',
+        auditor14: '~12:00 OOO팀 심사(4항~10항)',
+        auditor15: '~14:00 OOO팀 심사(4항~10항)',
+        auditor16: '~15:00 OOO팀 심사(4항~10항)',
+        auditor17: '~16:30 OOO팀 심사(4항~10항)',
+        auditor18: '~17:30 심사팀 회의 및 보고서 작성',
+        auditor19: '~18:00 종료회의'
       },
       s2DetailPlan2: {
         s2AuditDate2: null,
-        leader2:
-          '~10:00 OOO팀 심사(4항~10항), \n~11:00 OOO팀 심사(4항~10항), \n~12:00 OOO팀 심사(4항~10항), \n~14:00 OOO팀 심사(4항~10항), \n~15:00 OOO팀 심사(4항~10항), \n~16:30 OOO팀 심사(4항~10항), \n~17:30 심사팀 회의 및 보고서 작성, \n~18:00 종료회의',
-        auditor2:
-          '~10:00 OOO팀 심사(4항~10항), \n~11:00 OOO팀 심사(4항~10항), \n~12:00 OOO팀 심사(4항~10항), \n~14:00 OOO팀 심사(4항~10항), \n~15:00 OOO팀 심사(4항~10항), \n~16:30 OOO팀 심사(4항~10항), \n~17:30 심사팀 회의 및 보고서 작성, \n~18:00 종료회의'
+        leader21: '~09:30 시작회의',
+        leader22: '~10:00 경영자 면담',
+        leader23: '~11:00 현장순회',
+        leader24: '~12:00 OOO팀 심사(4항~10항)',
+        leader25: '~14:00 OOO팀 심사(4항~10항)',
+        leader26: '~15:00 OOO팀 심사(4항~10항)',
+        leader27: '~16:30 OOO팀 심사(4항~10항)',
+        leader28: '~17:30 심사팀 회의 및 보고서 작성',
+        leader29: '~18:00 종료회의',
+        auditor21: '~09:30 시작회의',
+        auditor22: '~10:00 경영자 면담',
+        auditor23: '~11:00 현장순회',
+        auditor24: '~12:00 OOO팀 심사(4항~10항)',
+        auditor25: '~14:00 OOO팀 심사(4항~10항)',
+        auditor26: '~15:00 OOO팀 심사(4항~10항)',
+        auditor27: '~16:30 OOO팀 심사(4항~10항)',
+        auditor28: '~17:30 심사팀 회의 및 보고서 작성',
+        auditor29: '~18:00 종료회의'
       },
       s2DetailPlan3: {
         s2AuditDate3: null,
-        leader3:
-          '~10:00 OOO팀 심사(4항~10항), \n~11:00 OOO팀 심사(4항~10항), \n~12:00 OOO팀 심사(4항~10항), \n~14:00 OOO팀 심사(4항~10항), \n~15:00 OOO팀 심사(4항~10항), \n~16:30 OOO팀 심사(4항~10항), \n~17:30 심사팀 회의 및 보고서 작성, \n~18:00 종료회의',
-        auditor3:
-          '~10:00 OOO팀 심사(4항~10항), \n~11:00 OOO팀 심사(4항~10항), \n~12:00 OOO팀 심사(4항~10항), \n~14:00 OOO팀 심사(4항~10항), \n~15:00 OOO팀 심사(4항~10항), \n~16:30 OOO팀 심사(4항~10항), \n~17:30 심사팀 회의 및 보고서 작성, \n~18:00 종료회의'
+        leader31: '~09:30 시작회의',
+        leader32: '~10:00 경영자 면담',
+        leader33: '~11:00 현장순회',
+        leader34: '~12:00 OOO팀 심사(4항~10항)',
+        leader35: '~14:00 OOO팀 심사(4항~10항)',
+        leader36: '~15:00 OOO팀 심사(4항~10항)',
+        leader37: '~16:30 OOO팀 심사(4항~10항)',
+        leader38: '~17:30 심사팀 회의 및 보고서 작성',
+        leader39: '~18:00 종료회의',
+        auditor31: '~09:30 시작회의',
+        auditor32: '~10:00 경영자 면담',
+        auditor33: '~11:00 현장순회',
+        auditor34: '~12:00 OOO팀 심사(4항~10항)',
+        auditor35: '~14:00 OOO팀 심사(4항~10항)',
+        auditor36: '~15:00 OOO팀 심사(4항~10항)',
+        auditor37: '~16:30 OOO팀 심사(4항~10항)',
+        auditor38: '~17:30 심사팀 회의 및 보고서 작성',
+        auditor39: '~18:00 종료회의'
       },
+      companion: '',
       s2CheckPoint: {
-        systemDocument:
+        documentStructure:
           '조직의 시스템 문서는 매뉴얼, 절차서, 프로세스, 지침서, 기준서 구조이며, 문서번호 및 버전정보는 매뉴얼 AAA-M-000(Ver0.0), 절차서 AAA-P-000(Ver0.0), 프로세스 AAA-P-000(Ver0.0), 기준서 AAA-I-000(Ver0.0), 기준서 AAA-S-000(Ver0.0)으로 운영되고 있음',
         difference: '심사계획서와의 차이 없음',
         doubleWorkplace:
@@ -3364,7 +2914,7 @@ export default {
           '조직은 조직이 제공하는 제품 또는 서비스에 대한 정보를 제품설명서 및 사양서 또는 홈페이지에 에 상세히 기록하여 고객에게 제공하고 있음. 조직이 제공하는 제품 또는 서비스는 해당 요구사항을 충족함을 보장하는 조치는 검토 및 승인된 문서화된 정보(AAA-PF-000 출하승인서)로 보유하고 있음. 고객의 불만 또는 피드백을 입수하기 위해 정기적인 고객만족도 조사를 시행하거나 홈페이지를 통해 언제든지 고객불만 또는 피드백을 표시할 수 있도록 하고 있음. 또한 관련 법령이나 규제등의 변경 시 조직이 제공하는 제품 또는 서비스가 그 변경사항을 만족하고 있음을 게시판 또는 공고 또는 고객에게 개별적으로 통지하고 있음.',
         productServiceRequirementSelect: 'A',
         emergency:
-          'EMS) 조직은 환경사고(안전보건사고) 발생 시 대응을 위한 계획을 수립(OOOO프로세스 AAA-P-000)하고 있으며, 환경(안전보건)사고 발생 시 조직의 대응방안을 문서화 하고 있음. 조직은 비상사태 발생의 잠재적 시나리오를 구성하고 주기적으로 대응훈련을 실시하고 있으며 실시결과를 분석하여 보완사항을 지속적으로 문서화된 정보에 반영하고 있음. 대응훈련 프로세스 및 결과는 문서화된 정보로 유지 및 보유하고 있음.(AAA-PF-00 OOOOO결과보고서)',
+          '조직은 환경사고(안전보건사고) 발생 시 대응을 위한 계획을 수립(OOOO프로세스 AAA-P-000)하고 있으며, 환경(안전보건)사고 발생 시 조직의 대응방안을 문서화 하고 있음. 비상사태 발생의 잠재적 시나리오를 구성하고 주기적으로 대응훈련을 실시하고 있으며 실시결과를 분석하여 보완사항을 지속적으로 문서화된 정보에 반영하고 있음. 대응훈련 프로세스 및 결과는 문서화된 정보로 유지 및 보유하고 있음.(AAA-PF-00 OOOOO결과보고서)',
         emergencySelect: 'A',
         design:
           '조직은 제품 및 서비스의 설계와 개발 이후의 공급을 보장하기 위해 OOOO프로세스(AAA-P-000)를 수립, 실행하고 있으며, 설계 및 개발의 결과를 문서화하여 보유하고 있음. 표준이 요구하는 설계와 개발 기획, 입력, 관리, 출력, 변경에 관한 문서화된 실적정보를 보유하고 있음.(00000프로젝트카드(AAA-PF-000-00))',
@@ -3400,101 +2950,7 @@ export default {
           '품질, 환경, 안전보건경영시스템 성과의 개선을 위해 조직은 이행실적의 분석을 통한 개선기회 발견 및 경영검토 출력사항을 검토하여 개선활동을 수립하고 있음. 조직은 개선활동의 효과성을 검토하고 있음. ',
         continuousImproveSelect: 'A'
       },
-      s2AuditCycle: {
-        orgStatusS1: 'O',
-        orgStatusS2: 'O',
-        orgStatusRe: 'O',
-        needsS1: 'O',
-        needsS2: 'O',
-        needsRe: 'O',
-        employeeNeedsS1: 'O',
-        employeeNeedsS2: 'O',
-        employeeNeedsRe: 'O',
-        appliedScopeS1: 'O',
-        appliedScopeS2: 'O',
-        appliedScopeRe: 'O',
-        qmsProcessS1: 'O',
-        qmsProcessS2: 'O',
-        qmsProcessRe: 'O',
-        eomSystemS1: 'O',
-        eomSystemS2: 'O',
-        eomSystemRe: 'O',
-        leadershipS1: 'O',
-        leadershipS2: 'O',
-        leadershipRe: 'O',
-        policyS1: 'O',
-        policyS2: 'O',
-        policyRe: 'O',
-        roleS1: 'O',
-        roleS2: 'O',
-        roleRe: 'O',
-        employeeParticipationS1: 'O',
-        employeeParticipationS2: 'O',
-        employeeParticipationRe: 'O',
-        riskHandlingS1: 'O',
-        riskHandlingS2: 'O',
-        riskHandlingRe: 'O',
-        objectPlanS1: 'O',
-        objectPlanS2: 'O',
-        objectPlanRe: 'O',
-        changePlanS1: 'O',
-        changePlanS2: 'O',
-        changePlanRe: 'O',
-        reSourceS1: 'O',
-        reSourceS2: 'O',
-        reSourceRe: 'O',
-        capabilityS1: 'O',
-        capabilityS2: 'O',
-        capabilityRe: 'O',
-        recognitionS1: 'O',
-        recognitionS2: 'O',
-        recognitionRe: 'O',
-        communicationS1: 'O',
-        communicationS2: 'O',
-        communicationRe: 'O',
-        documentS1: 'O',
-        documentS2: 'O',
-        documentRe: 'O',
-        operationPlanS1: 'O',
-        operationPlanS2: 'O',
-        operationPlanRe: 'O',
-        emergencyS1: 'O',
-        emergencyS2: 'O',
-        emergencyRe: 'O',
-        designS1: 'O',
-        designS2: 'O',
-        designRe: 'O',
-        purchaseS1: 'O',
-        purchaseS2: 'O',
-        purchaseRe: 'O',
-        productServiceS1: 'O',
-        productServiceS2: 'O',
-        productServiceRe: 'O',
-        productReleaseS1: 'O',
-        productReleaseS2: 'O',
-        productReleaseRe: 'O',
-        outputS1: 'O',
-        outputS2: 'O',
-        outputRe: 'O',
-        monitoringS1: 'O',
-        monitoringS2: 'O',
-        monitoringRe: 'O',
-        internal_auditS1: 'O',
-        internal_auditS2: 'O',
-        internal_auditRe: 'O',
-        management_reviewS1: 'O',
-        management_reviewS2: 'O',
-        management_reviewRe: 'O',
-        generalS1: 'O',
-        generalS2: 'O',
-        generalRe: 'O',
-        nonconformityS1: 'O',
-        nonconformityS2: 'O',
-        nonconformityRe: 'O',
-        continuousImproveS1: 'O',
-        continuousImproveS2: 'O',
-        continuousImproveRe: 'O'
-      },
+
       finalAuditSummary:
         'ISO9001요구사항, 조직에 적용되는 법규 및 준수사항 및 조직자체의 적용가능한 요구사항을 기준으로 심사가 진행되었으며 조직의 경영시스템 운영역량은 요구사항에 적합함. 다만, 전반적으로 조직의 경영시스템 수립은 체계적으로 수립되어 있으나 보다 적극적인 실행이 요구됨.  심사팀은 불확실성을 고려하여 업체와 심사결론을 합의하였으며 샘플링 심사가 고객의 경영시스템의 완전성을 보증하지 않음에 대해 안내하였습니다. 심사결과 부적합 00건, 권고사항 00건 발견되었음. 부적합에 대해서는 30일 내로 시정조치를 완료하여 결과서를 심사원에게 회신해주시기 바랍니다.',
       auditPurpose: '인증등록유지추천',
@@ -3637,8 +3093,11 @@ export default {
       console.log(this.imgExt)
     },
     async doSave() {
-      // if (this.customer.certification_type === '') {
-      //   return this.$swal('인증유형을 선택해주세요.')
+      // if (this.s2CheckPoint.systemDocument === '') {
+      //   return this.$swal('1번 항목을 입력하세요.')
+      // }
+      // if (this.s2CheckPoint.systemDocument.length > 200) {
+      //   return this.$swal('1번 항목의 글자가 너무 많습니다.')
       // }
       // if (this.customer.name_ko === '') {
       //   return this.$swal('국문회사명을 입력하세요.')
@@ -3701,15 +3160,15 @@ export default {
               audit_no: this.id,
               customer_id: this.list.customer_id,
               rows: JSON.stringify(this.rows),
-              systemDocument: this.s2AuditCheckpoint.systemDocument,
-              difference: this.s2AuditCheckpoint.difference,
-              doubleWorkplace: this.s2AuditCheckpoint.doubleWorkplace,
-              constructSite: this.s2AuditCheckpoint.constructSite,
-              outSourcing: this.s2AuditCheckpoint.outSourcing,
-              exclusiveClause: this.s2AuditCheckpoint.exclusiveClause,
-              previousAudit: this.s2AuditCheckpoint.previousAudit,
-              appliedLaw: this.s2AuditCheckpoint.appliedLaw,
-              logoUsage: this.s2AuditCheckpoint.logoUsage,
+              documentStructure: this.s2CheckPoint.documentStructure,
+              difference: this.s2CheckPoint.difference,
+              doubleWorkplace: this.s2CheckPoint.doubleWorkplace,
+              constructSite: this.s2CheckPoint.constructSite,
+              outSourcing: this.s2CheckPoint.outSourcing,
+              exclusiveClause: this.s2CheckPoint.exclusiveClause,
+              previousAudit: this.s2CheckPoint.previousAudit,
+              appliedLaw: this.s2CheckPoint.appliedLaw,
+              logoUsage: this.s2CheckPoint.logoUsage,
               companyName: this.s2Change.companyName,
               companyAddress: this.s2Change.companyAddress,
               companyCeo: this.s2Change.companyCeo,
@@ -3789,107 +3248,70 @@ export default {
               continuousImprove: this.s2AuditCheckpoint.continuousImprove,
               continuousImproveSelect:
                 this.s2AuditCheckpoint.continuousImproveSelect,
-              orgStatusS1: this.s2AuditCycle.orgStatusS1,
-              orgStatusS2: this.s2AuditCycle.orgStatusS2,
-              orgStatusRe: this.s2AuditCycle.orgStatusRe,
-              needsS1: this.s2AuditCycle.needsS1,
-              needsS2: this.s2AuditCycle.needsS2,
-              needsRe: this.s2AuditCycle.needsRe,
-              employeeNeedsS1: this.s2AuditCycle.employeeNeedsS1,
-              employeeNeedsS2: this.s2AuditCycle.employeeNeedsS2,
-              employeeNeedsRe: this.s2AuditCycle.employeeNeedsRe,
-              appliedScopeS1: this.s2AuditCycle.appliedScopeS1,
-              appliedScopeS2: this.s2AuditCycle.appliedScopeS2,
-              appliedScopeRe: this.s2AuditCycle.appliedScopeRe,
-              qmsProcessS1: this.s2AuditCycle.qmsProcessS1,
-              qmsProcessS2: this.s2AuditCycle.qmsProcessS2,
-              qmsProcessRe: this.s2AuditCycle.qmsProcessRe,
-              eomSystemS1: this.s2AuditCycle.eomSystemS1,
-              eomSystemS2: this.s2AuditCycle.eomSystemS2,
-              eomSystemRe: this.s2AuditCycle.eomSystemRe,
-              leadershipS1: this.s2AuditCycle.leadershipS1,
-              leadershipS2: this.s2AuditCycle.leadershipS2,
-              leadershipRe: this.s2AuditCycle.leadershipRe,
-              policyS1: this.s2AuditCycle.policyS1,
-              policyS2: this.s2AuditCycle.policyS2,
-              policyRe: this.s2AuditCycle.policyRe,
-              roleS1: this.s2AuditCycle.roleS1,
-              roleS2: this.s2AuditCycle.roleS2,
-              roleRe: this.s2AuditCycle.roleRe,
-              employeeParticipationS1:
-                this.s2AuditCycle.employeeParticipationS1,
-              employeeParticipationS2:
-                this.s2AuditCycle.employeeParticipationS2,
-              employeeParticipationRe:
-                this.s2AuditCycle.employeeParticipationRe,
-              riskHandlingS1: this.s2AuditCycle.riskHandlingS1,
-              riskHandlingS2: this.s2AuditCycle.riskHandlingS2,
-              riskHandlingRe: this.s2AuditCycle.riskHandlingRe,
-              objectPlanS1: this.s2AuditCycle.objectPlanS1,
-              objectPlanS2: this.s2AuditCycle.objectPlanS2,
-              objectPlanRe: this.s2AuditCycle.objectPlanRe,
-              changePlanS1: this.s2AuditCycle.changePlanS1,
-              changePlanS2: this.s2AuditCycle.changePlanS2,
-              changePlanRe: this.s2AuditCycle.changePlanRe,
-              reSourceS1: this.s2AuditCycle.reSourceS1,
-              reSourceS2: this.s2AuditCycle.reSourceS2,
-              reSourceRe: this.s2AuditCycle.reSourceRe,
-              capabilityS1: this.s2AuditCycle.capabilityS1,
-              capabilityS2: this.s2AuditCycle.capabilityS2,
-              capabilityRe: this.s2AuditCycle.capabilityRe,
-              recognitionS1: this.s2AuditCycle.recognitionS1,
-              recognitionS2: this.s2AuditCycle.recognitionS2,
-              recognitionRe: this.s2AuditCycle.recognitionRe,
-              communicationS1: this.s2AuditCycle.communicationS1,
-              communicationS2: this.s2AuditCycle.communicationS2,
-              communicationRe: this.s2AuditCycle.communicationRe,
-              documentS1: this.s2AuditCycle.documentS1,
-              documentS2: this.s2AuditCycle.documentS2,
-              documentRe: this.s2AuditCycle.documentRe,
-              operationPlanS1: this.s2AuditCycle.operationPlanS1,
-              operationPlanS2: this.s2AuditCycle.operationPlanS2,
-              operationPlanRe: this.s2AuditCycle.operationPlanRe,
-              emergencyS1: this.s2AuditCycle.emergencyS1,
-              emergencyS2: this.s2AuditCycle.emergencyS2,
-              emergencyRe: this.s2AuditCycle.emergencyRe,
-              designS1: this.s2AuditCycle.designS1,
-              designS2: this.s2AuditCycle.designS2,
-              designRe: this.s2AuditCycle.designRe,
-              purchaseS1: this.s2AuditCycle.purchaseS1,
-              purchaseS2: this.s2AuditCycle.purchaseS2,
-              purchaseRe: this.s2AuditCycle.purchaseRe,
-              productServiceS1: this.s2AuditCycle.productServiceS1,
-              productServiceS2: this.s2AuditCycle.productServiceS2,
-              productServiceRe: this.s2AuditCycle.productServiceRe,
-              productReleaseS1: this.s2AuditCycle.productReleaseS1,
-              productReleaseS2: this.s2AuditCycle.productReleaseS2,
-              productReleaseRe: this.s2AuditCycle.productReleaseRe,
-              outputS1: this.s2AuditCycle.outputS1,
-              outputS2: this.s2AuditCycle.outputS2,
-              outputRe: this.s2AuditCycle.outputRe,
-              monitoringS1: this.s2AuditCycle.monitoringS1,
-              monitoringS2: this.s2AuditCycle.monitoringS2,
-              monitoringRe: this.s2AuditCycle.monitoringRe,
-              internal_auditS1: this.s2AuditCycle.internal_auditS1,
-              internal_auditS2: this.s2AuditCycle.internal_auditS2,
-              internal_auditRe: this.s2AuditCycle.internal_auditRe,
-              management_reviewS1: this.s2AuditCycle.management_reviewS1,
-              management_reviewS2: this.s2AuditCycle.management_reviewS2,
-              management_reviewRe: this.s2AuditCycle.management_reviewRe,
-              generalS1: this.s2AuditCycle.generalS1,
-              generalS2: this.s2AuditCycle.generalS2,
-              generalRe: this.s2AuditCycle.generalRe,
-              nonconformityS1: this.s2AuditCycle.nonconformityS1,
-              nonconformityS2: this.s2AuditCycle.nonconformityS2,
-              nonconformityRe: this.s2AuditCycle.nonconformityRe,
-              continuousImproveS1: this.s2AuditCycle.continuousImproveS1,
-              continuousImproveS2: this.s2AuditCycle.continuousImproveS2,
-              continuousImproveRe: this.s2AuditCycle.continuousImproveRe,
+
               finalAuditSummary: this.finalAuditSummary,
               auditPurpose: this.auditPurpose,
               participants: JSON.stringify(this.participants),
               report_s2_no: 's24' + this.id,
-              auditor_email: this.$store.state.user.userInfo.email
+              auditor_email: this.$store.state.user.userInfo.email,
+              companion: this.companion,
+              s2AuditDate1: this.s2DetailPlan1.s2AuditDate1,
+              s2AuditDate2: this.s2DetailPlan2.s2AuditDate2,
+              s2AuditDate3: this.s2DetailPlan3.s2AuditDate3,
+              leader11: this.s2DetailPlan1.leader11,
+              leader12: this.s2DetailPlan1.leader12,
+              leader13: this.s2DetailPlan1.leader13,
+              leader14: this.s2DetailPlan1.leader14,
+              leader15: this.s2DetailPlan1.leader15,
+              leader16: this.s2DetailPlan1.leader16,
+              leader17: this.s2DetailPlan1.leader17,
+              leader18: this.s2DetailPlan1.leader18,
+              leader19: this.s2DetailPlan1.leader19,
+              auditor11: this.s2DetailPlan1.auditor11,
+              auditor12: this.s2DetailPlan1.auditor12,
+              auditor13: this.s2DetailPlan1.auditor13,
+              auditor14: this.s2DetailPlan1.auditor14,
+              auditor15: this.s2DetailPlan1.auditor15,
+              auditor16: this.s2DetailPlan1.auditor16,
+              auditor17: this.s2DetailPlan1.auditor17,
+              auditor18: this.s2DetailPlan1.auditor18,
+              auditor19: this.s2DetailPlan1.auditor19,
+              leader21: this.s2DetailPlan2.leader21,
+              leader22: this.s2DetailPlan2.leader22,
+              leader23: this.s2DetailPlan2.leader23,
+              leader24: this.s2DetailPlan2.leader24,
+              leader25: this.s2DetailPlan2.leader25,
+              leader26: this.s2DetailPlan2.leader26,
+              leader27: this.s2DetailPlan2.leader27,
+              leader28: this.s2DetailPlan2.leader28,
+              leader29: this.s2DetailPlan2.leader29,
+              auditor21: this.s2DetailPlan2.auditor21,
+              auditor22: this.s2DetailPlan2.auditor22,
+              auditor23: this.s2DetailPlan2.auditor23,
+              auditor24: this.s2DetailPlan2.auditor24,
+              auditor25: this.s2DetailPlan2.auditor25,
+              auditor26: this.s2DetailPlan2.auditor26,
+              auditor27: this.s2DetailPlan2.auditor27,
+              auditor28: this.s2DetailPlan2.auditor28,
+              auditor29: this.s2DetailPlan2.auditor29,
+              leader31: this.s2DetailPlan3.leader31,
+              leader32: this.s2DetailPlan3.leader32,
+              leader33: this.s2DetailPlan3.leader33,
+              leader34: this.s2DetailPlan3.leader34,
+              leader35: this.s2DetailPlan3.leader35,
+              leader36: this.s2DetailPlan3.leader36,
+              leader37: this.s2DetailPlan3.leader37,
+              leader38: this.s2DetailPlan3.leader38,
+              leader39: this.s2DetailPlan3.leader39,
+              auditor31: this.s2DetailPlan3.auditor31,
+              auditor32: this.s2DetailPlan3.auditor32,
+              auditor33: this.s2DetailPlan3.auditor33,
+              auditor34: this.s2DetailPlan3.auditor34,
+              auditor35: this.s2DetailPlan3.auditor35,
+              auditor36: this.s2DetailPlan3.auditor36,
+              auditor37: this.s2DetailPlan3.auditor37,
+              auditor38: this.s2DetailPlan3.auditor38,
+              auditor39: this.s2DetailPlan3.auditor39
             }
           })
 

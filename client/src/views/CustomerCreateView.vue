@@ -231,7 +231,7 @@
         <input
           type="text"
           class="form-control"
-          placeholder="홍길동/대표이사"
+          placeholder="홍길동/과장"
           v-model.trim="customer.contact_name"
         />
       </div>
@@ -2971,9 +2971,9 @@ export default {
           const r = await this.$post('/api/customer', {
             param: {
               customer_type: this.customer.customer_type,
-              certification_standard: JSON.stringify(
-                this.customer.certification_standard
-              ),
+              // certification_standard: JSON.stringify(
+              //   this.customer.certification_standard
+              // ),
               name_ko: this.customer.name_ko,
               name_en: this.customer.name_en,
               business_no: this.customer.business_no,
@@ -2999,8 +2999,8 @@ export default {
               scope_en: this.customer.scope_en,
               activity: JSON.stringify(this.customer.activity),
               process: this.customer.process,
-              shift: this.customer.shift,
-              shift_work_count: this.customer.shift_work_count,
+              // shift: this.customer.shift,
+              // shift_work_count: this.customer.shift_work_count,
               exclusion: this.customer.exclusion,
               exclusion_reason: this.customer.exclusion_reason,
               // production_method: this.customer.production_method,
@@ -3024,16 +3024,16 @@ export default {
               // this.customer.hazardous_chemical_content,
               // location: this.customer.location,
 
-              environmental_permit: this.customer.environmental_permit,
-              environmental_permit_content:
-                this.customer.environmental_permit_content,
-              environmental_accident: this.customer.environmental_accident,
-              environmental_accident_content:
-                this.customer.environmental_accident_content,
-              safety_accident: this.customer.safety_accident,
-              safety_accident_content: this.customer.safety_accident_content,
-              outside_worker: this.customer.outside_worker,
-              outside_worker_content: this.customer.outside_worker_content,
+              // environmental_permit: this.customer.environmental_permit,
+              // environmental_permit_content:
+              //   this.customer.environmental_permit_content,
+              // environmental_accident: this.customer.environmental_accident,
+              // environmental_accident_content:
+              //   this.customer.environmental_accident_content,
+              // safety_accident: this.customer.safety_accident,
+              // safety_accident_content: this.customer.safety_accident_content,
+              // outside_worker: this.customer.outside_worker,
+              // outside_worker_content: this.customer.outside_worker_content,
               // hazardous_chemical_worker:
               //   this.customer.hazardous_chemical_worker,
               // air_pollution: JSON.stringify(this.customer.air_pollution),
@@ -3061,20 +3061,20 @@ export default {
               // ),
               // work_factor: JSON.stringify(this.customer.work_factor),
               // work_env: JSON.stringify(this.customer.work_env),
-              environmental_aspect: this.environmental_aspect,
-              risk_factor: this.risk_factor,
+              // environmental_aspect: this.environmental_aspect,
+              // risk_factor: this.risk_factor,
               classify_audit: this.classify_audit,
               iaf_code: JSON.stringify(this.customer.iaf_code),
               auditor_name: this.$store.state.user.userInfo.name,
               auditor_email: this.$store.state.user.userInfo.email,
               img_license: this.customer.img_license,
               img_license_originalname: this.customer.img_license_originalname,
-              imgExt: this.customer.imgExt,
-              file_transCertification: this.customer.file_transCertification,
-              file_transCertification_originalname:
-                this.customer.file_transCertification_originalname,
-              file_transCertification_ext:
-                this.customer.file_transCertification_ext
+              imgExt: this.customer.imgExt
+              // file_transCertification: this.customer.file_transCertification,
+              // file_transCertification_originalname:
+              //   this.customer.file_transCertification_originalname,
+              // file_transCertification_ext:
+              //   this.customer.file_transCertification_ext
             }
           })
 
@@ -3084,7 +3084,7 @@ export default {
 
           if (r.status === 200) {
             this.$swal(
-              '고객정보가 저장되었습니다.<br/> 고객리스트 화면에서 심사신청을 진행해주세요'
+              '고객정보가 저장되었습니다.<br/> 고객사 현황 페이지에서 심사신청을 진행해주세요'
             )
             this.$router.push({
               path: '/customer/list/auditor',

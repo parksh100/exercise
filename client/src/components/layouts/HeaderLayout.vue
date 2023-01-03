@@ -46,7 +46,7 @@
                 >인증심사신청</a
               >
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a
                 class="nav-link"
                 :class="{ active: $route.path == '/auditor' }"
@@ -54,7 +54,7 @@
                 role="button"
                 >심사원현황</a
               >
-            </li>
+            </li> -->
 
             <li class="nav-item">
               <a
@@ -93,11 +93,20 @@
                 >보고서제출현황</a
               >
             </li>
+            <!-- <li class="nav-item">
+              <a
+                class="nav-link"
+                :class="{ active: $route.path == '/report/upload' }"
+                @click="goToMenu('/report/upload')"
+                role="button"
+                >보고서업로드</a
+              >
+            </li> -->
           </ul>
 
           <div class="d-flex">
             <span v-if="userInfo.name" class="text-white pt-2 me-4"
-              >{{ userInfo.name }} 위원님 반갑습니다!</span
+              >{{ userInfo.name }} 위원님</span
             >
             <button
               class="btn btn-outline-success"

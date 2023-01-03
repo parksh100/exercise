@@ -195,15 +195,15 @@
             class="p-1"
             role="button"
             v-show="
-              (this.dBcrInfo.audit_type === '전환사후' ||
-                this.dBcrInfo.audit_type === '전환갱신') &&
+              (this.list.audit_type === '전환사후' ||
+                this.list.audit_type === '전환갱신') &&
               this.dbTransReportInfo.report_trans_id === undefined
             "
           >
             <span
-              class="p-2 bg-secondary rounded text-white"
+              class="p-2 bg-primary rounded text-white"
               @click="goToTransReport"
-              >전환심사보고서작성</span
+              >전환보고서작성</span
             >
           </li>
           <li
@@ -215,7 +215,7 @@
             "
           >
             <span
-              class="p-2 bg-secondary rounded text-white"
+              class="p-2 bg-primary rounded text-white"
               @click="goToS1Report"
               >S1보고서작성</span
             >
@@ -226,9 +226,32 @@
             v-show="this.dbS2ReportInfo.report_s2_id === undefined"
           >
             <span
-              class="p-2 bg-secondary rounded text-white"
+              class="p-2 bg-primary rounded text-white"
               @click="goToS2Report"
               >S2보고서작성</span
+            >
+          </li>
+
+          <!-- 보고서 제출(업로드) -->
+          <li class="p-1" role="button">
+            <span
+              class="p-2 bg-warning rounded text-black"
+              @click="goToUploadTrans"
+              >전환보고서업로드</span
+            >
+          </li>
+          <li class="p-1" role="button">
+            <span
+              class="p-2 bg-warning rounded text-black"
+              @click="goToUploadS1"
+              >S1보고서업로드</span
+            >
+          </li>
+          <li class="p-1" role="button">
+            <span
+              class="p-2 bg-warning rounded text-black"
+              @click="goToUploadS2"
+              >S2보고서업로드</span
             >
           </li>
         </ul>
@@ -386,6 +409,7 @@ export default {
       const transReport = await this.$get(
         `http://localhost:3000/api/report/trans/${this.id}`
       )
+      console.log(transReport)
       this.dbTransReportInfo = transReport
       console.log('전환보고서정보', this.dbTransReportInfo)
       if (this.dbTransReportInfo.created_at_trans_report === null) {
@@ -437,9 +461,9 @@ export default {
       console.log(this.imgExt)
     },
     async doSave() {
-      // if (this.customer.certification_type === '') {
-      //   return this.$swal('인증유형을 선택해주세요.')
-      // }
+      if (this.customer.certification_type === '') {
+        return this.$swal('인증유형을 선택해주세요.')
+      }
 
       this.$swal({
         title: '계약검토를 저장 하시겠습니까?',
@@ -544,6 +568,24 @@ export default {
     goToS2Report() {
       this.$router.push({
         path: '/report/s2/',
+        query: { id: this.list.audit_no }
+      })
+    },
+    goToUploadTrans() {
+      this.$router.push({
+        path: '/upload/trans/',
+        query: { id: this.list.audit_no }
+      })
+    },
+    goToUploadS1() {
+      this.$router.push({
+        path: '/upload/s1/',
+        query: { id: this.list.audit_no }
+      })
+    },
+    goToUploadS2() {
+      this.$router.push({
+        path: '/upload/s2/',
         query: { id: this.list.audit_no }
       })
     },

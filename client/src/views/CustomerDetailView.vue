@@ -19,9 +19,9 @@
       </colgroup>
       <tbody class="text-center table-group-divider">
         <tr>
-          <th>심사유형</th>
+          <th>고객유형</th>
           <td>
-            {{ customer.certification_type }}
+            {{ customer.customer_type }}
           </td>
           <th>사업자등록번호</th>
           <td>{{ customer.business_no }}</td>
@@ -110,9 +110,9 @@
       </colgroup>
       <tbody class="text-center table-group-divider">
         <tr>
-          <th>신청 인증표준</th>
+          <th>심사코드</th>
           <td>
-            {{ customer.certification_standard }}
+            {{ customer.iaf_code }}
           </td>
           <th>종업원 수</th>
           <td>{{ customer.employee_count }}</td>
@@ -137,14 +137,7 @@
           <!-- <th >홈페이지</th>
           <td>{{ customer.homepage }}</td> -->
         </tr>
-        <tr>
-          <th>심사코드</th>
-          <td colspan="3" class="text-start">
-            <div class="col-sm-9">
-              <div>{{ customer.iaf_code }}</div>
-            </div>
-          </td>
-        </tr>
+
         <tr>
           <th>인증범위 활동</th>
           <td colspan="3">{{ customer.activity }}</td>
@@ -164,19 +157,6 @@
           <th>조항/근거</th>
           <td>{{ customer.exclusion_reason }}</td>
         </tr>
-        <tr>
-          <th>환경측면정의</th>
-          <td>{{ customer.env }}</td>
-          <th>심사비{{ customer.audit_fee }}</th>
-          <td></td>
-        </tr>
-
-        <tr>
-          <th>내부심사일</th>
-          <td>{{ customer.internal_date }}</td>
-          <th>경영검토일</th>
-          <td>{{ customer.management_date }}</td>
-        </tr>
 
         <tr>
           <th>외주처리 유무</th>
@@ -194,7 +174,7 @@
       </tbody>
     </table>
 
-    <h5 class="fw-bold mt-5 mb-3">
+    <!-- <h5 class="fw-bold mt-5 mb-3">
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>
       환경/안전보건 정보
     </h5>
@@ -210,8 +190,8 @@
         <tr>
           <th>환경측면파악여부</th>
           <td colspan="3">{{ customer.environmental_aspect }}</td>
-          <!-- <th></th>
-          <td></td> -->
+          <th></th>
+          <td></td>
         </tr>
         <tr>
           <th>환경허가신고사항유무</th>
@@ -235,8 +215,6 @@
         <tr>
           <th>위험요인파악여부</th>
           <td colspan="3">{{ customer.risk_factor }}</td>
-          <!-- <th></th>
-          <td></td> -->
         </tr>
         <tr>
           <th>사업장 외부 근무자 유무</th>
@@ -251,7 +229,7 @@
           <td>{{ customer.safety_accident_content }}</td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
 
     <h5 class="fw-bold mt-5 mb-3">
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>

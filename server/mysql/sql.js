@@ -1,5 +1,5 @@
 module.exports = {
-  auditorList: `select * from auditor`,
+  // auditorList: `select * from auditor`,
   customerList: `select * from customer`,
   crList: `select * from contract_review`,
   auditListByAuditorEmail: `select t1.*, t2.* from customer t1, certification_audit t2 where t1.auditor_email=? order by t2.audit_created_date desc`,
@@ -38,9 +38,16 @@ module.exports = {
   crInsert: `insert into contract_review set ?`,
   certInsert: `insert into certification_audit set ?`,
   auditorImage: `insert into auditor_image set ?`,
+  uploadTrans: `insert into report_trans_upload set ?`,
+  uploadS1: `insert into report_s1_upload set ?`,
+  uploadS2: `insert into report_s2_upload set ?`,
+
   auditorUpdate: `update auditor set ? where auditor_id=?`,
   customerUpdate: `update customer set ? where business_no=?`,
   auditUpdate: `update certification_audit set ? where audit_no=?`,
+  transReportUpdate: `update report_trans set ? where audit_no=?`,
+  s1ReportUpdate: `update report_s1 set ? where audit_no=?`,
+  s2ReportUpdate: `update report_s2 set ? where audit_no=?`,
   // auditUpdate: `update customer set ? where customer_id=?`,
   auditorDelete: `delete from auditor where auditor_id=?`,
   customerDelete: `delete from customer where customer_id=?`,

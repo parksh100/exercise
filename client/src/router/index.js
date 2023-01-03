@@ -182,6 +182,83 @@ const routes = [
     name: 'ReportMgtView',
     component: () =>
       import(/* webpackChunkName: "report" */ '../views/ReportMgtView.vue')
+  },
+  {
+    path: '/report/trans/detail',
+    name: 'ReportTransDetailView',
+    component: () =>
+      import(
+        /* webpackChunkName: "report" */ '../views/ReportTransDetailView.vue'
+      )
+  },
+  {
+    path: '/report/trans/change',
+    name: 'ReportTransChangeView',
+    component: () =>
+      import(
+        /* webpackChunkName: "report" */ '../views/ReportTransChangeView.vue'
+      )
+  },
+
+  {
+    path: '/report/s1/detail',
+    name: 'ReportS1DetailView',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/ReportS1DetailView.vue')
+  },
+  {
+    path: '/report/s1/change',
+    name: 'ReportS1ChangeView',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/ReportS1ChangeView.vue')
+  },
+  {
+    path: '/report/s2/detail',
+    name: 'ReportS2DetailView',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/ReportS2DetailView.vue')
+  },
+  {
+    path: '/report/s2/change',
+    name: 'ReportS2ChangeView',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/ReportS2ChangeView.vue')
+  },
+  {
+    path: '/upload/trans',
+    name: 'UploadTransView',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/UploadTransView.vue')
+  },
+
+  {
+    path: '/upload/s1',
+    name: 'UploadS1View',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/UploadS1View.vue')
+  },
+
+  {
+    path: '/upload/s2',
+    name: 'UploadS2View',
+    component: () =>
+      import(/* webpackChunkName: "report" */ '../views/UploadS2View.vue')
+  },
+  {
+    path: '/upload/detail',
+    name: 'UploadReportDetailView',
+    component: () =>
+      import(
+        /* webpackChunkName: "report" */ '../views/UploadReportDetailView.vue'
+      )
+  },
+  {
+    path: '/report/upload/change',
+    name: 'UploadReportChangeView',
+    component: () =>
+      import(
+        /* webpackChunkName: "report" */ '../views/UploadReportChangeView.vue'
+      )
   }
 ]
 

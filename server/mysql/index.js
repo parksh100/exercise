@@ -6,6 +6,8 @@ const pool = mysql.createPool({
   port: process.env.MYSQL_PORT,
   user: process.env.MYSQL_USERNAME,
   password: process.env.MYSQL_PASSWORD,
+  timezone: "KST",
+  // timezone: "+18:00",
   database: process.env.MYSQL_DB,
   connectionLimit: process.env.MYSQL_LIMIT,
 });

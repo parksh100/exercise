@@ -198,7 +198,7 @@ app.get("/api/customer/all", async (req, res) => {
 
 //customer by auditor전체조회
 app.get("/api/customer/:auditor_email", async (req, res) => {
-  console.log(req.params);
+  // console.log(req.params);
   const { auditor_email } = req.params;
   const customerListByAuditor = await mysql.query(
     "customerListByEmail",
@@ -328,7 +328,7 @@ app.get("/api/customer/cr/detail/:audit_no", async (req, res) => {
   res.send(crDetailByAuditNo[0]);
 });
 
-//transReport 조회 by audit_no
+// transReport 조회 by audit_no
 app.get("/api/report/trans/:audit_no", async (req, res) => {
   const { audit_no } = req.params;
   const transReport = await mysql.query("transReport", audit_no);
@@ -387,6 +387,7 @@ app.post("/api/auditor", async (req, res) => {
 // customer 생성
 app.post("/api/customer", async (req, res) => {
   const result = await mysql.query("customerInsert", req.body.param);
+  console.log(result);
   res.send(result);
 });
 
@@ -406,6 +407,7 @@ app.post("/api/report/s1", async (req, res) => {
 // 2단계보고서 생성
 app.post("/api/report/s2", async (req, res) => {
   const result = await mysql.query("reportS2Insert", req.body.param);
+  console.log(result);
   res.send(result);
 });
 
@@ -419,6 +421,25 @@ app.post("/api/cr", async (req, res) => {
 app.post("/api/cert/audit", async (req, res) => {
   const result = await mysql.query("certInsert", req.body.param);
   // console.log(result);
+  res.send(result);
+});
+
+// 전환보고서 업로드 생성
+app.post("/api/upload/trans", async (req, res) => {
+  const result = await mysql.query("uploadTrans", req.body.param);
+  console.log(result);
+  res.send(result);
+});
+// S1보고서 업로드 생성
+app.post("/api/upload/s1", async (req, res) => {
+  const result = await mysql.query("uploadS1", req.body.param);
+  console.log(result);
+  res.send(result);
+});
+// S2보고서 업로드 생성
+app.post("/api/upload/s2", async (req, res) => {
+  const result = await mysql.query("uploadS2", req.body.param);
+  console.log(result);
   res.send(result);
 });
 
@@ -450,6 +471,42 @@ app.put("/api/customer/cert/:audit_no", async (req, res) => {
   // console.log(req.body.param);
   // console.log(customer_id);
   const result = await mysql.query("auditUpdate", [req.body.param, audit_no]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
+  res.send(result);
+});
+
+// 전환심사보고서 수정
+app.put("/api/report/trans/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  // console.log(req.body.param);
+  // console.log(customer_id);
+  const result = await mysql.query("transReportUpdate", [
+    req.body.param,
+    audit_no,
+  ]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
+  res.send(result);
+});
+
+// 1단계심사보고서 수정
+app.put("/api/report/s1/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  // console.log(req.body.param);
+  // console.log(customer_id);
+  const result = await mysql.query("s1ReportUpdate", [
+    req.body.param,
+    audit_no,
+  ]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
+  res.send(result);
+});
+
+// 2단계심사보고서 수정
+app.put("/api/report/s2/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  // console.log(req.body.param);
+  // console.log(customer_id);
+  const result = await mysql.query("s2ReportUpdate", [
+    req.body.param,
+    audit_no,
+  ]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
   res.send(result);
 });
 
@@ -552,7 +609,7 @@ app.post("/api/cert/auditor/search", async (req, res) => {
 
 // 심사보고서 전체조회
 app.post("/api/report/list/search", async (req, res) => {
-  console.log(req.body.param);
+  // console.log(req.body.param);
   // const { auditor_email } = req.params;
   // const { searchName } = req.params;
   // console.log(auditor_email, searchName);
@@ -562,7 +619,7 @@ app.post("/api/report/list/search", async (req, res) => {
     // req.body.param[2],
     // req.body.param[3],
   ]);
-  // console.log(result);
+  console.log(result);
   res.send(result);
 });
 
@@ -774,46 +831,46 @@ app.all("*", (req, res, next) => {
 // task.destroy(); // 작업을 완전히 삭제
 
 // 1분마다 db에서 자료 가져와서 보내려면
-cron.schedule("* * * * *", async () => {
-  const auditorList = await mysql.query("auditorList");
-  const h = [];
-  h.push(`<table style="border:1px solid black;border-collapse:collapse;">`);
-  h.push(`<thead>`);
-  h.push(`<tr>`);
-  h.push(`<th style="border:1px solid black;">Auditor ID</th>`);
-  h.push(`<th style="border:1px solid black;">Auditor Name</th>`);
-  h.push(`<th style="border:1px solid black;">Auditor Gender</th>`);
-  h.push(`<th style="border:1px solid black;">Auditor Scheme</th>`);
-  h.push(`<th style="border:1px solid black;">Auditor Grade</th>`);
-  h.push(`</tr>`);
-  h.push(`</thead>`);
-  h.push(`<tbody>`);
-  auditorList.forEach((auditor) => {
-    h.push(`<tr>`);
-    h.push(`<td style="border:1px solid black;">${auditor.auditor_id}</td>`);
-    h.push(`<td style="border:1px solid black;">${auditor.auditor_name}</td>`);
-    h.push(
-      `<td style="border:1px solid black;">${auditor.auditor_gender}</td>`
-    );
-    h.push(
-      `<td style="border:1px solid black;">${auditor.auditor_scheme}</td>`
-    );
-    h.push(`<td style="border:1px solid black;">${auditor.auditor_grade}</td>`);
-    h.push(`</tr>`);
-  });
+// cron.schedule("* * * * *", async () => {
+//   const auditorList = await mysql.query("auditorList");
+//   const h = [];
+//   h.push(`<table style="border:1px solid black;border-collapse:collapse;">`);
+//   h.push(`<thead>`);
+//   h.push(`<tr>`);
+//   h.push(`<th style="border:1px solid black;">Auditor ID</th>`);
+//   h.push(`<th style="border:1px solid black;">Auditor Name</th>`);
+//   h.push(`<th style="border:1px solid black;">Auditor Gender</th>`);
+//   h.push(`<th style="border:1px solid black;">Auditor Scheme</th>`);
+//   h.push(`<th style="border:1px solid black;">Auditor Grade</th>`);
+//   h.push(`</tr>`);
+//   h.push(`</thead>`);
+//   h.push(`<tbody>`);
+//   auditorList.forEach((auditor) => {
+//     h.push(`<tr>`);
+//     h.push(`<td style="border:1px solid black;">${auditor.auditor_id}</td>`);
+//     h.push(`<td style="border:1px solid black;">${auditor.auditor_name}</td>`);
+//     h.push(
+//       `<td style="border:1px solid black;">${auditor.auditor_gender}</td>`
+//     );
+//     h.push(
+//       `<td style="border:1px solid black;">${auditor.auditor_scheme}</td>`
+//     );
+//     h.push(`<td style="border:1px solid black;">${auditor.auditor_grade}</td>`);
+//     h.push(`</tr>`);
+//   });
 
-  h.push(`</body>`);
-  h.push(`<table>`);
+//   h.push(`</body>`);
+//   h.push(`<table>`);
 
-  const emailData = {
-    from: "spark616@gmail.com",
-    to: "spark616@gmail.com",
-    subject: "심사원현황",
-    html: h.join(""),
-  };
+//   const emailData = {
+//     from: "spark616@gmail.com",
+//     to: "spark616@gmail.com",
+//     subject: "심사원현황",
+//     html: h.join(""),
+//   };
 
-  // await nodemailer.send(emailData);
-});
+//   // await nodemailer.send(emailData);
+// });
 
 // 엑셀 Read, Write --------------------------------------------------------------------------------------------------
 /*

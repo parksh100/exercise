@@ -25,11 +25,11 @@
           조회
         </button>
         <button class="btn btn-outline-success me-1" @click="goToList">
-          생성
+          심사신청
         </button>
-        <button class="btn btn-outline-dark me-1" @click="doExcel">
+        <!-- <button class="btn btn-outline-dark me-1" @click="doExcel">
           엑셀다운로드
-        </button>
+        </button> -->
       </div>
     </div>
     <table
@@ -39,18 +39,18 @@
       <thead>
         <tr class="bg-light table-group-divider">
           <!-- <th width="4%">ID</th> -->
-          <th style="width: 10%" rowspan="2">심사번호</th>
-          <th style="width: 15%" rowspan="2">회사명</th>
-          <th style="width: 10%" rowspan="2">표준</th>
+          <th style="width: 12%" rowspan="2">심사번호</th>
+          <th style="width: 13%" rowspan="2">회사명</th>
+          <th style="width: 16%" rowspan="2">표준</th>
           <th style="width: 10%" rowspan="2">심사유형</th>
           <th style="width: 10%" rowspan="2">S2종료일</th>
           <th style="width: 10%" rowspan="2">심사원</th>
-          <th colspan="3">전환보고서</th>
+          <th colspan="3">심사보고서</th>
         </tr>
         <tr class="bg-light table-group-divider">
-          <th style="width: 10%">전환보고서</th>
-          <th style="width: 10%">S1보고서</th>
-          <th style="width: 10%">S2보고서</th>
+          <th style="width: 8%">전환보고서</th>
+          <th style="width: 8%">S1보고서</th>
+          <th style="width: 8%">S2보고서</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
@@ -88,25 +88,67 @@
             {{ $convertDateFormat(item.audit_s2_end, 'YYYY-MM-DD') }}
           </td>
           <td>{{ item.auditor_name }}</td>
+
           <!-- 전환보고서 -->
-          <td class="report" style="word-break: break-all">
-            {{
-              item.audit_type == '전환사후' || item.audit_type === '전환갱신'
-                ? item.created_trans_report
-                : 'N/A'
-            }}
+          <td class="report text-center" style="word-break: break-all">
+            <!-- {{ item.created_trans_report }} -->
+            <button
+              class="btn btn-dark btn-sm"
+              v-if="
+                (item.audit_type === '전환사후' ||
+                  item.audit_type === '전환갱신') &&
+                item.report_trans_no !== null
+              "
+              @click="goToTransReport(item.audit_no)"
+            >
+              상세보기
+            </button>
+            <button
+              class="btn btn-danger btn-sm"
+              v-if="
+                (item.audit_type === '전환사후' ||
+                  item.audit_type === '전환갱신') &&
+                item.report_trans_no === null
+              "
+              @click="goToDetailAudit(item.audit_no)"
+            >
+              작성하기
+            </button>
           </td>
+
           <!-- 1단계보고서 -->
-          <td style="word-break: break-all">
-            {{ item.audit_type === '최초' ? item.created_s1_report : 'N/A' }}
+          <td style="word-break: break-all" class="text-center">
+            <button
+              class="btn btn-dark btn-sm"
+              v-if="item.audit_type === '최초' && item.report_s1_no !== null"
+              @click="goToS1Report(item.audit_no)"
+            >
+              상세보기
+            </button>
+            <button
+              class="btn btn-danger btn-sm"
+              v-if="item.audit_type === '최초' && item.report_s1_no === null"
+              @click="goToDetailAudit(item.audit_no)"
+            >
+              작성하기
+            </button>
           </td>
           <!-- 2단계보고서 -->
-          <td style="word-break: break-all">
-            {{
-              item.created_s2_report === '1970-01-01'
-                ? ''
-                : item.created_s2_report
-            }}
+          <td style="word-break: break-all" class="text-center">
+            <button
+              class="btn btn-dark btn-sm"
+              v-if="item.report_s2_no !== null"
+              @click="goToS2Report(item.audit_no)"
+            >
+              상세보기
+            </button>
+            <button
+              class="btn btn-danger btn-sm"
+              v-if="item.report_s2_no === null"
+              @click="goToDetailAudit(item.audit_no)"
+            >
+              작성하기
+            </button>
           </td>
           <!-- 불러오기 -->
           <!--<td>
@@ -261,7 +303,8 @@ export default {
       const result = await this.$post('/api/report/list/search', {
         param: [this.user.userInfo.email]
       })
-      // console.log('db보고서정보', result.data)
+      console.log('result', result)
+      // console.log('db보고서정보', result.created_at_trans_report)
       // console.log(this.listByEmailAndSearchName.data)
       // console.log(result.data.length)
       // console.log(this.listByEmailAndSearchName.data.length)
@@ -290,7 +333,6 @@ export default {
               Intl.DateTimeFormat('fr-CA').format(
                 new Date(result.data[i].s1_report_created)
               )
-
             this.listByEmailAndSearchName.data[j].created_s2_report =
               Intl.DateTimeFormat('fr-CA').format(
                 new Date(result.data[i].s2_report_created)
@@ -572,6 +614,27 @@ export default {
       this.$router.push({
         path: '/customer/cert/detail',
         query: { audit_no: id }
+      })
+    },
+    goToTransReport(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/report/trans/detail',
+        query: { audit_no: id }
+      })
+    },
+    goToS1Report(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/report/s1/detail',
+        query: { id: id }
+      })
+    },
+    goToS2Report(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/report/s2/detail',
+        query: { id: id }
       })
     }
   }
