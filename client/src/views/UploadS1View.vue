@@ -361,29 +361,29 @@ export default {
     //   console.log(this.ile_transReport_originalname)
     //   console.log(this.file_transReport_Ext)
     // },
-    // async uploadS1(files) {
-    //   const r = await this.$upload('/api/upload/file', files[0])
-    //   console.log(r)
-    //   this.fileS1 = `http://localhost:3000/static/uploads/${r.filename}`
-    //   this.file_s1Report = r.filename
-    //   this.file_s1Report_originalname = r.originalname
-    //   this.file_s1Report_Ext = r.mimetype
-    //   console.log(this.file_s1Report)
-    //   console.log(this.file_s1Report_originalname)
-    //   console.log(this.file_s1Report_Ext)
-    // },
-
-    async uploadS2(files) {
+    async uploadS1(files) {
       const r = await this.$upload('/api/upload/file', files[0])
       console.log(r)
-      this.fileS2 = `http://localhost:3000/static/uploads/${r.filename}`
-      this.file_s2Report = r.filename
-      this.file_s2Report_originalname = r.originalname
-      this.file_s2Report_Ext = r.mimetype
-      console.log(this.file_s2Report)
-      console.log(this.file_s2Report_originalname)
-      console.log(this.file_s2Report_Ext)
+      this.fileS1 = `http://localhost:3000/static/uploads/${r.filename}`
+      this.file_s1Report = r.filename
+      this.file_s1Report_originalname = r.originalname
+      this.file_s1Report_Ext = r.mimetype
+      console.log(this.file_s1Report)
+      console.log(this.file_s1Report_originalname)
+      console.log(this.file_s1Report_Ext)
     },
+
+    // async uploadS2(files) {
+    //   const r = await this.$upload('/api/upload/file', files[0])
+    //   console.log(r)
+    //   this.fileS2 = `http://localhost:3000/static/uploads/${r.filename}`
+    //   this.file_s2Report = r.filename
+    //   this.file_s2Report_originalname = r.originalname
+    //   this.file_s2Report_Ext = r.mimetype
+    //   console.log(this.file_s2Report)
+    //   console.log(this.file_s2Report_originalname)
+    //   console.log(this.file_s2Report_Ext)
+    // },
 
     goToDetail(id) {
       // console.log('Detail로 넘긴 customer_id', id)
@@ -562,7 +562,8 @@ export default {
               report_s1_originalname: this.file_s1Report_originalname,
               report_s1_ext: this.file_s1Report_Ext,
               audit_no: this.list.audit_no,
-              business_no: this.list.business_no
+              business_no: this.list.business_no,
+              auditor_email: this.list.auditor_email
             }
           })
 

@@ -63,7 +63,7 @@ app.post(
   "/api/upload/image",
   imageUpload.single("attachment"),
   async (req, res) => {
-    console.log(req.file);
+    // console.log(req.file);
     // console.log(req.body);
 
     const fileInfo = {
@@ -101,8 +101,8 @@ app.post(
   "/api/upload/file",
   fileUpload.single("attachment"),
   async (req, res) => {
-    console.log(req.file);
-    console.log(req.body);
+    // console.log(req.file);
+    // console.log(req.body);
 
     const fileInfo = {
       customer_id: parseInt(req.body.customer_id),
@@ -194,6 +194,12 @@ app.get("/api/auditor/:auditor_id", async (req, res) => {
 app.get("/api/customer/all", async (req, res) => {
   const customerList = await mysql.query("customerList");
   res.send(customerList);
+});
+
+//report 전체조회
+app.get("/api/report/all", async (req, res) => {
+  const reportList = await mysql.query("reportListAll");
+  res.send(reportList);
 });
 
 //customer by auditor전체조회
@@ -371,6 +377,55 @@ app.get("/api/report/list", async (req, res) => {
   res.send(reportList);
 });
 
+// 업로드보고서 get 전체조회
+app.get("/api/upload/list/:audit_no", async (req, res) => {
+  // console.log(req.body.param);
+  const { audit_no } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  // console.log(audit_no);
+  const result = await mysql.query("uploadReportListAllByAuditNo", audit_no);
+
+  // console.log(result);
+  res.send(result[0]);
+});
+
+// 업로드Trans보고서 get 조회
+app.get("/api/upload/trans/:audit_no", async (req, res) => {
+  // console.log(req.body.param);
+  const { audit_no } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  // console.log(audit_no);
+  const result = await mysql.query("getUploadTrans", audit_no);
+  // console.log(result);
+  res.send(result[0]);
+});
+
+// 업로드S1보고서 get 조회
+app.get("/api/upload/s1/:audit_no", async (req, res) => {
+  // console.log(req.body.param);
+  const { audit_no } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  // console.log(audit_no);
+  const result = await mysql.query("getUploadS1", audit_no);
+  // console.log(result);
+  res.send(result[0]);
+});
+
+// 업로드S2보고서 get 조회
+app.get("/api/upload/s2/:audit_no", async (req, res) => {
+  // console.log(req.body.param);
+  const { audit_no } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  // console.log(audit_no);
+  const result = await mysql.query("getUploadS2", audit_no);
+  // console.log(result);
+  res.send(result[0]);
+});
+
 //active customer
 app.get("/api/customer/active", async (req, res) => {
   const activeCustomers = await mysql.query("activeCustomers");
@@ -387,7 +442,7 @@ app.post("/api/auditor", async (req, res) => {
 // customer 생성
 app.post("/api/customer", async (req, res) => {
   const result = await mysql.query("customerInsert", req.body.param);
-  console.log(result);
+  // console.log(result);
   res.send(result);
 });
 
@@ -407,7 +462,7 @@ app.post("/api/report/s1", async (req, res) => {
 // 2단계보고서 생성
 app.post("/api/report/s2", async (req, res) => {
   const result = await mysql.query("reportS2Insert", req.body.param);
-  console.log(result);
+  // console.log(result);
   res.send(result);
 });
 
@@ -427,19 +482,25 @@ app.post("/api/cert/audit", async (req, res) => {
 // 전환보고서 업로드 생성
 app.post("/api/upload/trans", async (req, res) => {
   const result = await mysql.query("uploadTrans", req.body.param);
-  console.log(result);
+  // console.log(result);
   res.send(result);
 });
 // S1보고서 업로드 생성
 app.post("/api/upload/s1", async (req, res) => {
   const result = await mysql.query("uploadS1", req.body.param);
-  console.log(result);
+  // console.log(result);
   res.send(result);
 });
 // S2보고서 업로드 생성
 app.post("/api/upload/s2", async (req, res) => {
   const result = await mysql.query("uploadS2", req.body.param);
-  console.log(result);
+  // console.log(result);
+  res.send(result);
+});
+// 인증서 업로드 생성
+app.post("/api/upload/cert", async (req, res) => {
+  const result = await mysql.query("insertCertUpload", req.body.param);
+  // console.log(result);
   res.send(result);
 });
 
@@ -504,6 +565,42 @@ app.put("/api/report/s2/:audit_no", async (req, res) => {
   // console.log(req.body.param);
   // console.log(customer_id);
   const result = await mysql.query("s2ReportUpdate", [
+    req.body.param,
+    audit_no,
+  ]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
+  res.send(result);
+});
+
+// upload Trans 수정
+app.put("/api/upload/trans/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  // console.log(req.body.param);
+  // console.log(customer_id);
+  const result = await mysql.query("updateUploadTransUpdate", [
+    req.body.param,
+    audit_no,
+  ]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
+  res.send(result);
+});
+
+// upload s1 수정
+app.put("/api/upload/s1/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  // console.log(req.body.param);
+  // console.log(customer_id);
+  const result = await mysql.query("updateUploadS1Update", [
+    req.body.param,
+    audit_no,
+  ]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
+  res.send(result);
+});
+
+// upload s2 수정
+app.put("/api/upload/s2/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  // console.log(req.body.param);
+  // console.log(customer_id);
+  const result = await mysql.query("updateUploadS2Update", [
     req.body.param,
     audit_no,
   ]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
@@ -593,6 +690,20 @@ app.post("/api/customer/auditor/search", async (req, res) => {
   res.send(result);
 });
 
+// customer All 검색  searchName
+app.post("/api/customer/search", async (req, res) => {
+  // console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("customerListBySearchName", [
+    req.body.param,
+    // req.body.param[0],
+  ]);
+  // console.log(result);
+  res.send(result);
+});
+
 // 심사정보 auditList 검색 post by auditor_email and searchName
 app.post("/api/cert/auditor/search", async (req, res) => {
   // console.log(req.body.param);
@@ -607,7 +718,21 @@ app.post("/api/cert/auditor/search", async (req, res) => {
   res.send(result);
 });
 
-// 심사보고서 전체조회
+// 심사정보 auditList 검색 searchName
+app.post("/api/cert/search", async (req, res) => {
+  // console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("auditListAllBySearchName", [
+    req.body.param,
+    // req.body.param[0],
+  ]);
+  // console.log(result);
+  res.send(result);
+});
+
+// 심사보고서 전체조회 by 심사원
 app.post("/api/report/list/search", async (req, res) => {
   // console.log(req.body.param);
   // const { auditor_email } = req.params;
@@ -619,7 +744,66 @@ app.post("/api/report/list/search", async (req, res) => {
     // req.body.param[2],
     // req.body.param[3],
   ]);
-  console.log(result);
+  // console.log(result);
+  res.send(result);
+});
+
+// 심사보고서 전체조회 All
+app.post("/api/report/all", async (req, res) => {
+  console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("reportListAll", [
+    req.body.param,
+    // req.body.param[0],
+    // req.body.param[2],
+    // req.body.param[3],
+  ]);
+  // console.log(result);
+  res.send(result);
+});
+
+// 업로드보고서 전체조회
+app.post("/api/upload/list/search", async (req, res) => {
+  // console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("uploadReportListAllByAuditNo", [
+    // req.body.param[1],
+    req.body.param[0],
+    req.body.param[1],
+    // req.body.param[2],
+  ]);
+  // console.log(result);
+  res.send(result[0]);
+});
+
+// 심사현황 시그널램프 조회 by auditor all join
+app.post("/api/mgt/signal/search", async (req, res) => {
+  // console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("allJoin", [
+    // req.body.param[1],
+    req.body.param[1],
+    req.body.param[0],
+    // req.body.param[2],
+  ]);
+  // console.log(result);
+  res.send(result);
+});
+
+// 심사현황 시그널램프 조회 by admin all join
+app.post("/api/mgt/signal/all", async (req, res) => {
+  // console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("allJoinAdmin", [req.body.param]);
+  // console.log(result);
   res.send(result);
 });
 
@@ -637,6 +821,28 @@ app.post("/api/report/list/search", async (req, res) => {
 // checkbox 저장 테스트
 app.post("/api/checkbox", async (req, res) => {
   const result = await mysql.query("insertCheckValue", req.body.param);
+  res.send(result);
+});
+
+// 세금계산서 발행정보 생성
+app.post("/api/tax", async (req, res) => {
+  const result = await mysql.query("insertTaxInvoice", req.body.param);
+  // console.log(result);
+  res.send(result);
+});
+
+// 세금계산서 발행정보 조회 by audit_no
+app.get("/api/tax/:audit_no", async (req, res) => {
+  const { audit_no } = req.params;
+  const result = await mysql.query("getTaxInvoice", audit_no);
+  // console.log(result);
+  res.send(result[0]);
+});
+
+// 입금정보 생성
+app.post("/api/fee", async (req, res) => {
+  const result = await mysql.query("insertCash", req.body.param);
+  // console.log(result);
   res.send(result);
 });
 
@@ -710,11 +916,11 @@ app.post("/login", async (req, res) => {
     userEmail: req.body.user.email,
     userPw: req.body.user.pw,
   };
-  console.log(user.userEmail, user.userPw);
+  // console.log(user.userEmail, user.userPw);
   //데이터 베이스에 해당하는 사용자가 있는지, 비밀번호 맞는지 체크해야 함..있다면 로그인 시킴
   let result = await mysql.query("getUser", user.userEmail);
   result = JSON.parse(JSON.stringify(result));
-  console.log(result);
+  // console.log(result);
   if (result.length == 0) {
     res.json({
       success: false,

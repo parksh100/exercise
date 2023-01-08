@@ -2,7 +2,7 @@
   <div class="container mt-5">
     <h3 class="mb-4 fw-bold text-center">인증심사등록</h3>
     <hr />
-    <p style="font-size: small">{{ id }}</p>
+    <!-- <p style="font-size: small">{{ id }}</p> -->
     <!-- <p style="font-size: small">{{ customer.iaf_code }}</p> -->
     <h5 class="fw-bold">
       <i class="fa-solid fa-square-caret-right" style="color: blueviolet"></i>

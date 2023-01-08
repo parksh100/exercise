@@ -178,10 +178,12 @@ const routes = [
       import(/* webpackChunkName: "report" */ '../views/ReportListView.vue')
   },
   {
-    path: '/report/list/mgt',
-    name: 'ReportMgtView',
+    path: '/upload/list',
+    name: 'UploadReportListView',
     component: () =>
-      import(/* webpackChunkName: "report" */ '../views/ReportMgtView.vue')
+      import(
+        /* webpackChunkName: "report" */ '../views/UploadReportListView.vue'
+      )
   },
   {
     path: '/report/trans/detail',
@@ -228,36 +230,124 @@ const routes = [
     path: '/upload/trans',
     name: 'UploadTransView',
     component: () =>
-      import(/* webpackChunkName: "report" */ '../views/UploadTransView.vue')
+      import(/* webpackChunkName: "upload" */ '../views/UploadTransView.vue')
   },
 
   {
     path: '/upload/s1',
     name: 'UploadS1View',
     component: () =>
-      import(/* webpackChunkName: "report" */ '../views/UploadS1View.vue')
+      import(/* webpackChunkName: "upload" */ '../views/UploadS1View.vue')
   },
 
   {
     path: '/upload/s2',
     name: 'UploadS2View',
     component: () =>
-      import(/* webpackChunkName: "report" */ '../views/UploadS2View.vue')
+      import(/* webpackChunkName: "upload" */ '../views/UploadS2View.vue')
   },
   {
-    path: '/upload/detail',
-    name: 'UploadReportDetailView',
+    path: '/upload/detail/trans',
+    name: 'UploadTransDetailView',
     component: () =>
       import(
-        /* webpackChunkName: "report" */ '../views/UploadReportDetailView.vue'
+        /* webpackChunkName: "upload" */ '../views/UploadTransDetailView.vue'
       )
   },
   {
-    path: '/report/upload/change',
-    name: 'UploadReportChangeView',
+    path: '/upload/detail/s1',
+    name: 'UploadS1DetailView',
+    component: () =>
+      import(/* webpackChunkName: "upload" */ '../views/UploadS1DetailView.vue')
+  },
+  {
+    path: '/upload/detail/s2',
+    name: 'UploadS2DetailView',
+    component: () =>
+      import(/* webpackChunkName: "upload" */ '../views/UploadS2DetailView.vue')
+  },
+  {
+    path: '/upload/trans/change',
+    name: 'UploadTransChangeView',
     component: () =>
       import(
-        /* webpackChunkName: "report" */ '../views/UploadReportChangeView.vue'
+        /* webpackChunkName: "upload" */ '../views/UploadTransChangeView.vue'
+      )
+  },
+  {
+    path: '/upload/s1/change',
+    name: 'UploadS1ChangeView',
+    component: () =>
+      import(/* webpackChunkName: "upload" */ '../views/UploadS1ChangeView.vue')
+  },
+  {
+    path: '/upload/s2/change',
+    name: 'UploadS2ChangeView',
+    component: () =>
+      import(/* webpackChunkName: "upload" */ '../views/UploadS2ChangeView.vue')
+  },
+  {
+    path: '/mgt/signal',
+    name: 'AuditSignalRampView',
+    component: () =>
+      import(/* webpackChunkName: "mgt" */ '../views/AuditSignalRampView.vue')
+  },
+  {
+    path: '/mgt/tax',
+    name: 'TaxInvoiceCreateView',
+    component: () =>
+      import(/* webpackChunkName: "mgt" */ '../views/TaxInvoiceCreateView.vue')
+  },
+  {
+    path: '/mgt/tax/detail',
+    name: 'TaxInvoiceDetailView',
+    component: () =>
+      import(/* webpackChunkName: "mgt" */ '../views/TaxInvoiceDetailView.vue')
+  },
+  {
+    path: '/mgt/tax/change',
+    name: 'TaxInvoiceChangeView',
+    component: () =>
+      import(
+        /* webpackChunkName: "report" */ '../views/TaxInvoiceChangeView.vue'
+      )
+  },
+  {
+    path: '/mgt/fee',
+    name: 'CashCreateView',
+    component: () =>
+      import(/* webpackChunkName: "mgt" */ '../views/CashCreateView.vue')
+  },
+  {
+    path: '/mgt/fee/detail',
+    name: 'CashDetailView',
+    component: () =>
+      import(/* webpackChunkName: "mgt" */ '../views/CashDetailView.vue')
+  },
+  {
+    path: '/mgt/fee/change',
+    name: 'CashChangeView',
+    component: () =>
+      import(/* webpackChunkName: "mgt" */ '../views/CashChangeView.vue')
+  },
+  {
+    path: '/mgt/upload/cert',
+    name: 'UploadCertCreateView',
+    component: () =>
+      import(/* webpackChunkName: "mgt" */ '../views/UploadCertCreateView.vue')
+  },
+  {
+    path: '/mgt/upload/cert/detail',
+    name: 'UploadCertDetailView',
+    component: () =>
+      import(/* webpackChunkName: "mgt" */ '../views/UploadCertDetailView.vue')
+  },
+  {
+    path: '/mgt/upload/cert/change',
+    name: 'UploadCertChangeView',
+    component: () =>
+      import(
+        /* webpackChunkName: "report" */ '../views/UploadCertChangeView.vue'
       )
   }
 ]

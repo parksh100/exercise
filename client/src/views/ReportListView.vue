@@ -13,15 +13,12 @@
           type="search"
           class="form-control"
           v-model.trim="searchName"
-          @keyup.enter="getAuditListBySearch"
+          @keyup.enter="searchFunction"
           placeholder="Name"
         />
       </div>
       <div class="col-12">
-        <button
-          class="btn btn-outline-primary me-1"
-          @click="getAuditListBySearch"
-        >
+        <button class="btn btn-outline-primary me-1" @click="searchFunction">
           조회
         </button>
         <button class="btn btn-outline-success me-1" @click="goToList">
@@ -232,7 +229,8 @@ export default {
       listByEmailAndSearchName: [],
       reportList: [],
       auditor_email: '',
-      searchName: ''
+      searchName: '',
+      searchFunction: ''
       // selectedItem: {
       //   auditor_id: -1,
       //   auditor_name: '',
@@ -262,11 +260,21 @@ export default {
     // console.log('listByAuditor', this.listByAuditor)
     console.log('userEmail', this.user.userInfo.email)
     console.log('searchName', this.searchName)
+    console.log('role', this.user.userInfo.role)
 
-    // this.getList()
-    this.getAuditListBySearch()
-    // this.getReportBySearch()
-    console.log(this.searchName)
+    if (this.user.userInfo.role === 'auditor') {
+      this.getAuditListBySearch()
+      this.searchFunction = this.getAuditListBySearch
+    } else {
+      this.getAuditListAllBySearch()
+      this.searchFunction = this.getAuditListAllBySearch
+    }
+
+    // if (this.user.userInfo.role === 'auditor') {
+    //   this.getReportBySearch()
+    // } else {
+    //   this.getReportAll()
+    // }
   },
   unmounted() {},
 
@@ -286,13 +294,31 @@ export default {
       )
       // this.listByEmailAndSearchName.replace('QMS', 'Q')
 
-      console.log('db심사정보', this.listByEmailAndSearchName)
+      console.log('db심사원별심사정보', this.listByEmailAndSearchName)
       this.getReportBySearch()
 
       loader.hide()
     },
 
-    // 등록된 심사정보에 audit_no 대한 보고서 정보 및 조회 적용
+    // 등록된 심사정보 All & 조회 적용
+    async getAuditListAllBySearch() {
+      const loader = this.$loading.show({ canCancel: false })
+      console.log(this.user.userInfo.email)
+      const searchName = `%${this.searchName.toLowerCase()}%`
+      console.log(searchName)
+
+      this.listByEmailAndSearchName = await this.$post('/api/cert/search', {
+        param: [searchName]
+      })
+      // this.listByEmailAndSearchName.replace('QMS', 'Q')
+
+      console.log('db관리자용심사정보', this.listByEmailAndSearchName)
+      this.getReportAll()
+
+      loader.hide()
+    },
+
+    // 등록된  보고서 정보 및 조회 적용
     async getReportBySearch() {
       // console.log(id)
       const loader = this.$loading.show({ canCancel: false })
@@ -303,12 +329,8 @@ export default {
       const result = await this.$post('/api/report/list/search', {
         param: [this.user.userInfo.email]
       })
-      console.log('result', result)
-      // console.log('db보고서정보', result.created_at_trans_report)
-      // console.log(this.listByEmailAndSearchName.data)
-      // console.log(result.data.length)
-      // console.log(this.listByEmailAndSearchName.data.length)
-      // console.log(id)
+      console.log('db심사원별 result', result)
+
       for (let i = 0; i < result.data.length; i++) {
         // console.log(result.data[i].audit_no)
         for (let j = 0; j < this.listByEmailAndSearchName.data.length; j++) {
@@ -349,9 +371,73 @@ export default {
 
       // console.log('심사번호별보고서작성정보', this.reportList)
       console.log(
-        '심사번호별보고서작성정보',
+        'auditor심사번호별보고서작성정보',
         this.listByEmailAndSearchName.data
       )
+      loader.hide()
+    },
+
+    // 등록된 보고서 All 정보 및 조회 적용
+    async getReportAll() {
+      // console.log(id)
+      const loader = this.$loading.show({ canCancel: false })
+      // console.log(this.user.userInfo.email)
+      const searchName = `%${this.searchName.toLowerCase()}%`
+      console.log(searchName)
+
+      const result = await this.$post('/api/report/all')
+      console.log('db관리자용result', result.data)
+      // console.log('db보고서정보', result)
+      // console.log(this.listByEmailAndSearchName.data)
+      console.log(result.data.length)
+      // console.log(this.listByEmailAndSearchName.data.length)
+      // console.log(id)
+      for (let i = 0; i < result.data.length; i++) {
+        // console.log(result.data[i].audit_no)
+        for (let j = 0; j < this.listByEmailAndSearchName.data.length; j++) {
+          // console.log(j)
+          // console.log(result.data[i].audit_no)
+          // console.log(this.listByEmailAndSearchName.data[j].audit_no)
+          // console.log(result.data[i].audit_no)
+          // console.log(this.listByEmailAndSearchName.data[j].audit_no)
+          if (
+            result.data[i].audit_no ===
+            this.listByEmailAndSearchName.data[j].audit_no
+          ) {
+            this.listByEmailAndSearchName.data[j].audit_no =
+              result.data[i].audit_no
+            this.listByEmailAndSearchName.data[j].report_s1_no =
+              result.data[i].report_s1_no
+            this.listByEmailAndSearchName.data[j].report_s2_no =
+              result.data[i].report_s2_no
+            this.listByEmailAndSearchName.data[j].report_trans_no =
+              result.data[i].report_trans_no
+            this.listByEmailAndSearchName.data[j].created_s1_report =
+              Intl.DateTimeFormat('fr-CA').format(
+                new Date(result.data[i].s1_report_created)
+              )
+            this.listByEmailAndSearchName.data[j].created_s2_report =
+              Intl.DateTimeFormat('fr-CA').format(
+                new Date(result.data[i].s2_report_created)
+              )
+
+            this.listByEmailAndSearchName.data[j].created_trans_report =
+              Intl.DateTimeFormat('fr-CA').format(
+                new Date(result.data[i].created_at_trans_report)
+              )
+          }
+        }
+        // this.reportList.push(result.data[i].audit_no)
+      }
+
+      console.log(
+        'admin 심사번호별보고서작성정보',
+        this.listByEmailAndSearchName.data
+      )
+      // console.log(
+      //   '심사번호별보고서작성정보',
+      //   this.listByEmailAndSearchName.data
+      // )
       loader.hide()
     },
 

@@ -14,16 +14,13 @@
           type="search"
           class="form-control"
           v-model.trim="searchName"
-          @keyup.enter="getAuditListBySearch"
+          @keyup.enter="SearchFunction"
           placeholder="Name"
         />
       </div>
 
       <div class="col-12">
-        <button
-          class="btn btn-outline-primary me-1"
-          @click="getAuditListBySearch"
-        >
+        <button class="btn btn-outline-primary me-1" @click="SearchFunction">
           조회
         </button>
         <button class="btn btn-outline-success me-1" @click="goToList">
@@ -41,20 +38,21 @@
     <table
       class="table table-bordered"
       style="table-layout: fixed; font-size: 15px"
+      v-if="this.user.userInfo.role === 'auditor'"
     >
       <thead>
         <tr class="bg-light table-group-divider">
           <!-- <th width="4%">ID</th> -->
-          <th style="width: 15%">심사번호</th>
+          <th style="width: 13%">심사번호</th>
           <th style="width: 15%">회사명</th>
           <!-- <th style="width: 7%">인증유형</th> -->
-          <th style="width: 20%; word-break: break-all">표준</th>
-          <th style="width: 8%">유형</th>
-          <th style="width: 9%">시작일</th>
-          <th style="width: 9%">종료일</th>
-          <th style="width: 9%">심사원</th>
+          <th style="width: 15%; word-break: break-all">표준</th>
+          <th style="width: 9%">유형</th>
+          <th style="width: 10%">시작일</th>
+          <th style="width: 10%">종료일</th>
+          <th style="width: 8%">심사원</th>
           <th style="width: 10%">심사비</th>
-          <th style="width: 10%">보고서작성</th>
+          <th style="width: 10%">바로가기</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
@@ -99,53 +97,104 @@
             {{ $convertNumberFormat(item.audit_fee, '#,###') }}원
           </td>
           <td>
-            <!-- <button
-              class="btn btn-primary btn-sm me-1"
-              @click="goToDetail(item.customer_id)"
-            >
-              상세보기
-            </button> -->
-            <!-- <button
-              class="btn btn-danger btn-sm me-1"
-              @click="doDelete(item.customer_id)"
-            >
-              삭제
-            </button> -->
-            <!-- <p>{{ item.customer_id }}</p> -->
             <button
               class="btn btn-primary btn-sm me-1"
               @click="goToDetailAudit(item.audit_no)"
             >
               보고서작성
             </button>
-            <!-- <router-link
-              :to="{
-                name: 'CertCreateView',
-                params: { customer_id: item.customer_id }
-              }"
-              class="btn btn-primary btn-sm me-1"
-              >심사신청</router-link
-            > -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-            <!--<button
-              class="btn btn-info btn-sm me-1"
-              @click="goToCR(item.customer_id)"
+    <!-- admin Table -->
+    <table
+      class="table table-bordered"
+      style="table-layout: fixed; font-size: 15px"
+      v-if="this.user.userInfo.role === 'admin'"
+    >
+      <thead>
+        <tr class="bg-light table-group-divider">
+          <!-- <th width="4%">ID</th> -->
+          <th style="width: 13%">심사번호</th>
+          <th style="width: 15%">회사명</th>
+          <!-- <th style="width: 7%">인증유형</th> -->
+          <th style="width: 15%; word-break: break-all">표준</th>
+          <th style="width: 9%">유형</th>
+          <th style="width: 10%">시작일</th>
+          <th style="width: 10%">종료일</th>
+          <th style="width: 8%">심사원</th>
+          <!-- <th style="width: 10%">심사비</th> -->
+          <th style="width: 40%">바로가기</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr
+          :key="item.customer_id"
+          v-for="item in listByEmailAndSearchName.data"
+        >
+          <td style="word-break: break-all">
+            <a
+              @click="goToDetailAudit(item.audit_no)"
+              class="text-decoration-underline"
+              role="button"
+              >{{ item.audit_no }}</a
             >
-              계약검토
+          </td>
+          <!-- <td>{{ item.customer_id }}</td> -->
+          <td>
+            <!-- <a
+              @click="goToDetail(item.customer_id)"
+              style="text-decoration: underline"
+              role="button"
+              >{{ item.name_ko }}</a
+            > -->
+            <a
+              @click="goToDetail(item.business_no)"
+              class="text-decoration-underline"
+              role="button"
+              >{{ item.name_ko }}</a
+            >
+          </td>
+          <!-- <td>{{ item.certification_type }}</td> -->
+          <td style="word-break: break-all">{{ item.audit_standard }}</td>
+          <td>{{ item.audit_type + item.audit_degree }}</td>
+          <td>
+            {{ $convertDateFormat(item.audit_s2_start, 'YYYY-MM-DD') }}
+          </td>
+          <td>
+            {{ $convertDateFormat(item.audit_s2_end, 'YYYY-MM-DD') }}
+          </td>
+          <td>{{ item.auditor_name }}</td>
+          <!-- <td class="text-end">
+            {{ $convertNumberFormat(item.audit_fee, '#,###') }}원
+          </td> -->
+          <td>
+            <button
+              class="btn btn-primary btn-sm me-1"
+              @click="goToDetailAudit(item.audit_no)"
+            >
+              보고서작성
             </button>
-
-            <button class="btn btn-success btn-sm me-1">심사계획서</button>
             <button
               class="btn btn-warning btn-sm me-1"
-              @click="
-                changeStatus(
-                  item.customer_id,
-                  item.status_yn === 'Y' ? 'N' : 'Y'
-                )
-              "
+              @click="goToTaxCreate(item.audit_no)"
             >
-              {{ item.status_yn === 'Y' ? '사용중지' : '사용' }}
-            </button> -->
+              T/I등록
+            </button>
+            <button
+              class="btn btn-danger btn-sm me-1"
+              @click="goToCashCreate(item.audit_no)"
+            >
+              Cash등록
+            </button>
+            <button
+              class="btn btn-success btn-sm me-1"
+              @click="goToCertUpload(item.audit_no)"
+            >
+              인증서등록
+            </button>
           </td>
         </tr>
       </tbody>
@@ -182,8 +231,10 @@ export default {
       list: [],
       listByAuditor: [],
       listByEmailAndSearchName: [],
+      listAuditBySearchName: [],
       auditor_email: '',
-      searchName: ''
+      searchName: '',
+      SearchFunction: ''
       // selectedItem: {
       //   auditor_id: -1,
       //   auditor_name: '',
@@ -212,10 +263,18 @@ export default {
     // })
     // console.log('listByAuditor', this.listByAuditor)
     console.log('userEmail', this.user.userInfo.email)
+    console.log('userRole', this.user.userInfo.role)
+
     console.log('searchName', this.searchName)
 
     // this.getList()
-    this.getAuditListBySearch()
+    if (this.user.userInfo.role === 'auditor') {
+      this.getAuditListBySearch()
+      this.SearchFunction = this.getAuditListBySearch
+    } else {
+      this.getAllAuditListBySearch()
+      this.SearchFunction = this.getAllAuditListBySearch
+    }
   },
   unmounted() {},
   methods: {
@@ -238,6 +297,23 @@ export default {
         this.listByEmailAndSearchName
       )
       console.log(this.listByEmailAndSearchName.audit_s1_start)
+      loader.hide()
+    },
+    // admin 조회 적용
+    async getAllAuditListBySearch() {
+      const loader = this.$loading.show({ canCancel: false })
+      console.log(this.user.userInfo.email)
+      const searchName = `%${this.searchName.toLowerCase()}%`
+      console.log(searchName)
+
+      this.listByEmailAndSearchName = await this.$post('/api/cert/search', {
+        param: [searchName]
+      })
+
+      console.log(
+        'auditListByEmailAndSearchName',
+        this.listByEmailAndSearchName
+      )
       loader.hide()
     },
 
@@ -500,6 +576,24 @@ export default {
       this.$router.push({
         path: '/customer/cert/detail',
         query: { audit_no: id }
+      })
+    },
+    goToTaxCreate(id) {
+      this.$router.push({
+        path: '/mgt/tax/',
+        query: { id: id }
+      })
+    },
+    goToCashCreate(id) {
+      this.$router.push({
+        path: '/mgt/fee/',
+        query: { id: id }
+      })
+    },
+    goToCertUpload(id) {
+      this.$router.push({
+        path: '/mgt/upload/cert',
+        query: { id: id }
       })
     }
   }

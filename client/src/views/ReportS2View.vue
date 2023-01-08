@@ -882,6 +882,7 @@
               id=""
               cols="30"
               rows="3"
+              maxlength="200"
               class="form-control"
               v-model="s2CheckPoint.documentStructure"
             ></textarea
@@ -898,6 +899,7 @@
               id=""
               cols="30"
               rows="3"
+              maxlength="200"
               class="form-control"
               v-model="s2CheckPoint.difference"
             ></textarea
@@ -915,6 +917,7 @@
               id=""
               cols="30"
               rows="3"
+              maxlength="200"
               class="form-control"
               v-model="s2CheckPoint.doubleWorkplace"
             ></textarea
@@ -935,6 +938,7 @@
               id=""
               cols="30"
               rows="3"
+              maxlength="200"
               class="form-control"
               v-model="s2CheckPoint.constructSite"
             ></textarea
@@ -953,6 +957,7 @@
               id=""
               cols="30"
               rows="3"
+              maxlength="200"
               class="form-control"
               v-model="s2CheckPoint.outSourcing"
             ></textarea
@@ -971,6 +976,7 @@
               id=""
               cols="30"
               rows="3"
+              maxlength="200"
               class="form-control"
               v-model="s2CheckPoint.exclusiveClause"
             ></textarea
@@ -989,6 +995,7 @@
               id=""
               cols="30"
               rows="3"
+              maxlength="200"
               class="form-control"
               v-model="s2CheckPoint.previousAudit"
             ></textarea
@@ -1005,6 +1012,7 @@
               id=""
               cols="30"
               rows="3"
+              maxlength="200"
               class="form-control"
               v-model="s2CheckPoint.appliedLaw"
             ></textarea
@@ -1021,6 +1029,7 @@
               id=""
               cols="30"
               rows="3"
+              maxlength="200"
               class="form-control"
               v-model="s2CheckPoint.logoUsage"
             ></textarea
@@ -1054,6 +1063,7 @@
               id=""
               cols="30"
               rows="2"
+              maxlength="150"
               class="form-control"
               v-model="s2Change.companyName"
             ></textarea
@@ -1070,6 +1080,7 @@
               id=""
               cols="30"
               rows="2"
+              maxlength="150"
               class="form-control"
               v-model="s2Change.companyAddress"
             ></textarea
@@ -1085,6 +1096,7 @@
               id=""
               cols="30"
               rows="2"
+              maxlength="150"
               class="form-control"
               v-model="s2Change.companyCeo"
             ></textarea
@@ -1100,6 +1112,7 @@
               id=""
               cols="30"
               rows="2"
+              maxlength="150"
               class="form-control"
               v-model="s2Change.companyEmployee"
             ></textarea
@@ -1114,6 +1127,7 @@
               id=""
               cols="30"
               rows="2"
+              maxlength="150"
               class="form-control"
               v-model="s2Change.scope"
             ></textarea
@@ -1128,6 +1142,7 @@
               id=""
               cols="30"
               rows="2"
+              maxlength="150"
               class="form-control"
               v-model="s2Change.concernedLaw"
             ></textarea
@@ -1144,6 +1159,7 @@
               id=""
               cols="30"
               rows="2"
+              maxlength="150"
               class="form-control"
               v-model="s2Change.mgtSystem"
             ></textarea
@@ -1158,6 +1174,7 @@
               id=""
               cols="30"
               rows="2"
+              maxlength="150"
               class="form-control"
               v-model="s2Change.majorProcess"
             ></textarea
@@ -1172,6 +1189,7 @@
               id=""
               cols="30"
               rows="2"
+              maxlength="150"
               class="form-control"
               v-model="s2Change.etc"
             ></textarea
@@ -1208,6 +1226,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.orgStatus"
             ></textarea
             >({{ this.s2AuditCheckpoint.orgStatus.length }}/250)
@@ -1236,6 +1255,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.needs"
             ></textarea
             >({{ this.s2AuditCheckpoint.needs.length }}/250)
@@ -1264,6 +1284,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.employeeNeeds"
             ></textarea
             >({{ this.s2AuditCheckpoint.employeeNeeds.length }}/250)
@@ -1297,6 +1318,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.appliedScope"
             ></textarea
             >({{ this.s2AuditCheckpoint.appliedScope.length }}/250)
@@ -1325,6 +1347,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.qmsProcess"
             ></textarea
             >({{ this.s2AuditCheckpoint.qmsProcess.length }}/250)
@@ -1353,6 +1376,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.eomSystem"
             ></textarea
             >({{ this.s2AuditCheckpoint.eomSystem.length }}/250)
@@ -1384,6 +1408,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.leadership"
             ></textarea
             >({{ this.s2AuditCheckpoint.leadership.length }}/250)
@@ -1412,6 +1437,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.policy"
             ></textarea
             >({{ this.s2AuditCheckpoint.policy.length }}/250)
@@ -1440,6 +1466,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.role"
             ></textarea
             >({{ this.s2AuditCheckpoint.role.length }}/250)
@@ -1468,6 +1495,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.employeeParticipation"
             ></textarea
             >({{ this.s2AuditCheckpoint.employeeParticipation.length }}/250)
@@ -1501,6 +1529,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="500"
               v-model="s2AuditCheckpoint.riskHandling"
             ></textarea
             >({{ this.s2AuditCheckpoint.riskHandling.length }}/500)
@@ -1529,6 +1558,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.objectPlan"
             ></textarea
             >({{ this.s2AuditCheckpoint.objectPlan.length }}/250)
@@ -1557,6 +1587,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.changePlan"
             ></textarea
             >({{ this.s2AuditCheckpoint.changePlan.length }}/250)
@@ -1585,6 +1616,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.reSource"
             ></textarea
             >({{ this.s2AuditCheckpoint.reSource.length }}/250)
@@ -1613,6 +1645,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.capability"
             ></textarea
             >({{ this.s2AuditCheckpoint.capability.length }}/250)
@@ -1641,6 +1674,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.recognition"
             ></textarea
             >({{ this.s2AuditCheckpoint.recognition.length }}/250)
@@ -1669,6 +1703,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.communication"
             ></textarea
             >({{ this.s2AuditCheckpoint.communication.length }}/250)
@@ -1697,6 +1732,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.document"
             ></textarea
             >({{ this.s2AuditCheckpoint.document.length }}/250)
@@ -1725,6 +1761,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="500"
               v-model="s2AuditCheckpoint.operationPlan"
             ></textarea
             >({{ this.s2AuditCheckpoint.operationPlan.length }}/500)
@@ -1753,6 +1790,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="500"
               v-model="s2AuditCheckpoint.productServiceRequirement"
             ></textarea
             >({{ this.s2AuditCheckpoint.productServiceRequirement.length }}/500)
@@ -1781,6 +1819,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.emergency"
             ></textarea
             >({{ this.s2AuditCheckpoint.emergency.length }}/250)
@@ -1809,6 +1848,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.design"
             ></textarea
             >({{ this.s2AuditCheckpoint.design.length }}/250)
@@ -1837,6 +1877,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.purchase"
             ></textarea
             >({{ this.s2AuditCheckpoint.purchase.length }}/250)
@@ -1865,6 +1906,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="500"
               v-model="s2AuditCheckpoint.productService"
             ></textarea
             >({{ this.s2AuditCheckpoint.productService.length }}/500)
@@ -1893,6 +1935,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.productRelease"
             ></textarea
             >({{ this.s2AuditCheckpoint.productRelease.length }}/250)
@@ -1921,6 +1964,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.output"
             ></textarea
             >({{ this.s2AuditCheckpoint.output.length }}/250)
@@ -1949,6 +1993,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.monitoring"
             ></textarea
             >({{ this.s2AuditCheckpoint.monitoring.length }}/250)
@@ -1983,6 +2028,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="250"
               v-model="s2AuditCheckpoint.internal_audit"
             ></textarea
             >({{ this.s2AuditCheckpoint.internal_audit.length }}/250)
@@ -2015,6 +2061,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="500"
               v-model="s2AuditCheckpoint.management_review"
             ></textarea
             >({{ this.s2AuditCheckpoint.management_review.length }}/500)
@@ -2043,6 +2090,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="500"
               v-model="s2AuditCheckpoint.general"
             ></textarea
             >({{ this.s2AuditCheckpoint.general.length }}/500)
@@ -2071,6 +2119,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="500"
               v-model="s2AuditCheckpoint.nonconformity"
             ></textarea
             >({{ this.s2AuditCheckpoint.nonconformity.length }}/500)
@@ -2099,6 +2148,7 @@
               name=""
               id=""
               rows="3"
+              maxlength="500"
               v-model="s2AuditCheckpoint.continuousImprove"
             ></textarea
             >({{ this.s2AuditCheckpoint.continuousImprove.length }}/500)

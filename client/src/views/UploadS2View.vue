@@ -600,7 +600,8 @@ export default {
               report_s2_originalname: this.file_s2Report_originalname,
               report_s2_ext: this.file_s2Report_Ext,
               audit_no: this.list.audit_no,
-              business_no: this.list.business_no
+              business_no: this.list.business_no,
+              auditor_email: this.list.auditor_email
             }
           })
 

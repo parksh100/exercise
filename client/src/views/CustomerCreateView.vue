@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <h3 class="mb-4 fw-bold text-center">인증심사신청</h3>
+    <h3 class="mb-4 fw-bold text-center">고객정보등록</h3>
     <hr />
     <div class="row mb-3">
       <label class="col-sm-3 col-form-label">고객구분</label>

@@ -233,21 +233,41 @@
           </li>
 
           <!-- 보고서 제출(업로드) -->
-          <li class="p-1" role="button">
+          <li
+            class="p-1"
+            role="button"
+            v-show="
+              (this.list.audit_type === '전환사후' ||
+                this.list.audit_type === '전환갱신') &&
+              this.dbUploadedReportInfo.report_t_upload_id === null
+            "
+          >
             <span
               class="p-2 bg-warning rounded text-black"
               @click="goToUploadTrans"
               >전환보고서업로드</span
             >
           </li>
-          <li class="p-1" role="button">
+
+          <li
+            class="p-1"
+            role="button"
+            v-show="
+              this.list.audit_type === '최초' &&
+              this.dbUploadedReportInfo.report_s1_upload_id === null
+            "
+          >
             <span
               class="p-2 bg-warning rounded text-black"
               @click="goToUploadS1"
               >S1보고서업로드</span
             >
           </li>
-          <li class="p-1" role="button">
+          <li
+            class="p-1"
+            role="button"
+            v-show="this.dbUploadedReportInfo.report_s2_upload_id === null"
+          >
             <span
               class="p-2 bg-warning rounded text-black"
               @click="goToUploadS2"
@@ -299,7 +319,7 @@ export default {
   data() {
     return {
       id: '',
-      // searchName: '',
+      searchName: '',
       userEmail: '',
       imgSrc: '',
       imgExt: '',
@@ -309,7 +329,10 @@ export default {
       dbTransReportInfo: {},
       dbS1ReportInfo: {},
       dbS2ReportInfo: {},
-      dbAllReportInfo: {}
+      dbAllReportInfo: {},
+      dbUploadedReportInfo: {},
+      dbUploadedS1Info: [],
+      dbUploadedS2Info: []
     }
   },
   created() {
@@ -336,10 +359,46 @@ export default {
     this.getTransReportInfo()
     this.getS1ReportInfo()
     this.getS2ReportInfo()
-    // this.getReportAllByAuditNo()
+    this.getUploadReport()
   },
   unmounted() {},
   methods: {
+    // async getUploadReport() {
+    //   const loader = this.$loading.show({ canCancel: false })
+    //   console.log(this.user.userInfo.email)
+    //   // const searchName = `%${this.searchName.toLowerCase()}%`
+    //   // console.log(searchName)
+
+    //   this.dbUploadedReportInfo = await this.$post('/api/upload/list/search', {
+    //     param: [this.user.userInfo.email, this.id]
+    //   })
+
+    //   console.log('업로드보고서목록', this.dbUploadedReportInfo)
+
+    //   console.log(this.dbUploadedReportInfo.data.report_t_upload_id)
+    //   console.log(this.dbUploadedReportInfo.data.report_s1_upload_id)
+    //   console.log(this.dbUploadedReportInfo.data.report_s2_upload_id)
+
+    //   loader.hide()
+    // },
+
+    async getUploadReport() {
+      const loader = this.$loading.show({ canCancel: false })
+      console.log(this.user.userInfo.email)
+      // const searchName = `%${this.searchName.toLowerCase()}%`
+      // console.log(searchName)
+
+      this.dbUploadedReportInfo = await this.$get(`/api/upload/list/${this.id}`)
+
+      console.log('업로드보고서목록', this.dbUploadedReportInfo)
+
+      // console.log(this.dbUploadedReportInfo.report_t_upload_id)
+      // console.log(this.dbUploadedReportInfo.report_s1_upload_id)
+      // console.log(this.dbUploadedReportInfo.report_s2_upload_id)
+
+      loader.hide()
+    },
+
     async getList() {
       const loader = this.$loading.show({ canCancel: false })
       this.list = await this.$get(`/api/customer/cert/list/detail/${this.id}`)
@@ -412,13 +471,13 @@ export default {
       console.log(transReport)
       this.dbTransReportInfo = transReport
       console.log('전환보고서정보', this.dbTransReportInfo)
-      if (this.dbTransReportInfo.created_at_trans_report === null) {
-        this.dbTransReportInfo.created_at_trans_report = ''
-      } else {
-        this.dbTransReportInfo.created_at_trans_report = Intl.DateTimeFormat(
-          'fr-CA'
-        ).format(new Date(this.dbTransReportInfo.created_at_trans_report))
-      }
+      // if (this.dbTransReportInfo.created_at_trans_report === null) {
+      //   this.dbTransReportInfo.created_at_trans_report = ''
+      // } else {
+      //   this.dbTransReportInfo.created_at_trans_report = Intl.DateTimeFormat(
+      //     'fr-CA'
+      //   ).format(new Date(this.dbTransReportInfo.created_at_trans_report))
+      // }
     },
 
     async getS1ReportInfo() {

@@ -320,34 +320,6 @@ export default {
       const loader = this.$loading.show({ canCancel: false })
       this.list = await this.$get(`/api/customer/cert/list/detail/${this.id}`)
       console.log(this.list)
-      // console.log(this.list.audit_created_date)
-      const dbDate = this.list.audit_created_date
-      // console.log(dbDate)
-      this.list.audit_created_date = Intl.DateTimeFormat('fr-CA').format(
-        new Date(dbDate)
-      )
-      if (this.list.audit_s1_start === null) {
-        this.list.audit_s1_start = ''
-      } else {
-        this.list.audit_created_date = Intl.DateTimeFormat('fr-CA').format(
-          new Date(dbDate)
-        )
-      }
-
-      if (this.list.audit_s1_end === null) {
-        this.list.audit_s1_end = ''
-      } else {
-        this.list.audit_s1_end = Intl.DateTimeFormat('fr-CA').format(
-          new Date(this.list.audit_s1_end)
-        )
-      }
-
-      this.list.audit_s2_start = Intl.DateTimeFormat('fr-CA').format(
-        new Date(this.list.audit_s2_start)
-      )
-      this.list.audit_s2_end = Intl.DateTimeFormat('fr-CA').format(
-        new Date(this.list.audit_s2_end)
-      )
 
       loader.hide()
     },
@@ -524,7 +496,8 @@ export default {
               report_trans_originalname: this.file_transReport_originalname,
               report_trans_ext: this.file_transReport_Ext,
               audit_no: this.list.audit_no,
-              business_no: this.list.business_no
+              business_no: this.list.business_no,
+              auditor_email: this.list.auditor_email
             }
           })
 

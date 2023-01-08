@@ -198,22 +198,38 @@ export default {
     console.log('userEmail', this.user.userInfo.email)
     console.log('searchName', this.searchName)
 
-    // this.listByAuditor = await this.$post('/api/customer/auditor/search', {
-    //   param: [this.searchName, this.user.userInfo.email]
-    // })
-    // console.log('list', this.listByAuditor)
-    this.getSearch()
+    if (this.user.userInfo.role === 'auditor') {
+      this.getSearch()
+    } else {
+      this.getAllCustomerSearch()
+    }
   },
   unmounted() {},
   methods: {
     async getSearch() {
       const loader = this.$loading.show({ canCancel: false })
       console.log(this.user.userInfo.email)
+      console.log(this.user.userInfo.role)
       const searchName = `%${this.searchName.toLowerCase()}%`
       console.log(searchName)
 
       this.listByAuditor = await this.$post('/api/customer/auditor/search', {
         param: [searchName, this.user.userInfo.email]
+      })
+
+      console.log('listByAuditor', this.listByAuditor)
+
+      loader.hide()
+    },
+
+    async getAllCustomerSearch() {
+      const loader = this.$loading.show({ canCancel: false })
+      console.log(this.user.userInfo.email)
+      const searchName = `%${this.searchName.toLowerCase()}%`
+      console.log(searchName)
+
+      this.listByAuditor = await this.$post('/api/customer/search', {
+        param: [searchName]
       })
 
       console.log('listByAuditor', this.listByAuditor)

@@ -87,10 +87,10 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                :class="{ active: $route.path == '/report/list/mgt' }"
-                @click="goToMenu('/report/list/mgt')"
+                :class="{ active: $route.path == '/mgt/signal' }"
+                @click="goToMenu('/mgt/signal')"
                 role="button"
-                >보고서제출현황</a
+                >심사진행현황</a
               >
             </li>
             <!-- <li class="nav-item">
