@@ -718,6 +718,28 @@ app.post("/api/cert/auditor/search", async (req, res) => {
   res.send(result);
 });
 
+// ActiveCustomer by auditor_email
+app.post("/api/customer/active/", async (req, res) => {
+  // console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("activeCustomerList", [req.body.param]);
+  // console.log(result);
+  res.send(result);
+});
+
+// customerCount by Month
+app.post("/api/customer/count/month", async (req, res) => {
+  // console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("customerCountByMonth", [req.body.param]);
+  // console.log(result);
+  res.send(result);
+});
+
 // 심사정보 auditList 검색 searchName
 app.post("/api/cert/search", async (req, res) => {
   // console.log(req.body.param);
@@ -729,6 +751,21 @@ app.post("/api/cert/search", async (req, res) => {
     // req.body.param[0],
   ]);
   // console.log(result);
+  res.send(result);
+});
+
+// 심사정보 auditList 검색 auditor_email, s2startDate, s2endDate
+app.post("/api/cert/condition/search", async (req, res) => {
+  console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("certByEmailDate", [
+    req.body.param[0],
+    req.body.param[1],
+    req.body.param[2],
+  ]);
+  console.log(result);
   res.send(result);
 });
 

@@ -1,6 +1,7 @@
 module.exports = {
   // auditorList: `select * from auditor`,
   customerList: `select * from customer`,
+  activeCustomerList: `select * from customer where customer.status_yn = 'Y' and customer.auditor_email =?`,
   crList: `select * from contract_review`,
   auditListByAuditorEmail: `select t1.*, t2.* from customer t1, certification_audit t2 where t1.auditor_email=? order by t2.audit_created_date desc`,
   auditList: `select t1.name_ko, t2.* from customer t1, certification_audit t2 where t1.customer_id = t2.customer_id`,
@@ -60,7 +61,7 @@ module.exports = {
   certDetail: `select t1.*, t2. * from customer t1, certification_audit t2 where t1.customer_id= t2.customer_id and t2.audit_id=?`,
   crDetail: `select * from contract_review where customer_id=?`,
   auditorListByCondition: `select * from auditor where lower(auditor_name) like ?`,
-  customerListByCondition: `select * from customer where lower(name_ko) like ?`,
+  customerListByCondition: `select * from customer where lower(name_ko) like ? order by customer_created_date desc`,
   customerListByEmail: `select * from customer where auditor_email = ?`,
   customerListByEmailAndSearchName: `select t1.* from customer t1 where t1.auditor_email = ? and lower(name_ko) like ? order by t1.customer_created_date desc`,
   customerListBySearchName: `select t1.* from customer t1 where  lower(name_ko) like ? order by t1.customer_created_date desc`,
@@ -114,4 +115,20 @@ module.exports = {
   getTaxInvoice: `select * from tax_invoice where audit_no=?`,
   insertCash: `insert into cash set ?`,
   insertCertUpload: `insert into cert_upload set ?`,
+
+  customerCountByMonth:
+    "select month(`audit_created_date`) AS `month`, count(`audit_id`) AS `customerCount` from certification_audit group by `month`",
+
+  certByEmailDate: `SELECT certification_audit.audit_no, certification_audit.audit_fee, certification_audit.audit_s2_start, certification_audit.audit_s2_end, certification_audit.audit_leader, certification_audit.audit_no, certification_audit.audit_standard,certification_audit.audit_type,certification_audit.audit_degree, report_trans.created_at_trans_report, report_s1.s1_report_created, report_s2.s2_report_created, report_trans_upload.report_t_upload_id, report_trans_upload.report_t_upload_created, report_s1_upload.report_s1_upload_id, report_s1_upload.report_s1_upload_created, report_s2_upload.report_s2_upload_id, report_s2_upload.report_s2_upload_created, customer.name_ko,customer.business_no, tax_invoice.created_at_tax_invoice, tax_invoice.tax_invoice_amount, cash.cash_amount, cash.deduct_amount, cert_upload.cert_upload_created, cert_upload.cert_upload_id
+  FROM certification_audit LEFT JOIN report_trans ON certification_audit.audit_no = report_trans.audit_no
+                           LEFT JOIN report_s1 ON certification_audit.audit_no = report_s1.audit_no 
+                           LEFT JOIN report_s2 ON certification_audit.audit_no = report_s2.audit_no  
+                           LEFT JOIN report_trans_upload ON certification_audit.audit_no = report_trans_upload.audit_no 
+                           LEFT JOIN report_s1_upload ON certification_audit.audit_no = report_s1_upload.audit_no 
+                           LEFT JOIN report_s2_upload ON certification_audit.audit_no = report_s2_upload.audit_no 
+                           LEFT JOIN customer ON certification_audit.business_no = customer.business_no 
+                           LEFT JOIN tax_invoice ON certification_audit.audit_no = tax_invoice.audit_no 
+                           LEFT JOIN cash ON certification_audit.audit_no = cash.audit_no 
+                           LEFT JOIN cert_upload ON certification_audit.audit_no = cert_upload.audit_no 
+  WHERE  certification_audit.auditor_email = ? and certification_audit.audit_s2_start between ? and ?`,
 };
