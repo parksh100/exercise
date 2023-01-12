@@ -412,7 +412,9 @@
       </tbody>
     </table>
     <div class="text-end">
-      <button class="btn btn-secondary me-1" @click="goToList">목록</button>
+      <button class="btn btn-secondary me-1" @click="goToSignalRamp">
+        목록
+      </button>
       <button class="btn btn-primary" @click="doSave">저장</button>
     </div>
 
@@ -674,6 +676,12 @@ export default {
       this.$router.push({
         path: '/customer/cert/detail',
         query: { audit_no: this.id }
+      })
+    },
+    goToSignalRamp() {
+      this.$router.push({
+        path: '/mgt/signal'
+        // query: { audit_no: this.id }
       })
     }
   }

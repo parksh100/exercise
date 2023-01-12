@@ -131,4 +131,17 @@ module.exports = {
                            LEFT JOIN cash ON certification_audit.audit_no = cash.audit_no 
                            LEFT JOIN cert_upload ON certification_audit.audit_no = cert_upload.audit_no 
   WHERE  certification_audit.auditor_email = ? and certification_audit.audit_s2_start between ? and ?`,
+
+  certByAdmin: `SELECT certification_audit.audit_no, certification_audit.audit_fee, certification_audit.audit_s2_start, certification_audit.audit_s2_end, certification_audit.audit_leader, certification_audit.audit_no, certification_audit.audit_standard,certification_audit.audit_type,certification_audit.audit_degree, report_trans.created_at_trans_report, report_s1.s1_report_created, report_s2.s2_report_created, report_trans_upload.report_t_upload_id, report_trans_upload.report_t_upload_created, report_s1_upload.report_s1_upload_id, report_s1_upload.report_s1_upload_created, report_s2_upload.report_s2_upload_id, report_s2_upload.report_s2_upload_created, customer.name_ko,customer.business_no, tax_invoice.created_at_tax_invoice, tax_invoice.tax_invoice_amount, cash.cash_amount, cash.deduct_amount, cert_upload.cert_upload_created, cert_upload.cert_upload_id
+  FROM certification_audit LEFT JOIN report_trans ON certification_audit.audit_no = report_trans.audit_no
+                           LEFT JOIN report_s1 ON certification_audit.audit_no = report_s1.audit_no 
+                           LEFT JOIN report_s2 ON certification_audit.audit_no = report_s2.audit_no  
+                           LEFT JOIN report_trans_upload ON certification_audit.audit_no = report_trans_upload.audit_no 
+                           LEFT JOIN report_s1_upload ON certification_audit.audit_no = report_s1_upload.audit_no 
+                           LEFT JOIN report_s2_upload ON certification_audit.audit_no = report_s2_upload.audit_no 
+                           LEFT JOIN customer ON certification_audit.business_no = customer.business_no 
+                           LEFT JOIN tax_invoice ON certification_audit.audit_no = tax_invoice.audit_no 
+                           LEFT JOIN cash ON certification_audit.audit_no = cash.audit_no 
+                           LEFT JOIN cert_upload ON certification_audit.audit_no = cert_upload.audit_no 
+  WHERE certification_audit.audit_s2_start between ? and ?`,
 };

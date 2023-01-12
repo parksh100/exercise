@@ -765,7 +765,22 @@ app.post("/api/cert/condition/search", async (req, res) => {
     req.body.param[1],
     req.body.param[2],
   ]);
-  console.log(result);
+  // console.log(result);
+  res.send(result);
+});
+
+// 심사정보 auditList admin 검색 s2startDate, s2endDate
+app.post("/api/cert/admin/search", async (req, res) => {
+  console.log(req.body.param);
+  // const { auditor_email } = req.params;
+  // const { searchName } = req.params;
+  // console.log(auditor_email, searchName);
+  const result = await mysql.query("certByAdmin", [
+    req.body.param[0],
+    req.body.param[1],
+    // req.body.param[2],
+  ]);
+  // console.log(result);
   res.send(result);
 });
 
@@ -787,7 +802,7 @@ app.post("/api/report/list/search", async (req, res) => {
 
 // 심사보고서 전체조회 All
 app.post("/api/report/all", async (req, res) => {
-  console.log(req.body.param);
+  // console.log(req.body.param);
   // const { auditor_email } = req.params;
   // const { searchName } = req.params;
   // console.log(auditor_email, searchName);

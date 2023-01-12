@@ -89,7 +89,6 @@
         <input
           type="date"
           class="form-control"
-          @keyup.enter="searchFunction"
           placeholder=""
           v-model="s2StartDate"
         />
@@ -97,16 +96,22 @@
         <input
           type="date"
           class="form-control"
-          @keyup.enter="searchFunction"
           placeholder=""
-          value=""
           v-model="s2EndDate"
         />
       </div>
       <div class="col">
         <button
           class="btn btn-outline-primary me-1"
+          v-if="this.user.userInfo.role === 'auditor'"
           @click="certInfoByEmailS2startS2endDate"
+        >
+          조회
+        </button>
+        <button
+          class="btn btn-outline-primary me-1"
+          v-if="this.user.userInfo.role === 'admin'"
+          @click="certInfoByS2startS2endDate"
         >
           조회
         </button>
@@ -116,6 +121,13 @@
         </button> -->
       </div>
     </div>
+    <p v-if="this.intervalSearch.length > 0" class="mt-3">
+      조회하신 기간 중 <span class="fw-bold"> {{ this.noOfAudit }}건</span>의
+      심사와
+      <span class="fw-bold"
+        >{{ $convertNumberFormat(this.sumOfFee, '#,###') }}원</span
+      >의 심사비 내역이 존재합니다.
+    </p>
     <hr />
     <table
       class="table table-bordered"
@@ -172,13 +184,6 @@
         </tr>
       </tbody>
     </table>
-    <p v-if="this.intervalSearch.length > 0">
-      조회하신 기간 중 <span class="fw-bold"> {{ this.noOfAudit }}건</span>의
-      심사와
-      <span class="fw-bold"
-        >{{ $convertNumberFormat(this.sumOfFee, '#,###') }}원</span
-      >의 심사비 내역이 존재합니다.
-    </p>
 
     <hr />
     <!-- 기간검색테이블 -->
@@ -363,7 +368,7 @@ export default {
 
       loader.hide()
     },
-
+    // 심사원별, 기간조회
     async certInfoByEmailS2startS2endDate() {
       if (this.s2StartDate === null || this.s2EndDate === null) {
         this.$swal('날짜를 선택해주세요.')
@@ -405,7 +410,51 @@ export default {
       }
 
       loader.hide()
-    }
+    },
+
+    // 관리자, 기간조회
+    async certInfoByS2startS2endDate() {
+      if (this.s2StartDate === null || this.s2EndDate === null) {
+        this.$swal('날짜를 선택해주세요.')
+        return
+      }
+
+      if (this.s2StartDate > this.s2EndDate) {
+        this.$swal('시작일이 종료일보다 늦을 수 없습니다.')
+        return
+      }
+
+      const loader = this.$loading.show({ canCancel: false })
+      // console.log(this.user.userInfo.email)
+
+      const result = await this.$post('/api/cert/admin/search', {
+        param: [this.s2StartDate, this.s2EndDate]
+      })
+      console.log('intervalSearch', result.data)
+      // console.log(this.jan)
+      this.intervalSearch = result.data
+      console.log(this.intervalSearch)
+      console.log(this.intervalSearch.length)
+      this.noOfAudit = this.intervalSearch.length
+      // console.log('allJoinAuditInfo', this.allJoinAuditInfo)
+      // console.log('allJoinAuditInfo.length', this.allJoinAuditInfo.length)
+
+      // sum of audit_fee
+      if (this.sumOfFee === null) {
+        this.intervalSearch.forEach((item) => {
+          this.sumOfFee += item.audit_fee
+        })
+        console.log(this.sumOfAuditFee)
+      } else {
+        // this.s2StartDate = this.s2StartDate
+        // this.s2EndDate = this.s2EndDate
+        // this.$swal('날짜를 다시 선택해주세요.')
+        // this.s2StartDate = null
+        // this.s2EndDate = null
+      }
+
+      loader.hide()
+    },
 
     // goToDetail(id) {
     //   this.$router.push({
@@ -413,6 +462,34 @@ export default {
     //     query: { customer_id: id }
     //   })
     // },
+    goToTransReport(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/report/trans/detail',
+        query: { audit_no: id }
+      })
+    },
+    goToMakeTransReport(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/report/trans',
+        query: { audit_no: id }
+      })
+    },
+    goToS1Report(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/report/s1/detail',
+        query: { id: id }
+      })
+    },
+    goToS2Report(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/report/s2/detail',
+        query: { id: id }
+      })
+    }
   }
 }
 </script>

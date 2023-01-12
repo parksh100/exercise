@@ -39,11 +39,29 @@
           <!-- <th width="4%">ID</th> -->
           <th class="align-middle" style="width: 15%">심사번호</th>
           <th class="align-middle" style="width: 15%">회사명</th>
-          <th class="align-middle" style="width: 15%">표준</th>
-          <th class="align-middle" style="width: 15%">심사유형</th>
-          <th class="align-middle" style="width: 10%">전환<br />보고서</th>
-          <th class="align-middle" style="width: 10%">S1보고서</th>
-          <th class="align-middle" style="width: 10%">S2보고서</th>
+          <!-- <th class="align-middle" style="width: 15%">표준</th> -->
+          <!-- <th class="align-middle" style="width: 15%">심사유형</th> -->
+          <th
+            class="align-middle"
+            style="width: 10%; background-color: #f2f2f2"
+          >
+            TR작성
+          </th>
+          <th
+            class="align-middle"
+            style="width: 10%; background-color: #f2f2f2"
+          >
+            S1작성
+          </th>
+          <th
+            class="align-middle"
+            style="width: 10%; background-color: #f2f2f2"
+          >
+            S2작성
+          </th>
+          <th class="align-middle" style="width: 10%">TR제출</th>
+          <th class="align-middle" style="width: 10%">S1제출</th>
+          <th class="align-middle" style="width: 10%">S2제출</th>
           <th class="align-middle" style="width: 10%">
             계산서<br />발행<br /><small>(천원)</small>
           </th>
@@ -81,10 +99,90 @@
               >{{ item.name_ko }}</a
             >
           </td>
-          <td style="word-break: break-all">{{ item.audit_standard }}</td>
-          <td style="word-break: break-all">
+          <!-- <td style="word-break: break-all">{{ item.audit_standard }}</td> -->
+          <!-- <td style="word-break: break-all">
             {{ item.audit_type + item.audit_degree }}
+          </td> -->
+
+          <!-- 보고서 작성 램프 -->
+          <td style="font-size: 12px; background-color: #f2f2f2">
+            <div
+              v-if="
+                (item.audit_type === '전환사후' ||
+                  item.audit_type === '전환갱신') &&
+                item.created_at_trans_report
+              "
+            >
+              <a
+                @click="goToTransReport(item.audit_no)"
+                role="button"
+                class="text-decoration-underline"
+              >
+                {{ item.created_at_trans_report }}</a
+              >
+            </div>
+            <div
+              v-else-if="
+                (item.audit_type === '전환사후' ||
+                  item.audit_type === '전환갱신') &&
+                item.created_at_trans_report === null
+              "
+            >
+              <button
+                class="btn btn-danger btn-sm"
+                @click="goToMakeTransReport(item.audit_no)"
+              >
+                작성
+              </button>
+            </div>
+            <div v-else>N/A</div>
           </td>
+          <td style="font-size: 12px; background-color: #f2f2f2">
+            <div v-if="item.audit_type === '최초' && item.s1_report_created">
+              <a
+                @click="goToS1Report(item.audit_no)"
+                role="button"
+                class="text-decoration-underline"
+              >
+                {{ item.s1_report_created }}</a
+              >
+            </div>
+            <div
+              v-else-if="
+                item.audit_type === '최초' && item.s1_report_created === null
+              "
+            >
+              <button
+                class="btn btn-danger btn-sm"
+                @click="goToMakeS1Report(item.audit_no)"
+              >
+                작성
+              </button>
+            </div>
+            <div v-else>N/A</div>
+          </td>
+          <!-- 2단계보고서 작성 -->
+          <td style="font-size: 12px; background-color: #f2f2f2">
+            <div v-if="item.s2_report_created">
+              <a
+                @click="goToS2Report(item.audit_no)"
+                role="button"
+                class="text-decoration-underline"
+              >
+                {{ item.s2_report_created }}</a
+              >
+            </div>
+            <div v-else>
+              <button
+                class="btn btn-danger btn-sm"
+                @click="goToMakeS2Report(item.audit_no)"
+              >
+                작성
+              </button>
+            </div>
+          </td>
+
+          <!-- 보고서 업로드 -->
           <td style="font-size: 12px">
             <div
               v-if="
@@ -112,7 +210,7 @@
                 class="btn btn-danger btn-sm"
                 @click="goToUploadTransReport(item.audit_no)"
               >
-                업로드
+                제출
               </button>
             </div>
             <div v-else>N/A</div>
@@ -139,7 +237,7 @@
                 class="btn btn-danger btn-sm"
                 @click="goToUploadS1Report(item.audit_no)"
               >
-                업로드
+                제출
               </button>
             </div>
             <div v-else>N/A</div>
@@ -179,7 +277,7 @@
                 class="btn btn-danger btn-sm"
                 @click="goToUploadS2Report(item.audit_no)"
               >
-                업로드
+                제출
               </button>
             </div>
           </td>
@@ -763,6 +861,27 @@ export default {
       console.log(id)
       this.$router.push({
         path: '/mgt/fee',
+        query: { id: id }
+      })
+    },
+    goToMakeTransReport(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/report/trans',
+        query: { audit_no: id }
+      })
+    },
+    goToMakeS1Report(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/report/s1',
+        query: { id: id }
+      })
+    },
+    goToMakeS2Report(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/report/s2',
         query: { id: id }
       })
     }
