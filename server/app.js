@@ -358,6 +358,14 @@ app.get("/api/report/s2/:audit_no", async (req, res) => {
   res.send(s2Report[0]);
 });
 
+//user 조회 by user_id
+app.get("/api/user/:user_id", async (req, res) => {
+  const { user_id } = req.params;
+  const result = await mysql.query("getUserList", user_id);
+  console.log(result);
+  res.send(result[0]);
+});
+
 //심사보고서 모두 조회 by auditor_email
 app.get("/api/report/list/:auditor_email", async (req, res) => {
   const { auditor_email } = req.params;
@@ -514,6 +522,13 @@ app.put("/api/auditor/:auditor_id", async (req, res) => {
   res.send(result);
 });
 
+// user 수정
+app.put("/api/user/:user_id", async (req, res) => {
+  const { user_id } = req.params;
+  const result = await mysql.query("updateUser", [req.body.param, user_id]); // body에 실려온 자료 중 첫번째 ?표에 req.body.param에 auditor_id는 두번째 ?에 입력됨.
+  res.send(result);
+});
+
 // customer 수정
 app.put("/api/customer/:business_no", async (req, res) => {
   const { business_no } = req.params;
@@ -623,6 +638,7 @@ app.delete("/api/customer/:customer_id", async (req, res) => {
 
 // auditor 검색 post
 app.post("/api/auditor/search", async (req, res) => {
+  // const { searchName } = req.params;
   const result = await mysql.query("auditorListByCondition", req.body.param);
   res.send(result);
 });
@@ -972,7 +988,7 @@ app.post("/login", async (req, res) => {
   //데이터 베이스에 해당하는 사용자가 있는지, 비밀번호 맞는지 체크해야 함..있다면 로그인 시킴
   let result = await mysql.query("getUser", user.userEmail);
   result = JSON.parse(JSON.stringify(result));
-  // console.log(result);
+  console.log(result);
   if (result.length == 0) {
     res.json({
       success: false,

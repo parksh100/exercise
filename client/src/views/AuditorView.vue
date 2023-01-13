@@ -17,53 +17,53 @@
           class="btn btn-success me-1"
           data-bs-toggle="modal"
           data-bs-target="#auditorModal"
-          @click="openModal()"
+          @click="goToUserCreate"
         >
           생성
         </button>
         <button class="btn btn-info me-1" @click="doExcel">엑셀다운로드</button>
       </div>
     </div>
-    <table class="table table-striped table-bordered">
+    <table class="table table-bordered">
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Scheme</th>
-          <th>Grade</th>
-          <th>Email</th>
-          <th>PW</th>
-          <th>Status</th>
-          <th></th>
+        <tr class="bg-light">
+          <th style="width: 5%">ID</th>
+          <th style="width: 10%">성명</th>
+          <th style="width: 15%">이메일</th>
+          <th style="width: 10%">비밀번호</th>
+          <th style="width: 10%">역할</th>
+          <th style="width: 35%">심사가능코드</th>
+          <!-- <th>Status</th> -->
+          <th style="width: 15%">비고</th>
         </tr>
       </thead>
       <tbody>
-        <tr :key="item.auditor_id" v-for="item in list">
-          <td>{{ item.auditor_id }}</td>
-          <td>{{ item.auditor_name }}</td>
-          <td>{{ item.auditor_scheme }}</td>
-          <td>{{ item.auditor_grade }}</td>
-          <td>{{ item.auditor_email }}</td>
-          <td>{{ item.auditor_pw }}</td>
-          <td>{{ item.use_yn }}</td>
+        <tr :key="item.user_id" v-for="item in list">
+          <td style="word-break: break-all">{{ item.user_id }}</td>
+          <td style="word-break: break-all">{{ item.user_name }}</td>
+          <td style="word-break: break-all">{{ item.user_email }}</td>
+          <td style="word-break: break-all">{{ item.user_pw }}</td>
+          <td style="word-break: break-all">{{ item.user_role }}</td>
+          <td style="word-break: break-all">{{ item.user_auditable_code }}</td>
+          <!-- <td>{{ item.use_yn }}</td> -->
           <td>
             <button
-              class="btn btn-success me-1"
+              class="btn btn-success btn-sm me-1"
               data-bs-toggle="modal"
               data-bs-target="#auditorModal"
-              @click="openModal(item.auditor_id)"
+              @click="goToUserChange(item.user_id)"
             >
               수정</button
             ><button
-              class="btn btn-danger me-1"
-              @click="doDelete(item.auditor_id)"
+              class="btn btn-danger btn-sm me-1"
+              @click="doDelete(item.user_id)"
             >
               삭제
             </button>
             <button
-              class="btn btn-warning"
+              class="btn btn-warning btn-sm"
               @click="
-                changeStatus(item.auditor_id, item.use_yn === 'Y' ? 'N' : 'Y')
+                changeStatus(item.user_id, item.use_yn === 'Y' ? 'N' : 'Y')
               "
             >
               {{ item.use_yn === 'Y' ? '사용중지' : '사용' }}
@@ -72,108 +72,6 @@
         </tr>
       </tbody>
     </table>
-    <div
-      class="modal fade"
-      id="auditorModal"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">심사원 정보</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="row mb-3">
-              <label class="col-sm-3 col-form-label">Name</label>
-              <div class="col-sm-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model.trim="selectedItem.auditor_name"
-                />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="col-sm-3 col-form-label">Scheme</label>
-              <div class="col-sm-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model.trim="selectedItem.auditor_scheme"
-                />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="col-sm-3 col-form-label">Grade</label>
-              <div class="col-sm-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model.trim="selectedItem.auditor_grade"
-                />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="col-sm-3 col-form-label">Email</label>
-              <div class="col-sm-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model.trim="selectedItem.auditor_email"
-                />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="col-sm-3 col-form-label">PW</label>
-              <div class="col-sm-9">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model.trim="selectedItem.auditor_pw"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-              ref="btnClose"
-              @click="clearSelectedItem"
-            >
-              닫기
-            </button>
-            <button
-              type="button"
-              v-if="selectedItem.auditor_id === -1"
-              class="btn btn-primary"
-              @click="doCreate"
-            >
-              생성
-            </button>
-            <button
-              type="button"
-              v-else
-              class="btn btn-primary"
-              @click="doSave"
-            >
-              저장
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -190,22 +88,22 @@ export default {
   data() {
     return {
       headers: [
-        { title: 'ID', key: 'auditor_id' },
-        { title: 'Name', key: 'auditor_name' },
-        { title: 'Scheme', key: 'auditor_scheme' },
-        { title: 'Grade', key: 'auditor_grade' },
-        { title: 'Email', key: 'auditor_email' },
-        { title: 'PW', key: 'auditor_pw' }
+        { title: 'ID', key: 'user_id' },
+        { title: '성명', key: 'user_name' },
+        { title: '이메일', key: 'user_pw' },
+        { title: '비밀번호', key: 'user_name' },
+        { title: '역할', key: 'user_role' },
+        { title: '심사가능코드', key: 'user_auditable_code' }
       ],
       list: [],
       searchName: '',
       selectedItem: {
-        auditor_id: -1,
-        auditor_name: '',
-        auditor_scheme: '',
-        auditor_grade: '',
-        auditor_email: '',
-        auditor_pw: ''
+        user_id: -1,
+        user_email: '',
+        user_pw: '',
+        user_name: '',
+        user_role: '',
+        user_auditable_code: []
       }
     }
   },
@@ -217,24 +115,27 @@ export default {
       this.$router.push({ path: '/login' })
     }
 
-    this.list = await this.$get('/api/auditor')
+    // const r = await this.$get('/api/auditor')
     // console.log(r)
+    // this.list = r
+    this.getList()
   },
   unmounted() {},
   methods: {
     async getList() {
       const loader = this.$loading.show({ canCancel: false })
-      this.list = (
-        await this.$post('/api/auditor/search', {
-          param: `%${this.searchName.toLowerCase()}%`
-        })
-      ).data
-      console.log(this.list)
+      const result = await this.$post('/api/auditor/search', {
+        param: [`%${this.searchName.toLowerCase()}%`]
+      })
+      console.log(result)
+      this.list = result.data
       loader.hide()
     },
+
     doExcel() {
       this.$ExcelFromTable(this.headers, this.list, 'auditors', {})
     },
+
     doDelete(id) {
       this.$swal({
         title: '심사원정보를 정말 삭제 하시겠습니까?',
@@ -312,14 +213,16 @@ export default {
           const loader = this.$loading.show({ canCancel: false })
 
           const r = await this.$put(
-            `/api/auditor/${this.selectedItem.auditor_id}`,
+            `/api/auditor/${this.selectedItem.user_id}`,
             {
               param: {
-                auditor_name: this.selectedItem.auditor_name,
-                auditor_scheme: this.selectedItem.auditor_scheme,
-                auditor_grade: this.selectedItem.auditor_grade,
-                auditor_email: this.selectedItem.auditor_email,
-                auditor_pw: this.selectedItem.auditor_pw
+                user_name: this.selectedItem.user_name,
+                user_email: this.selectedItem.user_email,
+                user_pw: this.selectedItem.user_pw,
+                user_role: this.selectedItem.user_role,
+                user_auditable_code: JSON.stringify(
+                  this.selectedItem.user_auditable_code
+                )
               }
             }
           )
@@ -350,11 +253,14 @@ export default {
 
           const r = await this.$post('/api/auditor', {
             param: {
-              auditor_name: this.selectedItem.auditor_name,
-              auditor_scheme: this.selectedItem.auditor_scheme,
-              auditor_grade: this.selectedItem.auditor_grade,
-              auditor_email: this.selectedItem.auditor_email,
-              auditor_pw: this.selectedItem.auditor_pw
+              user_id: this.selectedItem.user_id,
+              user_email: this.selectedItem.user_email,
+              user_pw: this.selectedItem.user_pw,
+              user_name: this.selectedItem.user_name,
+              user_role: this.selectedItem.user_role,
+              user_auditable_code: JSON.stringify(
+                this.selectedItem.user_auditable_code
+              )
             }
           })
 
@@ -373,28 +279,38 @@ export default {
     openModal(id) {
       if (id === undefined) {
         this.selectedItem = {
-          auditor_id: -1,
-          auditor_name: '',
-          auditor_scheme: '',
-          auditor_grade: '',
-          auditor_email: '',
-          auditor_pw: ''
+          user_id: -1,
+          user_email: '',
+          user_pw: '',
+          user_name: '',
+          user_role: '',
+          user_auditable_code: []
         }
       } else {
-        this.selectedItem = JSON.parse(
-          JSON.stringify(this.list.filter((item) => item.auditor_id === id)[0])
-        )
+        // this.selectedItem = JSON.parse(
+        //   JSON.stringify(this.list.filter((item) => item.user_id === id)[0])
+        this.selectedItem = this.list.filter((item) => item.user_id === id)[0]
       }
     },
     clearSelectedItem() {
       this.selectedItem = {
-        auditor_id: -1,
-        auditor_name: '',
-        auditor_scheme: '',
-        auditor_grade: '',
-        auditor_email: '',
-        auditor_pw: ''
+        user_id: -1,
+        user_email: '',
+        user_pw: '',
+        user_name: '',
+        user_role: '',
+        user_auditable_code: []
       }
+    },
+    goToUserCreate() {
+      this.$router.push({ name: 'userCreateView' })
+    },
+    goToUserChange(id) {
+      console.log(id)
+      this.$router.push({
+        path: '/user/change',
+        query: { user_id: id }
+      })
     }
   }
 }

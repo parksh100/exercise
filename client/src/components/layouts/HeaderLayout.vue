@@ -43,10 +43,10 @@
                 :class="{ active: $route.path == '/customer/create' }"
                 @click="goToMenu('/customer/create')"
                 role="button"
-                >인증심사신청</a
+                >고객사등록</a
               >
             </li>
-            <!-- <li class="nav-item">
+            <li class="nav-item" v-if="userInfo.role === 'admin'">
               <a
                 class="nav-link"
                 :class="{ active: $route.path == '/auditor' }"
@@ -54,7 +54,7 @@
                 role="button"
                 >심사원현황</a
               >
-            </li> -->
+            </li>
 
             <li class="nav-item">
               <a

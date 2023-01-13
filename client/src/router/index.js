@@ -32,6 +32,7 @@ const routes = [
     name: 'auditor',
     component: AuditorView
   },
+
   {
     path: '/about',
     name: 'about',
@@ -46,6 +47,24 @@ const routes = [
     name: 'hello',
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/HelloView.vue')
+  },
+  {
+    path: '/user/create',
+    name: 'userCreateView',
+    component: () =>
+      import(/* webpackChunkName: "user" */ '../views/userCreateView.vue')
+  },
+  {
+    path: '/user/detail',
+    name: 'userDetailView',
+    component: () =>
+      import(/* webpackChunkName: "user" */ '../views/userDetailView.vue')
+  },
+  {
+    path: '/user/change',
+    name: 'userChangeView',
+    component: () =>
+      import(/* webpackChunkName: "user" */ '../views/userChangeView.vue')
   },
   {
     path: '/customer/create',

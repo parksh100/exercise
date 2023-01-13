@@ -1,5 +1,5 @@
 module.exports = {
-  // auditorList: `select * from auditor`,
+  auditorList: `select * from user`,
   customerList: `select * from customer`,
   activeCustomerList: `select * from customer where customer.status_yn = 'Y' and customer.auditor_email =?`,
   crList: `select * from contract_review`,
@@ -34,7 +34,7 @@ module.exports = {
   s2AuditDayDiff: `select certification_audit.audit_no, certification_audit.audit_s2_end, timestampdiff(day, audit_s2_start, audit_s2_end) as diff_Day from certification_audit where certification_audit.audit_no =?`,
   crSelectedList: `select t1.*, t2.* from certification_audit t1, contract_review t2 where t1.audit_no = t2.audit_no and t2.audit_no=?`,
   auditSelectedList: `select t1.name_ko, t1.auditor_name, t2.* from customer t1, contract_review t2 where t1.customer_id=t2.customer_id`,
-  auditorInsert: `insert into auditor set ?`,
+  auditorInsert: `insert into user set ?`,
   customerInsert: `insert into customer set ?`,
   reportTransInsert: `insert into report_trans set ?`,
   reportS1Insert: `insert into report_s1 set ?`,
@@ -60,7 +60,7 @@ module.exports = {
   customerDetailByBizNo: `select * from customer where business_no=?`,
   certDetail: `select t1.*, t2. * from customer t1, certification_audit t2 where t1.customer_id= t2.customer_id and t2.audit_id=?`,
   crDetail: `select * from contract_review where customer_id=?`,
-  auditorListByCondition: `select * from auditor where lower(auditor_name) like ?`,
+  auditorListByCondition: `select * from user where lower(user_name) like ?`,
   customerListByCondition: `select * from customer where lower(name_ko) like ? order by customer_created_date desc`,
   customerListByEmail: `select * from customer where auditor_email = ?`,
   customerListByEmailAndSearchName: `select t1.* from customer t1 where t1.auditor_email = ? and lower(name_ko) like ? order by t1.customer_created_date desc`,
@@ -144,4 +144,7 @@ module.exports = {
                            LEFT JOIN cash ON certification_audit.audit_no = cash.audit_no 
                            LEFT JOIN cert_upload ON certification_audit.audit_no = cert_upload.audit_no 
   WHERE certification_audit.audit_s2_start between ? and ?`,
+
+  getUserList: `select * from user where user_id=?`,
+  updateUser: `update user set ? where user_id=?`,
 };
